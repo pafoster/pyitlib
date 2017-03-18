@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-#The MIT License (MIT)
+# The MIT License (MIT)
 #
-#Copyright (c) 2016 Peter Foster <pyitlib@gmx.us>
+# Copyright (c) 2016 Peter Foster <pyitlib@gmx.us>
 #
-#Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 #
-#The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
 This module implements various information-theoretic quantities for discrete random variables.
@@ -74,21 +74,21 @@ import numpy as np
 import sklearn.preprocessing
 import warnings
 
-#Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls, prefer flags, convenient defaults for possible interactive use). Focus on data analysis. Documentation. 
-#TODO Get source code on github
-#TODO Get documentation on github
-#TODO Add guidance on which estimator to use (within module doc)
-#TODO Add notes on interpretation of each measure (within each function doc)
-#TODO Add basic equalities and properties, followed by interpretation (within each function doc)
-#TODO Note about which measures are metrics (within each function doc).
-#TODO Add information diagrams (within each function doc).
-#TODO Implement joint observation mapping function encode/map_joint_observations. This works by sorting and returning unique observations, similar to entropy_joint()
-#TODO Implement generalised Jensen-Shannon divergence
-#TODO Information bottleneck and deterministic information bottleneck (See Strose and Schwab 2016). NB Can be used in either supervised or unsupervised manner. Implement in separate module. Implement the earlier hierarchical aggolerative clustering approach as well?. The approaches should also incorporate `de-noising' capability: With probability p, corrupt observations with a random symbol. The learnt model should also have a way of discarding un-used input features (feture selection).
-#TODO Re-arrange functions based on dependencies
-#TODO Set up project email address pyitlib@gmx.us
-#TODO Add note in README on how functions accept numpy arrays, (or more generally array-like input). Thus, a straightforward approach is entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions support higher-dimensional input for convenience, allowingquantities to be computed for multiple random variables using one function call.
-#TODO Add information in documentation on when quantities are maximised or minimised
+# Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls, prefer flags, convenient defaults for possible interactive use). Focus on data analysis. Documentation. 
+# TODO Get source code on github
+# TODO Get documentation on github
+# TODO Add guidance on which estimator to use (within module doc)
+# TODO Add notes on interpretation of each measure (within each function doc)
+# TODO Add basic equalities and properties, followed by interpretation (within each function doc)
+# TODO Note about which measures are metrics (within each function doc).
+# TODO Add information diagrams (within each function doc).
+# TODO Implement joint observation mapping function encode/map_joint_observations. This works by sorting and returning unique observations, similar to entropy_joint()
+# TODO Implement generalised Jensen-Shannon divergence
+# TODO Information bottleneck and deterministic information bottleneck (See Strose and Schwab 2016). NB Can be used in either supervised or unsupervised manner. Implement in separate module. Implement the earlier hierarchical aggolerative clustering approach as well?. The approaches should also incorporate `de-noising' capability: With probability p, corrupt observations with a random symbol. The learnt model should also have a way of discarding un-used input features (feture selection).
+# TODO Re-arrange functions based on dependencies
+# TODO Set up project email address pyitlib@gmx.us
+# TODO Add note in README on how functions accept numpy arrays, (or more generally array-like input). Thus, a straightforward approach is entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions support higher-dimensional input for convenience, allowingquantities to be computed for multiple random variables using one function call.
+# TODO Add information in documentation on when quantities are maximised or minimised
 
 
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
@@ -214,9 +214,9 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphab
     return information_binding(X, base, fill_value, estimator, Alphabet_X) + information_multi(X, base, fill_value, estimator, Alphabet_X)
 
 
-def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None): #See `Anatomy of a bit'. Include?
-    #Note: can be negative
-    #Note: equals multivariate mutual information when N=3, can test for this
+def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None): # See `Anatomy of a bit'. Include?
+    # Note: can be negative
+    # Note: equals multivariate mutual information when N=3, can test for this
     """
     Returns the estimated enigmatic information [JaEC11] for an array X containing realisations of discrete random variables.
     
@@ -361,7 +361,7 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
         
-    X = np.reshape(X, (-1, X.shape[-1])) #Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     
     I = 0
@@ -460,7 +460,7 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
         
-    X = np.reshape(X, (-1, X.shape[-1])) #Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))    
     
     I = 0
@@ -538,8 +538,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     else:
         Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     
-    #Exceptions needed to create Alphabet_X correctly if None
-    #Not all of these are needed, however we include them for consistency.
+    # Exceptions needed to create Alphabet_X correctly if None
+    # Not all of these are needed, however we include them for consistency.
     if X.size == 0:
         raise ValueError("arg X contains no elements")    
     if np.any(_isnan(X)):
@@ -558,10 +558,10 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
     
-    #Exceptions thrown by entropy_joint
+    # Exceptions thrown by entropy_joint
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
     B = H_joint
-    #Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))    
     M = np.arange(X.shape[0])
@@ -785,7 +785,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
             I = I.reshape(np.append(shapeI_XY,shapeI_Z).astype('int'))
         return I
     
-    #Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Z = np.reshape(Z, (-1, Z.shape[-1]))
@@ -802,7 +802,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
             entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]) )
         I[i] = I_
         
-    #Reverse re-shaping
+    # Reverse re-shaping
     I = np.reshape(I, orig_shape_I)
     
     return I
@@ -936,7 +936,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: information_lautum(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
         
-    #Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -948,16 +948,16 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
     
     for i in xrange(X.shape[0]):
-        #Sort X and Y jointly, so that we can determine joint symbol probabilities
+        # Sort X and Y jointly, so that we can determine joint symbol probabilities
         JointXY = np.vstack((X[i], Y[i]))
         JointXY = JointXY[:,JointXY[0].argsort(kind='mergesort')]
         JointXY = JointXY[:,JointXY[1].argsort(kind='mergesort')]
                           
-        #Compute symbol run-lengths    
-        B = np.any(JointXY[:,1:] != JointXY[:,:-1], axis=0) #Compute symbol change indicators
+        # Compute symbol run-lengths    
+        B = np.any(JointXY[:,1:] != JointXY[:,:-1], axis=0) # Compute symbol change indicators
         
-        I = np.append(np.where(B), JointXY.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) #Compute run lengths
+        I = np.append(np.where(B), JointXY.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, I)) # Compute run lengths
         
         alphabet_XY = JointXY[:,I]
         if estimator != 'ML':
@@ -967,9 +967,9 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
             continue        
         P_XY, _ = _estimate_probabilities(L, estimator)
         
-        #Assign probabilities in P_XY to P_XY_reshaped, a matrix which exhaustively
-        #records probabilities for all elements in the cartesian product of alphabets.
-        #In this way, we can subsequently integrate across variables X, Y.
+        # Assign probabilities in P_XY to P_XY_reshaped, a matrix which exhaustively
+        # records probabilities for all elements in the cartesian product of alphabets.
+        # In this way, we can subsequently integrate across variables X, Y.
         alphabet_X = np.unique(alphabet_XY[0])
         alphabet_Y = np.unique(alphabet_XY[1])
         P_XY_reshaped = np.zeros((alphabet_Y.size,alphabet_X.size))
@@ -983,20 +983,20 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
                 j = j + 1
             P_XY_reshaped[j,k] = P_XY[c]
 
-        #Integrate across X, Y
+        # Integrate across X, Y
         P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1,-1))
         P_Y = np.reshape(np.sum(P_XY_reshaped, axis=1), (-1, 1))
         
         H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y, (1,-1)), np.reshape(P_XY_reshaped, (1,-1)), False, base)
         
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H        
     
 
 def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=False, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
-    #TODO Documentation should include properties for each of the normalisation factors
+    # TODO Documentation should include properties for each of the normalisation factors
     """
     Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.
     
@@ -1134,7 +1134,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
          raise ValueError("dimensions of args 1 and 2 do not match")        
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
          raise ValueError("trailing dimensions of args 1 and 2 do not match")        
-    #NB: No base parameter needed here, therefore no test!
+    # NB: No base parameter needed here, therefore no test!
         
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
@@ -1181,9 +1181,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
             else:
                 H = np.float64(np.NaN)
             
-            #Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            X = np.reshape(X, (-1, X.shape[-1])) #Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            Y = np.reshape(Y, (-1, Y.shape[-1])) #Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            Y = np.reshape(Y, (-1, Y.shape[-1])) # Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
             Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
             Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
             
@@ -1471,7 +1471,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_cross(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
         
-    #Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -1482,16 +1482,16 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
     
-    #NB: Observations are not considered jointly, thus elements in each row are sorted independently
+    # NB: Observations are not considered jointly, thus elements in each row are sorted independently
     X = np.sort(X, axis=1)
     Y = np.sort(Y, axis=1)
 
-    #Compute symbol run-lengths    
-    B = X[:,1:] != X[:,:-1] #Compute symbol change indicators
+    # Compute symbol run-lengths    
+    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
     C = Y[:,1:] != Y[:,:-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) #Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, I)) # Compute run lengths
         
         alphabet_X = X[i,I]
         if estimator != 'ML':
@@ -1501,8 +1501,8 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
             continue
         P1, _ = _estimate_probabilities(L, estimator)
         
-        J = np.append(np.where(C[i]), Y.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, J)) #Compute run lengths
+        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, J)) # Compute run lengths
 
         alphabet_Y = Y[i,J]
         if estimator != 'ML':
@@ -1512,7 +1512,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
             continue        
         P2, _ = _estimate_probabilities(L, estimator)
 
-        #Merge probability distributions, so that common symbols have common array location
+        # Merge probability distributions, so that common symbols have common array location
         Alphabet = np.union1d(alphabet_X, alphabet_Y)
         P = np.zeros_like(Alphabet, dtype=P1.dtype)
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
@@ -1521,7 +1521,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         
         H[i] = entropy_cross_pmf(P, Q, False, base)
     
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H        
@@ -1709,7 +1709,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: divergence_jensenshannon(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
         
-    #Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -1720,16 +1720,16 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)    
     
-    #NB: Observations are not considered jointly, thus elements in each row are sorted independently
+    # NB: Observations are not considered jointly, thus elements in each row are sorted independently
     X = np.sort(X, axis=1)
     Y = np.sort(Y, axis=1)
 
-    #Compute symbol run-lengths    
-    B = X[:,1:] != X[:,:-1] #Compute symbol change indicators
+    # Compute symbol run-lengths    
+    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
     C = Y[:,1:] != Y[:,:-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) #Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, I)) # Compute run lengths
 
         alphabet_X = X[i,I]
         if estimator != 'ML':
@@ -1739,8 +1739,8 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
             continue
         P1, _ = _estimate_probabilities(L, estimator)
         
-        J = np.append(np.where(C[i]), Y.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, J)) #Compute run lengths
+        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, J)) # Compute run lengths
 
         alphabet_Y = Y[i,J]
         if estimator != 'ML':
@@ -1750,7 +1750,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
             continue        
         P2, _ = _estimate_probabilities(L, estimator)
 
-        #Merge probability distributions, so that common symbols have common array location
+        # Merge probability distributions, so that common symbols have common array location
         Alphabet = np.union1d(alphabet_X, alphabet_Y)
         P = np.zeros_like(Alphabet, dtype=P1.dtype)
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
@@ -1759,7 +1759,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
         
         H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - 0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
     
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H        
@@ -1904,7 +1904,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
         
     """    
-    #TODO Add note in documentation (for other functions where appropriate) about creating joint observations using appropriate function    
+    # TODO Add note in documentation (for other functions where appropriate) about creating joint observations using appropriate function    
     if Y is None:
         Y = X
         cartesian_product = True
@@ -1966,7 +1966,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_conditional(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
         
-    #Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -1977,7 +1977,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     for i in xrange(X.shape[0]):
         H[i] = entropy_joint(np.vstack((X[i],Y[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value)) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
     
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H
@@ -2033,8 +2033,8 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
         
     """
-    #TODO If we add joint observation function, we can reduce code duplication in this function.
-    #TODO NB: The joint observation function must honour missing data fill values.
+    # TODO If we add joint observation function, we can reduce code duplication in this function.
+    # TODO NB: The joint observation function must honour missing data fill values.
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
@@ -2060,19 +2060,19 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
         
-    X = np.reshape(X, (-1, X.shape[-1])) #Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
     
-    #Sort columns
+    # Sort columns
     for i in xrange(X.shape[0]):
         X = X[:,X[i].argsort(kind='mergesort')]
 
-    #Compute symbol run-lengths    
-    B = np.any(X[:,1:] != X[:,:-1], axis=0) #Compute symbol change indicators
-    I = np.append(np.where(B), X.shape[1]-1) #Obtain symbol change positions
-    L = np.diff(np.append(-1, I)) #Compute run lengths
+    # Compute symbol run-lengths    
+    B = np.any(X[:,1:] != X[:,:-1], axis=0) # Compute symbol change indicators
+    I = np.append(np.where(B), X.shape[1]-1) # Obtain symbol change positions
+    L = np.diff(np.append(-1, I)) # Compute run lengths
     
     alphabet_X = X[:,I]
     if estimator != 'ML':
@@ -2083,7 +2083,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not np.any(L):
         return np.float64(np.NaN)
             
-    #P_0 is the probability mass assigned to each additional empty bin
+    # P_0 is the probability mass assigned to each additional empty bin
     P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
     H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
     H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
@@ -2139,7 +2139,7 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
                 
     """
-    #NB: We would be able to reduce code duplication by invoking entropy_cross(X,X). However, performance would likely be lower!
+    # NB: We would be able to reduce code duplication by invoking entropy_cross(X,X). However, performance would likely be lower!
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
@@ -2171,7 +2171,7 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     else:
         H = np.float64(np.NaN)
     
-    #Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     orig_shape_H = H.shape    
@@ -2179,14 +2179,14 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
 
-    #NB: This is not joint entropy. Elements in each row are sorted independently
+    # NB: This is not joint entropy. Elements in each row are sorted independently
     X = np.sort(X, axis=1)
 
-    #Compute symbol run-lengths    
-    B = X[:,1:] != X[:,:-1] #Compute symbol change indicators
+    # Compute symbol run-lengths    
+    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) #Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) #Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, I)) # Compute run lengths
         
         alphabet_X = X[i,I]
         if estimator != 'ML':
@@ -2197,12 +2197,12 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         if not np.any(L):
             continue
         
-        #P_0 is the probability mass assigned to each additional empty bin        
+        # P_0 is the probability mass assigned to each additional empty bin        
         P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
         H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
         H[i] = entropy_pmf(P, base, require_valid_pmf=False) + H_0
     
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H
@@ -2489,7 +2489,7 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
                 i = i + 1
         Alphabet = np.hstack((Alphabet, A[:,Unseen]))
         Counts = np.append(Counts, np.tile(0,Alphabet.size-Counts.size))
-        #Sort columns
+        # Sort columns
         for i in xrange(Alphabet.shape[0]):
             I = Alphabet[i].argsort(kind='mergesort')
             Alphabet = Alphabet[:,I]
@@ -2549,7 +2549,7 @@ def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
                 H[n] = function(X[i], Y[j])
             n = n + 1
             
-    #Reverse re-shaping
+    # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
     
     return H
@@ -2567,10 +2567,10 @@ def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet, fil
 
 
 def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
-    #TODO Documentation should present the following guidelines:
-    #1) Good-Turing may be used if slope requirement satisfied and if unobserved symbols have been defined (TODO Clarify what the requirement is)
-    #2) James-Stein approach may be used as an alternative
-    #3) Dirichlet prior may be used in all other cases
+    # TODO Documentation should present the following guidelines:
+    # 1) Good-Turing may be used if slope requirement satisfied and if unobserved symbols have been defined (TODO Clarify what the requirement is)
+    # 2) James-Stein approach may be used as an alternative
+    # 3) Dirichlet prior may be used in all other cases
 
     assert(np.sum(Counts) > 0)
     assert(np.all(Counts.astype('int') == Counts))
@@ -2590,32 +2590,32 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         else:
             alpha = 0
         Theta = (Counts+alpha) / (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
-        #Theta_0 is the probability mass assigned to each additional empty bin
+        # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
             Theta_0 = alpha / (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
         else:
             Theta_0 = 0
             
     elif estimator == 'GOOD-TURING':
-        #TODO We could also add a Chen-Chao vocabulary size estimator (See Bhat Suma's thesis)
+        # TODO We could also add a Chen-Chao vocabulary size estimator (See Bhat Suma's thesis)
         
-        #The following notation is based on Gale and Sampson (1995)
-        #Determine histogram of counts N_r (index r denotes count)
+        # The following notation is based on Gale and Sampson (1995)
+        # Determine histogram of counts N_r (index r denotes count)
         X = np.sort(Counts)
-        B = X[1:] != X[:-1] #Compute symbol change indicators        
-        I = np.append(np.where(B), X.size-1) #Obtain symbol change positions
+        B = X[1:] != X[:-1] # Compute symbol change indicators        
+        I = np.append(np.where(B), X.size-1) # Obtain symbol change positions
         N_r = np.zeros(X[I[-1]]+1)
-        N_r[X[I]] = np.diff(np.append(-1, I)) #Compute run lengths
-        N_r[0] = 0 #This initialisation ensures that unobserved symbols do not interfere
+        N_r[X[I]] = np.diff(np.append(-1, I)) # Compute run lengths
+        N_r[0] = 0 # This initialisation ensures that unobserved symbols do not interfere
         
-        #Compute Z_r, a locally averaged version of N_r
+        # Compute Z_r, a locally averaged version of N_r
         R = np.where(N_r)[0]
         Q = np.append(0, R[:-1])
         T = np.append(R[1:], 2*R[-1]-Q[-1])
         Z_r = np.zeros_like(N_r)
         Z_r[R] = N_r[R] / (0.5*(T-Q))
         
-        #Fit least squares regression line to plot of log(Z_r) versus log(r)
+        # Fit least squares regression line to plot of log(Z_r) versus log(r)
         x = np.log10(np.arange(1,Z_r.size))
         with np.errstate(invalid='ignore', divide='ignore'):
             y = np.log10(Z_r[1:])
@@ -2624,12 +2624,12 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         m, c = np.linalg.lstsq(np.vstack([x,np.ones(x.size)]).T, y)[0]
         if m >= -1:
             warnings.warn("Regression slope < -1 requirement in linear Good-Turing estimate not satisfied")
-        #Compute smoothed value of N_r based on interpolation
-        SmoothedN_r = np.zeros(N_r.size+1) #We need to refer to SmoothedN_{r+1} for all observed values of r
+        # Compute smoothed value of N_r based on interpolation
+        SmoothedN_r = np.zeros(N_r.size+1) # We need to refer to SmoothedN_{r+1} for all observed values of r
         SmoothedN_r[1:] = 10**(np.log10(np.arange(1,SmoothedN_r.size)) * m + c)
         
-        #Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
-        #Variance of Turing estimate
+        # Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
+        # Variance of Turing estimate
         with np.errstate(invalid='ignore', divide='ignore'):        
             VARr_T = (np.arange(N_r.size)+1)**2 * (1.0*np.append(N_r[1:],0)/(N_r**2)) * (1 + np.append(N_r[1:],0)/N_r)
             x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:],0) / N_r
@@ -2637,38 +2637,38 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
         assert(turing_is_sig_diff[0] == False)
-        T = np.where(turing_is_sig_diff == False)[0] #NB: 0th element can be safely ignored, since always 0
+        T = np.where(turing_is_sig_diff == False)[0] # NB: 0th element can be safely ignored, since always 0
         if T.size > 1:
             thresh_r = T[1]
-            #Use smoothed estimates from the first non-significant np.abs(SmoothedN_r-N_r) position onwards
+            # Use smoothed estimates from the first non-significant np.abs(SmoothedN_r-N_r) position onwards
             SmoothedN_r[:thresh_r] = N_r[:thresh_r]
         else:
-            #Use only non-smoothed estimates (except for SmoothedN_r[-1])
+            # Use only non-smoothed estimates (except for SmoothedN_r[-1])
             SmoothedN_r[:-1] = N_r
                 
-        #Estimate probability of encountering one particular symbol among the objects observed r times, r>0
+        # Estimate probability of encountering one particular symbol among the objects observed r times, r>0
         p_r = np.zeros(N_r.size)
         N = np.sum(Counts)
         p_r[1:] = (np.arange(1,N_r.size)+1) * 1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
-        #Estimate probability of observing any unseen symbol
+        # Estimate probability of observing any unseen symbol
         p_r[0] = 1.0 * N_r[1] / N
         
-        #Assign probabilities to observed symbols
+        # Assign probabilities to observed symbols
         Theta = np.array([p_r[r] for r in Counts])
         Theta[Counts == 0] = 0
         
-        #Normalise probabilities for observed symbols, so that they sum to one
+        # Normalise probabilities for observed symbols, so that they sum to one
         if np.any(Counts == 0) or n_additional_empty_bins > 0:
             Theta = (1-p_r[0]) * Theta / np.sum(Theta)
         else:
             warnings.warn("No unobserved symbols specified. Disregarding the probability mass allocated to any unobserved symbols.")
             Theta = Theta / np.sum(Theta)
         
-        #Divide p_0 among unobserved symbols
+        # Divide p_0 among unobserved symbols
         with np.errstate(invalid='ignore', divide='ignore'):        
             p_emptybin = p_r[0] / (np.sum(Counts == 0) + n_additional_empty_bins)
         Theta[Counts == 0] = p_emptybin
-        #Theta_0 is the probability mass assigned to each additional empty bin
+        # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
             Theta_0 = p_emptybin
         else:
@@ -2688,7 +2688,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             Lambda = 1
             
         Theta = Lambda*p_uniform + (1-Lambda)*Theta
-        #Theta_0 is the probability mass assigned to each additional empty bin
+        # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
             Theta_0 = Lambda*p_uniform
         else:
@@ -2742,7 +2742,7 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
         L = sklearn.preprocessing.LabelEncoder()
         F = [np.atleast_1d(v) for v in Fill_values]
         L.fit(np.concatenate([A.ravel() for A in Symbol_matrices] + F))
-        #TODO make sure to test with various (unusual) data types
+        # TODO make sure to test with various (unusual) data types
         Symbol_matrices = [L.transform(A.ravel()).reshape(A.shape) for A in Symbol_matrices]
         Fill_values = [L.transform(np.atleast_1d(f)) for f in Fill_values]
         
@@ -2770,7 +2770,7 @@ def _sanitise_array_input(X, fill_value=-1):
         if X.dtype.char == 'S':
             current_dtype_len = int(str(X.dtype).split('S')[1])
             if current_dtype_len < len(fill_value):
-                #Fix numpy's broken array string type behaviour which causes X.filled() placeholder entries to be no longer than non-placeholder entries
+                # Fix numpy's broken array string type behaviour which causes X.filled() placeholder entries to be no longer than non-placeholder entries
                 warnings.warn("Changing numpy array dtype internally to accommodate fill_value string length")
                 M = X.mask
                 X = np.array(X.filled(), dtype='S'+str(len(fill_value)))
@@ -2794,7 +2794,7 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
     for i in xrange(X.shape[0]):
         I = X[i] != fill_value
         J = Alphabet[i] != fill_value
-        if np.setdiff1d(X[i,I],Alphabet[i,J]).size > 0: #NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
+        if np.setdiff1d(X[i,I],Alphabet[i,J]).size > 0: # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
             raise ValueError("provided alphabet does not contain all observed symbols")
 
 
@@ -2803,15 +2803,15 @@ def _vstack_pad_with_fillvalue(Arrays, fill_value):
     Arrays = [np.append(A, np.tile(fill_value, np.append(A.shape[:-1], max_length-A.shape[-1]))) for A in Arrays]
     return np.vstack((Arrays))
 
-#TODO What happens if there are no observations due to all data missing? Write some tests to ensure nan is returned?
-#TODO String processing bug observed in SherlockML -- Pokemon challenge
-#TODO should we be testing for string type directly in _sanitise_array_input? -- which types do we need to test for? S a U ? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-#TODO Which data types may we permit explicitly using whitelist? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-#TODO Support for pandas (missing data via .isnull()).
+# TODO What happens if there are no observations due to all data missing? Write some tests to ensure nan is returned?
+# TODO String processing bug observed in SherlockML -- Pokemon challenge
+# TODO should we be testing for string type directly in _sanitise_array_input? -- which types do we need to test for? S a U ? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# TODO Which data types may we permit explicitly using whitelist? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# TODO Support for pandas (missing data via .isnull()).
 
-#NB: The following tests should also determine what happens when data contain None, but fill value is not None
-#TODO Test _determine_number_additional_empty_bins using None fill_value etc. / add assertions
-#TODO Test _append_empty_bins_using_alphabet using None fill_value etc. / add assertions
-#TODO Test _autocreate_alphabet using None fill_value / add assertions
-#TODO Test _remove_counts_at_fill_value / add assertions
-#TODO Test _vstack_pad_with_fillvalue / add assertions
+# NB: The following tests should also determine what happens when data contain None, but fill value is not None
+# TODO Test _determine_number_additional_empty_bins using None fill_value etc. / add assertions
+# TODO Test _append_empty_bins_using_alphabet using None fill_value etc. / add assertions
+# TODO Test _autocreate_alphabet using None fill_value / add assertions
+# TODO Test _remove_counts_at_fill_value / add assertions
+# TODO Test _vstack_pad_with_fillvalue / add assertions
