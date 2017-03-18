@@ -31,7 +31,7 @@ Function                                           Generalises           Non-neg
 :meth:`divergence_kullbackleibler_pmf`                                   Yes            No       Yes
 :meth:`divergence_kullbackleibler_symmetrised`                           Yes            Yes      Yes
 :meth:`divergence_kullbackleibler_symmetrised_pmf`                       Yes            Yes      Yes
-:meth:`entropy`                                                          Yes            
+:meth:`entropy`                                                          Yes
 :meth:`entropy_conditional`                                              Yes            No       No
 :meth:`entropy_cross`                                                    Yes            No       No
 :meth:`entropy_cross_pmf`                                                Yes            No       No
@@ -74,7 +74,7 @@ import numpy as np
 import sklearn.preprocessing
 import warnings
 
-# Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls, prefer flags, convenient defaults for possible interactive use). Focus on data analysis. Documentation. 
+# Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls, prefer flags, convenient defaults for possible interactive use). Focus on data analysis. Documentation.
 # TODO Get source code on github
 # TODO Get documentation on github
 # TODO Add guidance on which estimator to use (within module doc)
@@ -94,123 +94,123 @@ import warnings
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated residual entropy [JaEC11] (also known as erasure entropy [VeWe06]) for an array X containing realisations of discrete random variables.
-    
+
     **Mathematical definition**:
-    
+
     Given discrete random variables :math:`X_1, \ldots, X_n`, the residual entropy :math:`R(X_1, \\ldots, X_n)` is defined as:
-    
+
     .. math::
         R(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - B(X_1, \\ldots, X_n)
-    
+
     where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Residual information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although residual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although residual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
-        The desired logarithmic base (default 2).    
+        The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
+
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
-    
+
     return H_joint - information_binding(X, base, fill_value, estimator, Alphabet_X)
 
 
 def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated exogenous local information [JaEC11] for an array X containing realisations of discrete random variables.
-    
+
     **Mathematical definition**:
-    
+
     Given discrete random variables :math:`X_1, \ldots, X_n`, the exogenous local information :math:`W(X_1, \\ldots, X_n)` is defined as:
-    
+
     .. math::
         W(X_1, \\ldots, X_n) = T(X_1, \\ldots, X_n) + B(X_1, \\ldots, X_n)
-    
+
     where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Exogenous local information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although exogenous local information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although exogenous local information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
+
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     return information_binding(X, base, fill_value, estimator, Alphabet_X) + information_multi(X, base, fill_value, estimator, Alphabet_X)
 
 
@@ -219,130 +219,130 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=N
     # Note: equals multivariate mutual information when N=3, can test for this
     """
     Returns the estimated enigmatic information [JaEC11] for an array X containing realisations of discrete random variables.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X_1, \ldots, X_n`, the enigmatic information :math:`Q(X_1, \\ldots, X_n)` is defined as:
-    
+
     .. math::
         Q(X_1, \\ldots, X_n) = T(X_1, \\ldots, X_n) - B(X_1, \\ldots, X_n)
-    
+
     where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Enigmatic information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although enigmatic information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although enigmatic information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
+
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     return information_multi(X, base, fill_value, estimator, Alphabet_X) - information_binding(X, base, fill_value, estimator, Alphabet_X)
 
 
 def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated interaction information [JaBr03] for an array X containing realisations of discrete random variables.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X_1, \ldots, X_n`, the interaction information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)` is defined as:
-    
+
     .. math::
         \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)
-    
+
     where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of random variables specified by :math:`T`. Thus, interaction information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.
-    
+
     Note that interaction information is equal in magnitude to the co-information :math:`I(X_1, \\ldots, X_n)`, with equality for the case where :math:`n` is even,
-    
+
     .. math::
         \\mathrm{Int}(X_1, \\ldots, X_n) = (-1)^n I(X_1, \\ldots, X_n).
-        
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Interaction information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-    
-    See below for a list of available estimators. Note that although interaction information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although interaction information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to -1*entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
+
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
         Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-        
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if np.any(_isnan(X)):
@@ -351,352 +351,352 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
         raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
         raise ValueError("arg Alphabet_X contains NaN values")
-    if _isnan(fill_value_X):
-        raise ValueError("fill value for arg X is NaN")        
-    if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
-    if not (np.isscalar(base) and np.isreal(base) and base > 0):
-        raise ValueError("arg base not a positive real-valued scalar")        
-        
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
-    X, Alphabet_X = S
-        
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    
-    I = 0
-    M = np.zeros(X.shape[0]).astype('bool')
-    M = _increment_binary_vector(M)
-    while np.any(M):
-        I -= (-1)**(X.shape[0]-np.sum(M)) * entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
-        M = _increment_binary_vector(M)
-        
-    return I
-
-
-def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
-    """
-    Returns the estimated co-information [Bell03] for an array X containing realisations of discrete random variables.
-    
-    **Mathematical definition**:    
-    
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the co-information :math:`I(X_1, \\ldots, X_n)` is defined as:
-    
-    .. math::
-        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{|T|}  H(X_i : i \in T)
-    
-    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of random variables specified by :math:`T`. Thus, co-information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.
-    
-    Note that co-information is equal in magnitude to the interaction information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)`, with equality for the case where :math:`n` is even,
-    
-    .. math::
-        I(X_1, \\ldots, X_n) = (-1)^n \\mathrm{Int}(X_1, \\ldots, X_n).    
-        
-    **Estimation**:    
-        
-    Co-information is estimated based on frequency tables, using the following functions:
-        
-        entropy_joint()
-    
-    See below for a list of available estimators. Note that although co-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
-    **Parameters**:
-        
-    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-        NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """    
-    X, fill_value_X = _sanitise_array_input(X, fill_value)
-    if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
-        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
-    else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-        
-    if X.size == 0:
-        raise ValueError("arg X contains no elements")
-    if np.any(_isnan(X)):
-        raise ValueError("arg X contains NaN values")
-    if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")
-    if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")
-    if _isnan(fill_value_X):
-        raise ValueError("fill value for arg X is NaN")        
-    if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
-    if not (np.isscalar(base) and np.isreal(base) and base > 0):
-        raise ValueError("arg base not a positive real-valued scalar")        
-        
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
-    X, Alphabet_X = S
-        
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))    
-    
-    I = 0
-    M = np.zeros(X.shape[0]).astype('bool')
-    M = _increment_binary_vector(M)
-    while np.any(M):
-        I -= (-1)**(np.sum(M)) * entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
-        M = _increment_binary_vector(M)
-        
-    return I
-
-
-def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
-    """
-    Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.
-    
-    **Mathematical definition**:    
-    
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the binding information :math:`B(X_1, \\ldots, X_n)` is defined as:
-    
-    .. math::
-        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)
-    
-    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.
-    
-    **Estimation**:    
-        
-    Binding information is estimated based on frequency tables, using the following functions:
-        
-        entropy_joint()
-        
-        entropy()
-    
-    See below for a list of available estimators. Note that although binding information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
-    **Parameters**:
-        
-    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-        NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """
-    X, fill_value_X = _sanitise_array_input(X, fill_value)
-    if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
-        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
-    else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-    
-    # Exceptions needed to create Alphabet_X correctly if None
-    # Not all of these are needed, however we include them for consistency.
-    if X.size == 0:
-        raise ValueError("arg X contains no elements")    
-    if np.any(_isnan(X)):
-        raise ValueError("arg X contains NaN values")
-    if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
-    if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values") 
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
         raise ValueError("leading dimensions of args X and Alphabet_X do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
-    
-    # Exceptions thrown by entropy_joint
-    H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
-    B = H_joint
-    # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-    X = np.reshape(X, (-1, X.shape[-1]))
-    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))    
-    M = np.arange(X.shape[0])
-    
-    for i in xrange(X.shape[0]):
-        B -= H_joint
-        if X.shape[0] > 1:
-            B += entropy_joint(X[M != i], base, fill_value, estimator, Alphabet_X[M != i])
-    
-    return B
+
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
+
+    I = 0
+    M = np.zeros(X.shape[0]).astype('bool')
+    M = _increment_binary_vector(M)
+    while np.any(M):
+        I -= (-1)**(X.shape[0]-np.sum(M)) * entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
+        M = _increment_binary_vector(M)
+
+    return I
 
 
-def information_multi(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
-    Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.
-    
-    **Mathematical definition**:    
-    
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:
-    
+    Returns the estimated co-information [Bell03] for an array X containing realisations of discrete random variables.
+
+    **Mathematical definition**:
+
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the co-information :math:`I(X_1, \\ldots, X_n)` is defined as:
+
     .. math::
-        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) - H(X_1, \\ldots, X_n)
-    
-    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.
-    
-    **Estimation**:    
-        
-    Multi-information is estimated based on frequency tables, using the following functions:
-        
+        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{|T|}  H(X_i : i \in T)
+
+    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of random variables specified by :math:`T`. Thus, co-information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.
+
+    Note that co-information is equal in magnitude to the interaction information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)`, with equality for the case where :math:`n` is even,
+
+    .. math::
+        I(X_1, \\ldots, X_n) = (-1)^n \\mathrm{Int}(X_1, \\ldots, X_n).
+
+    **Estimation**:
+
+    Co-information is estimated based on frequency tables, using the following functions:
+
         entropy_joint()
-        
-        entropy()
-    
-    See below for a list of available estimators. Note that although multi-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although co-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
+    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+        NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
+    X, fill_value_X = _sanitise_array_input(X, fill_value)
+    if Alphabet_X is not None:
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
+    else:
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+
+    if X.size == 0:
+        raise ValueError("arg X contains no elements")
+    if np.any(_isnan(X)):
+        raise ValueError("arg X contains NaN values")
+    if Alphabet_X.size == 0:
+        raise ValueError("arg Alphabet_X contains no elements")
+    if np.any(_isnan(Alphabet_X)):
+        raise ValueError("arg Alphabet_X contains NaN values")
+    if _isnan(fill_value_X):
+        raise ValueError("fill value for arg X is NaN")
+    if X.shape[:-1] != Alphabet_X.shape[:-1]:
+        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+    if not (np.isscalar(base) and np.isreal(base) and base > 0):
+        raise ValueError("arg base not a positive real-valued scalar")
+
+    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    X, Alphabet_X = S
+
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
+
+    I = 0
+    M = np.zeros(X.shape[0]).astype('bool')
+    M = _increment_binary_vector(M)
+    while np.any(M):
+        I -= (-1)**(np.sum(M)) * entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
+        M = _increment_binary_vector(M)
+
+    return I
+
+
+def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+    """
+    Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.
+
+    **Mathematical definition**:
+
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the binding information :math:`B(X_1, \\ldots, X_n)` is defined as:
+
+    .. math::
+        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)
+
+    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.
+
+    **Estimation**:
+
+    Binding information is estimated based on frequency tables, using the following functions:
+
+        entropy_joint()
+
+        entropy()
+
+    See below for a list of available estimators. Note that although binding information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
+    **Parameters**:
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
+
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
+    X, fill_value_X = _sanitise_array_input(X, fill_value)
+    if Alphabet_X is not None:
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
+    else:
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+
+    # Exceptions needed to create Alphabet_X correctly if None
+    # Not all of these are needed, however we include them for consistency.
+    if X.size == 0:
+        raise ValueError("arg X contains no elements")
+    if np.any(_isnan(X)):
+        raise ValueError("arg X contains NaN values")
+    if Alphabet_X.size == 0:
+        raise ValueError("arg Alphabet_X contains no elements")
+    if np.any(_isnan(Alphabet_X)):
+        raise ValueError("arg Alphabet_X contains NaN values")
+    if _isnan(fill_value_X):
+        raise ValueError("fill value for arg X is NaN")
+    if X.shape[:-1] != Alphabet_X.shape[:-1]:
+        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+    if not (np.isscalar(base) and np.isreal(base) and base > 0):
+        raise ValueError("arg base not a positive real-valued scalar")
+
+    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    X, Alphabet_X = S
+
+    # Exceptions thrown by entropy_joint
+    H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
+    B = H_joint
+    # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))
+    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
+    M = np.arange(X.shape[0])
+
+    for i in xrange(X.shape[0]):
+        B -= H_joint
+        if X.shape[0] > 1:
+            B += entropy_joint(X[M != i], base, fill_value, estimator, Alphabet_X[M != i])
+
+    return B
+
+
+def information_multi(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+    """
+    Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.
+
+    **Mathematical definition**:
+
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:
+
+    .. math::
+        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) - H(X_1, \\ldots, X_n)
+
+    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.
+
+    **Estimation**:
+
+    Multi-information is estimated based on frequency tables, using the following functions:
+
+        entropy_joint()
+
+        entropy()
+
+    See below for a list of available estimators. Note that although multi-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
+    **Parameters**:
+
+    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+        NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
-    
+
     return np.sum(H) - H_joint
 
 
 def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None, Alphabet_Z=None):
     """
     Returns the conditional mutual information (see e.g. [CoTh06]) between arrays X and Y given array Z, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X`, :math:`Y`,  :math:`Z`, the conditional mutual information :math:`I(X;Y|Z)` is defined as:
-    
+
     .. math::
         I(X;Y|Z) = H(X|Z) - H(X|Y,Z)
-        
+
     where :math:`H(\\cdot|\\cdot)` denotes the conditional entropy.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Conditional mutual information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although conditional mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although conditional mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X,Y,Z : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False*: X,Y,Z are arrays containing discrete random variable realisations, with X.shape==Y.shape==Z.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X,Y,Z may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X,Y,Z). When X.ndim==Y.ndim==Z.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1 and Z.ndim>1, returns an array of estimated conditional mutual information values with dimensions X.shape[:-1]. Neither X nor Y nor Z may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True*: X,Y,Z are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]==Z.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X,Y,Z may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X,Y,Z). When X.ndim==Y.ndim==Z.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1 or Z.ndim>1, returns an array of estimated conditional mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1],Z.shape[:-1]). Neither X nor Y nor Z may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
+
+        *cartesian_product==True*: X,Y,Z are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]==Z.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X,Y,Z may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X,Y,Z). When X.ndim==Y.ndim==Z.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1 or Z.ndim>1, returns an array of estimated conditional mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1],Z.shape[:-1]). Neither X nor Y nor Z may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X,Y,Z (cartesian_product==False, the default value) or **many-to-many** between X,Y,Z (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y, Alphabet_Z : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y, Z may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y, Z respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y, Alphabet_Z respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y and Z). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
 
         NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y, Alphabet_Z. For example, specifying Alphabet_X=Alphabet_Y=Alphabet_Z=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array((1,1,1,1,2,2,2,2),((1,1,2,2,1,1,2,2),(1,2,1,2,1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
@@ -716,13 +716,13 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
         Alphabet_Z, _ = _autocreate_alphabet(Alphabet_Z, fill_value_Alphabet_Z)
     else:
         Alphabet_Z, fill_value_Alphabet_Z = _autocreate_alphabet(Z, fill_value_Z)
-    
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if Y.size == 0:
         raise ValueError("arg Y contains no elements")
     if Z.size == 0:
-        raise ValueError("arg Z contains no elements")        
+        raise ValueError("arg Z contains no elements")
     if np.any(_isnan(X)):
         raise ValueError("arg X contains NaN values")
     if np.any(_isnan(Y)):
@@ -730,15 +730,15 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     if np.any(_isnan(Z)):
         raise ValueError("arg Z contains NaN values")
     if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
+        raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
         raise ValueError("arg Alphabet_X contains NaN values")
     if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
+        raise ValueError("arg Alphabet_Y contains no elements")
     if np.any(_isnan(Alphabet_Y)):
         raise ValueError("arg Alphabet_Y contains NaN values")
     if Alphabet_Z.size == 0:
-        raise ValueError("arg Alphabet_Z contains no elements")    
+        raise ValueError("arg Alphabet_Z contains no elements")
     if np.any(_isnan(Alphabet_Z)):
         raise ValueError("arg Alphabet_Z contains NaN values")
     if _isnan(fill_value_X):
@@ -759,11 +759,11 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
          raise ValueError("trailing dimensions of args 1, 2, 3 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y,Z,Alphabet_Z), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y,fill_value_Z,fill_value_Alphabet_Z))
     X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z = S
-        
-    if not cartesian_product:  
+
+    if not cartesian_product:
         I = np.empty(X.shape[:-1])
         if I.ndim > 0:
             I[:] = np.NaN
@@ -784,97 +784,97 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
             I = np.rollaxis(I,0,len(I.shape))
             I = I.reshape(np.append(shapeI_XY,shapeI_Z).astype('int'))
         return I
-    
+
     # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Z = np.reshape(Z, (-1, Z.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
-    Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))    
+    Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))
     orig_shape_I = I.shape
     I = np.reshape(I, (-1,1))
-    
+
     for i in xrange(X.shape[0]):
         I_ = ( entropy_joint(np.vstack((X[i],Z[i])), base, fill_value, estimator,_vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Z[i]),fill_value)) +
             entropy_joint(np.vstack((Y[i],Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i],Alphabet_Z[i]),fill_value)) -
             entropy_joint(np.vstack((X[i],Y[i],Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i],Alphabet_Z[i]),fill_value)) -
             entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]) )
         I[i] = I_
-        
+
     # Reverse re-shaping
     I = np.reshape(I, orig_shape_I)
-    
+
     return I
-    
+
     pass
 
 
 def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the lautum information [PaVe08] between arrays X and Y, each containing discrete random variable realisations.
-       
+
     **Mathematical definition**:
-    
+
     Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, and denoting with :math:`P_{XY}(x,y)` the probability of jointly observing outcomes :math:`x`, :math:`y` respectively with :math:`X`, :math:`Y`, the lautum information :math:`L(X;Y)` is defined as:
-    
+
     .. math::
         \\begin{eqnarray}
             L(X;Y) &=& -\\sum_x \\sum_y {P_X(x) P_Y(y) \\log {\\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\\\
             &=& D_{\\mathrm{KL}}(P_X P_Y \\parallel P_{XY})
         \\end{eqnarray}
-        
+
     where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence. Note that *lautum* is *mutual* spelt backwards; denoting with :math:`I(\\cdot;\\cdot)` the mutual information it may be shown (see e.g. [CoTh06]) that
-    
+
     .. math::
         \\begin{eqnarray}
             I(X;Y) &=& D_{\\mathrm{KL}}(P_{XY} \\parallel P_X P_Y).
         \\end{eqnarray}
-        
+
     **Estimation**:
-    
+
     Lautum information is estimated based on frequency tables. See below for a list of available estimators.
-    
+
     **Parameters**:
-    
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to information_lautum(X, X, ... ). Thus, a shorthand syntax for computing lautum information (in bits) between all pairs of random variables in X is information_lautum(X).
     cartesian_product : boolean
-        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).        
+        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """   
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     if Y is None:
         Y = X
         cartesian_product = True
@@ -882,7 +882,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
 
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
-    if Alphabet_X is not None:    
+    if Alphabet_X is not None:
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
@@ -891,22 +891,22 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y) 
-    
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if np.any(_isnan(X)):
         raise ValueError("arg X contains NaN values")
     if Y.size == 0:
-        raise ValueError("arg Y contains no elements")        
+        raise ValueError("arg Y contains no elements")
     if np.any(_isnan(Y)):
         raise ValueError("arg Y contains NaN values")
     if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
+        raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")        
+        raise ValueError("arg Alphabet_X contains NaN values")
     if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
+        raise ValueError("arg Alphabet_Y contains no elements")
     if np.any(_isnan(Alphabet_Y)):
         raise ValueError("arg Alphabet_Y contains NaN values")
     if _isnan(fill_value_X):
@@ -916,18 +916,18 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
         raise ValueError("leading dimensions of args X and Alphabet_X do not match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")        
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")        
-    if cartesian_product and X.shape[-1] != Y.shape[-1]:        
+         raise ValueError("dimensions of args 1 and 2 do not match")
+    if cartesian_product and X.shape[-1] != Y.shape[-1]:
          raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
-    X, Alphabet_X, Y, Alphabet_Y = S        
-        
-    if not cartesian_product: 
+    X, Alphabet_X, Y, Alphabet_Y = S
+
+    if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
             H[:] = np.NaN
@@ -935,38 +935,38 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
             H = np.float64(np.NaN)
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: information_lautum(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
-        
+
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))    
+    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
     H = np.reshape(H, (-1,1))
-    
-    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
+
+    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
-    
+
     for i in xrange(X.shape[0]):
         # Sort X and Y jointly, so that we can determine joint symbol probabilities
         JointXY = np.vstack((X[i], Y[i]))
         JointXY = JointXY[:,JointXY[0].argsort(kind='mergesort')]
         JointXY = JointXY[:,JointXY[1].argsort(kind='mergesort')]
-                          
-        # Compute symbol run-lengths    
+
+        # Compute symbol run-lengths
         B = np.any(JointXY[:,1:] != JointXY[:,:-1], axis=0) # Compute symbol change indicators
-        
+
         I = np.append(np.where(B), JointXY.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
-        
+
         alphabet_XY = JointXY[:,I]
         if estimator != 'ML':
             L, alphabet_XY = _append_empty_bins_using_alphabet(L, alphabet_XY, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value), fill_value)
         L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY, fill_value)
         if not np.any(L):
-            continue        
+            continue
         P_XY, _ = _estimate_probabilities(L, estimator)
-        
+
         # Assign probabilities in P_XY to P_XY_reshaped, a matrix which exhaustively
         # records probabilities for all elements in the cartesian product of alphabets.
         # In this way, we can subsequently integrate across variables X, Y.
@@ -986,29 +986,29 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         # Integrate across X, Y
         P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1,-1))
         P_Y = np.reshape(np.sum(P_XY_reshaped, axis=1), (-1, 1))
-        
+
         H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y, (1,-1)), np.reshape(P_XY_reshaped, (1,-1)), False, base)
-        
+
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
-    
-    return H        
-    
+
+    return H
+
 
 def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=False, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     # TODO Documentation should include properties for each of the normalisation factors
     """
     Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X`, :math:`Y`, the normalised mutual information :math:`NI(X;Y)` is defined as:
-    
+
     .. math::
         NI(X;Y) = \\frac{I(X;Y)}{C_n}
-        
+
     where :math:`I` denotes the mutual information and where :math:`C_n` denotes a normalisation factor. Normalised mutual information is a dimensionless quantity, with :math:`C_n` alternatively defined as:
-        
+
     .. math::
          \\begin{eqnarray}
            C_{\\text{X}} &=& H(X) \\\\
@@ -1019,78 +1019,78 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
            C_{\\text{XY}} &=& H(X,Y) \\\\
            C_{\\text{SQRT}} &=& \\sqrt{H(X) H(Y)}
          \\end{eqnarray}
-         
+
     where :math:`H(\\cdot)` and :math:`H(\\cdot,\\cdot)` respectively denote the entropy and joint entropy.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Normalised mutual information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although normalised mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although normalised mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated normalised information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated normalised information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated normalised information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to information_mutual_normalised(X, X, norm_factor, True). Thus, a shorthand syntax for computing normalised mutual information (based on C_n = C_Y as defined above) between all pairs of random variables in X is information_mutual_normalised(X).
     norm_factor : string
         The desired normalisation factor, specified as a string. Internally, the supplied string is converted to upper case and spaces are discarded. Subsequently, the function tests for one of the following string values, each corresponding to an alternative normalisation factor as defined above:
-        
+
         *'X'*
-        
+
         *'Y' (the default value)*
-        
+
         *'X+Y' (equivalently 'Y+X')*
-        
+
         *'MIN'*
-        
+
         *'MAX'*
-        
+
         *'XY' (equivalently YX)*
-        
+
         *'SQRT'*
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
 
         NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
     """
     if Y is None:
         Y = X
         cartesian_product = True
-        Alphabet_Y = Alphabet_X        
-        
+        Alphabet_Y = Alphabet_X
+
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
@@ -1103,27 +1103,27 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
         Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
-    
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if Y.size == 0:
-        raise ValueError("arg Y contains no elements")        
+        raise ValueError("arg Y contains no elements")
     if np.any(_isnan(X)):
         raise ValueError("arg X contains NaN values")
     if np.any(_isnan(Y)):
         raise ValueError("arg Y contains NaN values")
     if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
+        raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")        
+        raise ValueError("arg Alphabet_X contains NaN values")
     if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
+        raise ValueError("arg Alphabet_Y contains no elements")
     if np.any(_isnan(Alphabet_Y)):
         raise ValueError("arg Alphabet_Y contains NaN values")
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if _isnan(fill_value_Y):
-        raise ValueError("fill value for arg Y is NaN")        
+        raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
         raise ValueError("leading dimensions of args X and Alphabet_X do not match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
@@ -1131,117 +1131,117 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
     if not isinstance(norm_factor, str):
         raise ValueError("arg norm_factor not a string")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")        
+         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")        
+         raise ValueError("trailing dimensions of args 1 and 2 do not match")
     # NB: No base parameter needed here, therefore no test!
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
-    
+
     I = information_mutual(X, Y, cartesian_product, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X, Alphabet_Y=Alphabet_Y)
-    
+
     norm_factor = norm_factor.upper().replace(' ', '')
     if norm_factor == 'Y':
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))        
-        
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+
         C = H2
     elif norm_factor == 'X':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))        
-        
+        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+
         C = H1
     elif norm_factor == 'Y+X' or norm_factor == 'X+Y':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))    
+        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))        
-        
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+
         C = H1 + H2
     elif norm_factor == 'MIN':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))    
+        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
         H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
-        
+
         C = np.minimum(H1, H2)
     elif norm_factor == 'MAX':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))    
+        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))        
-        
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+
         C = np.maximum(H1, H2)
     elif norm_factor == 'XY' or norm_factor == 'YX':
-        if not cartesian_product:  
+        if not cartesian_product:
             H = np.empty(X.shape[:-1])
             if H.ndim > 0:
                 H[:] = np.NaN
             else:
                 H = np.float64(np.NaN)
-            
+
             # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
             X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
             Y = np.reshape(Y, (-1, Y.shape[-1])) # Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
             Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
             Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
-            
+
             orig_shape_H = H.shape
             H = np.reshape(H, (-1,1))
-            
+
             for i in xrange(X.shape[0]):
                 H[i] = entropy_joint(np.vstack((X[i], Y[i])), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value))
             H = np.reshape(H, orig_shape_H)
-            
+
             C = H
         else:
             H = _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X,Alphabet_Y),fill_value)), Alphabet_X,Alphabet_Y)
-            
+
             C = H
     elif norm_factor == 'SQRT':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))    
+        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))        
-        
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+
         C = np.sqrt(H1 * H2)
     else:
         raise ValueError("arg norm_factor has invalid value")
-    
+
     return I / C
 
 
 def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the variation of information [Meil03] between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X`, :math:`Y`, the variation of information :math:`VI(X;Y)` is defined as:
-    
+
     .. math::
         VI(X;Y) = H(X|Y) + H(Y|X)
-        
+
     where :math:`H(\\cdot|\\cdot)` denotes the conditional entropy.
-    
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Variation of information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although variation of information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although variation of information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to information_variation(X, X, ... ). Thus, a shorthand syntax for computing variation of information (in bits) between all pairs of random variables in X is information_variation(X).
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
@@ -1249,75 +1249,75 @@ def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
 
         NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     if Y is None:
         Y = X
         cartesian_product = True
-        Alphabet_Y = Alphabet_X        
-    
+        Alphabet_Y = Alphabet_X
+
     H1 = entropy_conditional(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
     H2 = entropy_conditional(Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X)
-    
+
     if cartesian_product:
         H2 = H2.T
-    return H1 + H2    
+    return H1 + H2
 
 
 def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Given discrete random variables :math:`X`, :math:`Y`, the mutual information :math:`I(X;Y)` is defined as:
-    
+
     .. math::
         I(X;Y) = H(X) - H(X|Y)
-        
+
     where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot|\\cdot)` denotes the conditional entropy.
-        
-    **Estimation**:    
-        
+
+    **Estimation**:
+
     Mutual information is estimated based on frequency tables, using the following functions:
-        
+
         entropy_joint()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated mutual information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to information_mutual(X, X, ... ). Thus, a shorthand syntax for computing mutual information (in bits) between all pairs of random variables in X is information_mutual(X).
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
@@ -1325,35 +1325,35 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-    """    
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    """
     H_conditional = entropy_conditional(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
-    
+
     H = np.reshape(H, np.append(H.shape,np.ones(H_conditional.ndim-H.ndim)).astype('int'))
     return H - H_conditional
 
@@ -1361,25 +1361,25 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1
 def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, the cross entopy :math:`H^\\times(X,Y)` is defined as:
-    
+
     .. math::
         H^\\times(X,Y) = -\\sum_x {P_X(x) \\log {P_Y(x)}}.
-        
-    **Estimation**:        
-            
+
+    **Estimation**:
+
     Cross entropy is estimated based on frequency tables. See below for a list of available estimators.
-        
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated cross entropies with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated cross entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated cross entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to entropy_cross(X, X, ... ). Thus, a shorthand syntax for computing cross entropies (in bits) between all pairs of random variables in X is entropy_cross(X).
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
@@ -1387,35 +1387,35 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
     **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
     """
     if Y is None:
         Y = X
         cartesian_product = True
-        Alphabet_Y = Alphabet_X        
+        Alphabet_Y = Alphabet_X
 
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
@@ -1429,21 +1429,21 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
         Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
-    
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if Y.size == 0:
-        raise ValueError("arg Y contains no elements")        
+        raise ValueError("arg Y contains no elements")
     if np.any(_isnan(X)):
         raise ValueError("arg X contains NaN values")
     if np.any(_isnan(Y)):
         raise ValueError("arg Y contains NaN values")
     if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
+        raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")        
+        raise ValueError("arg Alphabet_X contains NaN values")
     if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
+        raise ValueError("arg Alphabet_Y contains no elements")
     if np.any(_isnan(Alphabet_Y)):
         raise ValueError("arg Alphabet_Y contains NaN values")
     if _isnan(fill_value_X):
@@ -1458,10 +1458,10 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
          raise ValueError("dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
-        
+
     if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
@@ -1470,29 +1470,29 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
             H = np.float64(np.NaN)
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_cross(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
-        
+
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))    
+    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
     H = np.reshape(H, (-1,1))
-    
-    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
+
+    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
-    
+
     # NB: Observations are not considered jointly, thus elements in each row are sorted independently
     X = np.sort(X, axis=1)
     Y = np.sort(Y, axis=1)
 
-    # Compute symbol run-lengths    
+    # Compute symbol run-lengths
     B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
     C = Y[:,1:] != Y[:,:-1]
     for i in xrange(X.shape[0]):
         I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
-        
+
         alphabet_X = X[i,I]
         if estimator != 'ML':
             L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)
@@ -1500,7 +1500,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         if not np.any(L):
             continue
         P1, _ = _estimate_probabilities(L, estimator)
-        
+
         J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, J)) # Compute run lengths
 
@@ -1509,7 +1509,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
             L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
         if not np.any(L):
-            continue        
+            continue
         P2, _ = _estimate_probabilities(L, estimator)
 
         # Merge probability distributions, so that common symbols have common array location
@@ -1518,398 +1518,143 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
         P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
         Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
-        
+
         H[i] = entropy_cross_pmf(P, Q, False, base)
-    
+
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
-    
-    return H        
+
+    return H
 
 
 def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
+
+    **Mathematical definition**:
+
     Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, the Kullback-Leibler divergence :math:`D_{\\mathrm{KL}}(P_X \\parallel P_Y)` is defined as:
-    
+
     .. math::
         D_{\\mathrm{KL}}(P_X \\parallel P_Y) = -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.
 
-    **Estimation**:    
-        
+    **Estimation**:
+
     Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:
-        
+
         entropy_cross()
-        
+
         entropy()
-    
-    See below for a list of available estimators. Note that although Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.    
-        
+
+    See below for a list of available estimators. Note that although Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
         *Y is None*: Equivalent to divergence_kullbackleibler(X, X, ... ). Thus, a shorthand syntax for computing Kullback-Leibler divergence (in bits) between all pairs of random variables in X is divergence_kullbackleibler(X).
-    cartesian_product : boolean
-        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).        
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """
-    H_cross = entropy_cross(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
-    H = entropy(X, base, fill_value, estimator, Alphabet_X)
-    
-    H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
-    return H_cross - H
-        
-
-def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
-    """
-    Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
-    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:
-    
-    .. math::
-        D_{\\mathrm{JS}}(P_X \\parallel P_Y) = \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)
-    
-    where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
-    
-    **Estimation**:    
-    
-    Jensen-Shannon divergence is estimated based on frequency tables. See below for a list of available estimators.
-        
-    **Parameters**:
-        
-    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
-        *Y is None*: Equivalent to divergence_jensenshannon(X, X, ... ). Thus, a shorthand syntax for computing Jensen-Shannon divergence (in bits) between all pairs of random variables in X is divergence_jensenshannon(X).
-    cartesian_product : boolean
-        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).        
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """
-    if Y is None:
-        Y = X
-        cartesian_product = True
-        Alphabet_Y = Alphabet_X        
-
-    X, fill_value_X = _sanitise_array_input(X, fill_value)
-    Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
-    if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
-        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
-    else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-    if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
-        Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
-    else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
-    
-    if X.size == 0:
-        raise ValueError("arg X contains no elements")
-    if Y.size == 0:
-        raise ValueError("arg Y contains no elements")        
-    if np.any(_isnan(X)):
-        raise ValueError("arg X contains NaN values")
-    if np.any(_isnan(Y)):
-        raise ValueError("arg Y contains NaN values")
-    if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
-    if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")        
-    if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
-    if np.any(_isnan(Alphabet_Y)):
-        raise ValueError("arg Alphabet_Y contains NaN values")
-    if _isnan(fill_value_X):
-        raise ValueError("fill value for arg X is NaN")
-    if _isnan(fill_value_Y):
-        raise ValueError("fill value for arg Y is NaN")        
-    if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
-    if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
-    if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
-         raise ValueError("dimensions of args 1 and 2 do not match")
-    if not (np.isscalar(base) and np.isreal(base) and base > 0):
-        raise ValueError("arg base not a positive real-valued scalar")
-        
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
-    X, Alphabet_X, Y, Alphabet_Y = S
-        
-    if not cartesian_product:   
-        H = np.empty(X.shape[:-1])
-        if H.ndim > 0:
-            H[:] = np.NaN
-        else:
-            H = np.float64(np.NaN)
-    else:
-        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: divergence_jensenshannon(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
-        
-    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-    X = np.reshape(X, (-1, X.shape[-1]))
-    Y = np.reshape(Y, (-1, Y.shape[-1]))
-    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
-    orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
-    
-    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
-    _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)    
-    
-    # NB: Observations are not considered jointly, thus elements in each row are sorted independently
-    X = np.sort(X, axis=1)
-    Y = np.sort(Y, axis=1)
-
-    # Compute symbol run-lengths    
-    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
-    C = Y[:,1:] != Y[:,:-1]
-    for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) # Compute run lengths
-
-        alphabet_X = X[i,I]
-        if estimator != 'ML':
-            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)        
-        L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
-        if not np.any(L):
-            continue
-        P1, _ = _estimate_probabilities(L, estimator)
-        
-        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, J)) # Compute run lengths
-
-        alphabet_Y = Y[i,J]
-        if estimator != 'ML':
-            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)        
-        L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
-        if not np.any(L):
-            continue        
-        P2, _ = _estimate_probabilities(L, estimator)
-
-        # Merge probability distributions, so that common symbols have common array location
-        Alphabet = np.union1d(alphabet_X, alphabet_Y)
-        P = np.zeros_like(Alphabet, dtype=P1.dtype)
-        Q = np.zeros_like(Alphabet, dtype=P2.dtype)
-        P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
-        Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
-        
-        H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - 0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
-    
-    # Reverse re-shaping
-    H = np.reshape(H, orig_shape_H)
-    
-    return H        
-
-
-def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
-    """
-    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
-    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the symmetrised Kullback-Leibler divergence :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:
-
-    .. math::
-        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) = D_{\\mathrm{KL}}(P_X \\parallel P_Y) + D_{\\mathrm{KL}}(P_Y \\parallel P_X)
-
-    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
-    
-    **Estimation**:    
-        
-    Symmetrised Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:
-        
-        entropy_cross()
-        
-        entropy()
-    
-    See below for a list of available estimators. Note that although symmetrised Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
-        
-    **Parameters**:
-        
-    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
-        *Y is None*: Equivalent to divergence_kullbackleibler_symmetrised(X, X, ... ). Thus, a shorthand syntax for computing symmetrised Kullback-Leibler divergence (in bits) between all pairs of random variables in X is divergence_kullbackleibler_symmetrised(X).
-    cartesian_product : boolean
-        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).        
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
-        
-    """
-    if Y is None:
-        Y = X
-        cartesian_product = True
-        Alphabet_Y = Alphabet_X        
-    
-    H1 = divergence_kullbackleibler(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
-    H2 = divergence_kullbackleibler(Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X)
-    
-    if cartesian_product:
-        H2 = H2.T
-    return H1 + H2
-    
-
-def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
-    """
-    Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
-    
-    **Mathematical definition**:    
-    
-    Given discrete random variables :math:`X`, :math:`Y`, the conditional entropy :math:`H(X|Y)` is defined as:
-    
-    .. math::
-        H(X|Y) = H(X,Y) - H(Y)
-        
-    where :math:`H(\\cdot,\\cdot)` denotes the joint entropy and where :math:`H(\\cdot)` denotes the entropy.
-    
-    **Estimation**:    
-            
-    Conditional entropy is estimated based on frequency tables, using the following functions:
-        
-        entropy_joint()
-        
-        entropy()
-        
-    See below for a list of available estimators. Note that although conditional entropy is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
-        
-    **Parameters**:
-        
-    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated conditional entropies with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
-        
-        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated conditional entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-        
-        *Y is None*: Equivalent to entropy_conditional(X, X, ... ). Thus, a shorthand syntax for computing conditional entropies (in bits) between all pairs of random variables in X is entropy_conditional(X).
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.        
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-        NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
+
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
-        
-    """    
-    # TODO Add note in documentation (for other functions where appropriate) about creating joint observations using appropriate function    
+
+    """
+    H_cross = entropy_cross(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
+    H = entropy(X, base, fill_value, estimator, Alphabet_X)
+
+    H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    return H_cross - H
+
+
+def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+    """
+    Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
+
+    **Mathematical definition**:
+
+    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:
+
+    .. math::
+        D_{\\mathrm{JS}}(P_X \\parallel P_Y) = \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)
+
+    where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+
+    **Estimation**:
+
+    Jensen-Shannon divergence is estimated based on frequency tables. See below for a list of available estimators.
+
+    **Parameters**:
+
+    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *Y is None*: Equivalent to divergence_jensenshannon(X, X, ... ). Thus, a shorthand syntax for computing Jensen-Shannon divergence (in bits) between all pairs of random variables in X is divergence_jensenshannon(X).
+    cartesian_product : boolean
+        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
     if Y is None:
         Y = X
         cartesian_product = True
-        Alphabet_Y = Alphabet_X        
-        
+        Alphabet_Y = Alphabet_X
+
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
@@ -1922,21 +1667,21 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
         Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
-    
+
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if Y.size == 0:
-        raise ValueError("arg Y contains no elements")        
+        raise ValueError("arg Y contains no elements")
     if np.any(_isnan(X)):
         raise ValueError("arg X contains NaN values")
     if np.any(_isnan(Y)):
         raise ValueError("arg Y contains NaN values")
     if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
+        raise ValueError("arg Alphabet_X contains no elements")
     if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")        
+        raise ValueError("arg Alphabet_X contains NaN values")
     if Alphabet_Y.size == 0:
-        raise ValueError("arg Alphabet_Y contains no elements")    
+        raise ValueError("arg Alphabet_Y contains no elements")
     if np.any(_isnan(Alphabet_Y)):
         raise ValueError("arg Alphabet_Y contains NaN values")
     if _isnan(fill_value_X):
@@ -1946,18 +1691,273 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
         raise ValueError("leading dimensions of args X and Alphabet_X do not match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")        
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+    if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
+         raise ValueError("dimensions of args 1 and 2 do not match")
+    if not (np.isscalar(base) and np.isreal(base) and base > 0):
+        raise ValueError("arg base not a positive real-valued scalar")
+
+    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    X, Alphabet_X, Y, Alphabet_Y = S
+
+    if not cartesian_product:
+        H = np.empty(X.shape[:-1])
+        if H.ndim > 0:
+            H[:] = np.NaN
+        else:
+            H = np.float64(np.NaN)
+    else:
+        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: divergence_jensenshannon(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
+
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))
+    Y = np.reshape(Y, (-1, Y.shape[-1]))
+    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
+    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
+    orig_shape_H = H.shape
+    H = np.reshape(H, (-1,1))
+
+    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
+    _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
+
+    # NB: Observations are not considered jointly, thus elements in each row are sorted independently
+    X = np.sort(X, axis=1)
+    Y = np.sort(Y, axis=1)
+
+    # Compute symbol run-lengths
+    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
+    C = Y[:,1:] != Y[:,:-1]
+    for i in xrange(X.shape[0]):
+        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, I)) # Compute run lengths
+
+        alphabet_X = X[i,I]
+        if estimator != 'ML':
+            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)
+        L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
+        if not np.any(L):
+            continue
+        P1, _ = _estimate_probabilities(L, estimator)
+
+        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
+        L = np.diff(np.append(-1, J)) # Compute run lengths
+
+        alphabet_Y = Y[i,J]
+        if estimator != 'ML':
+            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)
+        L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
+        if not np.any(L):
+            continue
+        P2, _ = _estimate_probabilities(L, estimator)
+
+        # Merge probability distributions, so that common symbols have common array location
+        Alphabet = np.union1d(alphabet_X, alphabet_Y)
+        P = np.zeros_like(Alphabet, dtype=P1.dtype)
+        Q = np.zeros_like(Alphabet, dtype=P2.dtype)
+        P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
+        Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
+
+        H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - 0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
+
+    # Reverse re-shaping
+    H = np.reshape(H, orig_shape_H)
+
+    return H
+
+
+def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+    """
+    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
+
+    **Mathematical definition**:
+
+    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the symmetrised Kullback-Leibler divergence :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:
+
+    .. math::
+        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) = D_{\\mathrm{KL}}(P_X \\parallel P_Y) + D_{\\mathrm{KL}}(P_Y \\parallel P_X)
+
+    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+
+    **Estimation**:
+
+    Symmetrised Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:
+
+        entropy_cross()
+
+        entropy()
+
+    See below for a list of available estimators. Note that although symmetrised Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
+    **Parameters**:
+
+    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *Y is None*: Equivalent to divergence_kullbackleibler_symmetrised(X, X, ... ). Thus, a shorthand syntax for computing symmetrised Kullback-Leibler divergence (in bits) between all pairs of random variables in X is divergence_kullbackleibler_symmetrised(X).
+    cartesian_product : boolean
+        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
+    if Y is None:
+        Y = X
+        cartesian_product = True
+        Alphabet_Y = Alphabet_X
+
+    H1 = divergence_kullbackleibler(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
+    H2 = divergence_kullbackleibler(Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X)
+
+    if cartesian_product:
+        H2 = H2.T
+    return H1 + H2
+
+
+def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+    """
+    Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
+
+    **Mathematical definition**:
+
+    Given discrete random variables :math:`X`, :math:`Y`, the conditional entropy :math:`H(X|Y)` is defined as:
+
+    .. math::
+        H(X|Y) = H(X,Y) - H(Y)
+
+    where :math:`H(\\cdot,\\cdot)` denotes the joint entropy and where :math:`H(\\cdot)` denotes the entropy.
+
+    **Estimation**:
+
+    Conditional entropy is estimated based on frequency tables, using the following functions:
+
+        entropy_joint()
+
+        entropy()
+
+    See below for a list of available estimators. Note that although conditional entropy is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+
+    **Parameters**:
+
+    X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        *cartesian_product==False and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated conditional entropies with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *cartesian_product==True and Y is not None*: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim>1 or Y.ndim>1, returns an array of estimated conditional entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+
+        *Y is None*: Equivalent to entropy_conditional(X, X, ... ). Thus, a shorthand syntax for computing conditional entropies (in bits) between all pairs of random variables in X is entropy_conditional(X).
+    cartesian_product : boolean
+        Indicates whether random variables are paired **one-to-one** between X and Y (cartesian_product==False, the default value) or **many-to-many** between X and Y (cartesian_product==True).
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X, Alphabet_Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+        NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
+    # TODO Add note in documentation (for other functions where appropriate) about creating joint observations using appropriate function
+    if Y is None:
+        Y = X
+        cartesian_product = True
+        Alphabet_Y = Alphabet_X
+
+    X, fill_value_X = _sanitise_array_input(X, fill_value)
+    Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
+    if Alphabet_X is not None:
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
+    else:
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+    if Alphabet_Y is not None:
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
+    else:
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+
+    if X.size == 0:
+        raise ValueError("arg X contains no elements")
+    if Y.size == 0:
+        raise ValueError("arg Y contains no elements")
+    if np.any(_isnan(X)):
+        raise ValueError("arg X contains NaN values")
+    if np.any(_isnan(Y)):
+        raise ValueError("arg Y contains NaN values")
+    if Alphabet_X.size == 0:
+        raise ValueError("arg Alphabet_X contains no elements")
+    if np.any(_isnan(Alphabet_X)):
+        raise ValueError("arg Alphabet_X contains NaN values")
+    if Alphabet_Y.size == 0:
+        raise ValueError("arg Alphabet_Y contains no elements")
+    if np.any(_isnan(Alphabet_Y)):
+        raise ValueError("arg Alphabet_Y contains NaN values")
+    if _isnan(fill_value_X):
+        raise ValueError("fill value for arg X is NaN")
+    if _isnan(fill_value_Y):
+        raise ValueError("fill value for arg Y is NaN")
+    if X.shape[:-1] != Alphabet_X.shape[:-1]:
+        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+    if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")       
+         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
          raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
-        
-    if not cartesian_product:   
+
+    if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
             H[:] = np.NaN
@@ -1965,73 +1965,73 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
             H = np.float64(np.NaN)
     else:
         return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_conditional(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
-        
+
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))    
+    Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
     H = np.reshape(H, (-1,1))
-    
+
     for i in xrange(X.shape[0]):
         H[i] = entropy_joint(np.vstack((X[i],Y[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value)) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
-    
+
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
-    
+
     return H
 
 
 def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X containing realisations of discrete random variables.
-    
+
     **Mathematical definition**:
-    
+
     Denoting with :math:`P(x_1, \\ldots, x_n)` the probability of jointly observing outcomes :math:`(x_1, \\ldots, x_n)` of :math:`n` discrete random variables :math:`(X_1, \ldots, X_n)`, the joint entopy :math:`H(X_1, \\ldots, X_n)` is defined as:
-    
+
     .. math::
         H(X_1, \\ldots, X_n) = -\\sum_{x_1} \\ldots \\sum_{x_n} {P(x_1, \\ldots, x_n ) \\log {P(x_1, \\ldots, x_n)}}.
-        
-    **Estimation**:        
-        
+
+    **Estimation**:
+
     Joint entropy is estimated based on frequency tables. See below for a list of available estimators.
-        
+
     **Parameters**:
-        
+
     X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
         It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored. 
+
+        Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
         The desired estimator (see above for details on estimators). Possible values are:
-            
+
             *'ML' (the default value)* : Maximum likelihood estimator.
-            
+
             *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
+
             *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
+
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
+
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
+
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
+
     Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
+
         NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
-        
+
     **Implementation notes**:
-        
+
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
-        
+
     """
     # TODO If we add joint observation function, we can reduce code duplication in this function.
     # TODO NB: The joint observation function must honour missing data fill values.
@@ -2041,112 +2041,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
         Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-        
-    if X.size == 0:
-        raise ValueError("arg X contains no elements")    
-    if np.any(_isnan(X)):
-        raise ValueError("arg X contains NaN values")
-    if Alphabet_X.size == 0:
-        raise ValueError("arg Alphabet_X contains no elements")    
-    if np.any(_isnan(Alphabet_X)):
-        raise ValueError("arg Alphabet_X contains NaN values")
-    if _isnan(fill_value_X):
-        raise ValueError("fill value for arg X is NaN")        
-    if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
-    if not (np.isscalar(base) and np.isreal(base) and base > 0):
-        raise ValueError("arg base not a positive real-valued scalar")
-        
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
-    X, Alphabet_X = S
-        
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
-    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)    
-    
-    # Sort columns
-    for i in xrange(X.shape[0]):
-        X = X[:,X[i].argsort(kind='mergesort')]
-
-    # Compute symbol run-lengths    
-    B = np.any(X[:,1:] != X[:,:-1], axis=0) # Compute symbol change indicators
-    I = np.append(np.where(B), X.shape[1]-1) # Obtain symbol change positions
-    L = np.diff(np.append(-1, I)) # Compute run lengths
-    
-    alphabet_X = X[:,I]
-    if estimator != 'ML':
-        n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X, fill_value)
-    else:
-        n_additional_empty_bins = 0
-    L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
-    if not np.any(L):
-        return np.float64(np.NaN)
-            
-    # P_0 is the probability mass assigned to each additional empty bin
-    P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
-    H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
-    H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
-    
-    return H
-
-
-def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
-    """
-    Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing realisations of a discrete random variable.    
-    
-    **Mathematical definition**:    
-    
-    Denoting with :math:`P(x)` the probability of observing outcome :math:`x` of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined as:
-    
-    .. math::
-        H(X) = -\\sum_x {P(x) \\log {P(x)}}.
-        
-    **Estimation**:        
-        
-    Entropy is estimated based on frequency tables. See below for a list of available estimators.    
-        
-    **Parameters**:
-        
-    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar. When X.ndim>1, returns an array of estimated entropies with dimensions X.shape[:-1].  X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.        
-    base : float
-        The desired logarithmic base (default 2).
-    fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
-        
-        Data equal to the placeholder value are subsequently ignored.
-    estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
-            
-            *'ML' (the default value)* : Maximum likelihood estimator.
-            
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
-            
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
-            
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
-            
-            *JAMES-STEIN* : James-Stein estimator [HaSt09].
-            
-            *GOOD-TURING* : Good-Turing estimator [GaSa95].
-            
-    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
-        
-    **Implementation notes**:
-        
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
-                
-    """
-    # NB: We would be able to reduce code duplication by invoking entropy_cross(X,X). However, performance would likely be lower!
-    X, fill_value_X = _sanitise_array_input(X, fill_value)
-    if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
-        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
-    else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
-    
     if X.size == 0:
         raise ValueError("arg X contains no elements")
     if np.any(_isnan(X)):
@@ -2161,66 +2056,171 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         raise ValueError("leading dimensions of args X and Alphabet_X do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
     X, Alphabet_X = S
-           
+
+    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
+
+    _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
+
+    # Sort columns
+    for i in xrange(X.shape[0]):
+        X = X[:,X[i].argsort(kind='mergesort')]
+
+    # Compute symbol run-lengths
+    B = np.any(X[:,1:] != X[:,:-1], axis=0) # Compute symbol change indicators
+    I = np.append(np.where(B), X.shape[1]-1) # Obtain symbol change positions
+    L = np.diff(np.append(-1, I)) # Compute run lengths
+
+    alphabet_X = X[:,I]
+    if estimator != 'ML':
+        n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X, fill_value)
+    else:
+        n_additional_empty_bins = 0
+    L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
+    if not np.any(L):
+        return np.float64(np.NaN)
+
+    # P_0 is the probability mass assigned to each additional empty bin
+    P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
+    H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
+    H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
+
+    return H
+
+
+def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+    """
+    Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing realisations of a discrete random variable.
+
+    **Mathematical definition**:
+
+    Denoting with :math:`P(x)` the probability of observing outcome :math:`x` of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined as:
+
+    .. math::
+        H(X) = -\\sum_x {P(x) \\log {P(x)}}.
+
+    **Estimation**:
+
+    Entropy is estimated based on frequency tables. See below for a list of available estimators.
+
+    **Parameters**:
+
+    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar. When X.ndim>1, returns an array of estimated entropies with dimensions X.shape[:-1].  X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+    base : float
+        The desired logarithmic base (default 2).
+    fill_value : object
+        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+
+        Data equal to the placeholder value are subsequently ignored.
+    estimator : str or float
+        The desired estimator (see above for details on estimators). Possible values are:
+
+            *'ML' (the default value)* : Maximum likelihood estimator.
+
+            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+
+            *JAMES-STEIN* : James-Stein estimator [HaSt09].
+
+            *GOOD-TURING* : Good-Turing estimator [GaSa95].
+
+    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
+        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+
+    **Implementation notes**:
+
+    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+
+    """
+    # NB: We would be able to reduce code duplication by invoking entropy_cross(X,X). However, performance would likely be lower!
+    X, fill_value_X = _sanitise_array_input(X, fill_value)
+    if Alphabet_X is not None:
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
+    else:
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+
+    if X.size == 0:
+        raise ValueError("arg X contains no elements")
+    if np.any(_isnan(X)):
+        raise ValueError("arg X contains NaN values")
+    if Alphabet_X.size == 0:
+        raise ValueError("arg Alphabet_X contains no elements")
+    if np.any(_isnan(Alphabet_X)):
+        raise ValueError("arg Alphabet_X contains NaN values")
+    if _isnan(fill_value_X):
+        raise ValueError("fill value for arg X is NaN")
+    if X.shape[:-1] != Alphabet_X.shape[:-1]:
+        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+    if not (np.isscalar(base) and np.isreal(base) and base > 0):
+        raise ValueError("arg base not a positive real-valued scalar")
+
+    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    X, Alphabet_X = S
+
     H = np.empty(X.shape[:-1])
     if H.ndim > 0:
         H[:] = np.NaN
     else:
         H = np.float64(np.NaN)
-    
+
     # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
-    orig_shape_H = H.shape    
+    orig_shape_H = H.shape
     H = np.reshape(H, (-1,1))
-    
+
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
 
     # NB: This is not joint entropy. Elements in each row are sorted independently
     X = np.sort(X, axis=1)
 
-    # Compute symbol run-lengths    
+    # Compute symbol run-lengths
     B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
     for i in xrange(X.shape[0]):
         I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
-        
+
         alphabet_X = X[i,I]
         if estimator != 'ML':
             n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X[i], fill_value)
         else:
-            n_additional_empty_bins = 0        
+            n_additional_empty_bins = 0
         L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
         if not np.any(L):
             continue
-        
-        # P_0 is the probability mass assigned to each additional empty bin        
+
+        # P_0 is the probability mass assigned to each additional empty bin
         P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
         H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
         H[i] = entropy_pmf(P, base, require_valid_pmf=False) + H_0
-    
+
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
-    
+
     return H
 
 
 def entropy_pmf(P, base=2, require_valid_pmf=True):
     """
-    Returns the entropy (see e.g. [CoTh06]) of an array P representing a discrete probability distribution.    
-    
-    **Mathematical definition**:    
-    
+    Returns the entropy (see e.g. [CoTh06]) of an array P representing a discrete probability distribution.
+
+    **Mathematical definition**:
+
     Denoting with :math:`P(x)` the probability mass associated with observing an outcome :math:`x` under distribution :math:`P`, the entopy :math:`H(P)` is defined as:
-    
+
     .. math::
         H(P) = -\\sum_x {P(x) \\log {Q(x)}}.
-        
+
     **Parameters**:
-        
+
     P : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         An array containing probability mass assignments. Probabilities in a distribution are indexed by the last axis in the array; multiple probability distributions may be specified using preceding axes. When P.ndim==1, returns a scalar. When P.ndim>1, returns an array of entropies with dimensions P.shape[:-1]. P may not contain (floating point) NaN values.
     base : float
@@ -2229,57 +2229,57 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
         When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
     """
     P, _ = _sanitise_array_input(P)
-    
+
     if P.size == 0:
         raise ValueError("arg P contains no elements")
     if np.any(_isnan(P)):
-        raise ValueError("arg P contains NaN values")          
+        raise ValueError("arg P contains NaN values")
     if np.any(np.logical_or(P<0, P>1)):
         raise ValueError("arg P contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-    
+
     H = -np.sum(P * np.log2(P + np.spacing(0)), axis=-1)
     H = H / np.log2(base)
 
     return H
 
 
-def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):    
+def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
-    Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.    
-    
-    **Mathematical definition**:    
-    
+    Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.
+
+    **Mathematical definition**:
+
     Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass associated with observing an outcome :math:`x` under distributions :math:`P`, :math:`Q`, the cross entopy :math:`H^\\times(P,Q)` is defined as:
-    
+
     .. math::
         H^\\times(P,Q) = -\\sum_x {P(x) \\log {Q(x)}}.
-        
+
     **Parameters**:
-        
+
     P, Q : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **one-to-one** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of cross entropies with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.
-        
+
         *cartesian_product==True and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **many-to-many** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of cross entropies with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.
-        
+
         *Q is None*: Equivalent to entropy_cross_pmf(P, P, ... ). Thus, a shorthand syntax for computing cross entropies (in bits) between all pairs of probability distributions in P is entropy_cross_pmf(P).
     cartesian_product : boolean
         Indicates whether probability distributions are paired **one-to-one** between P and Q (cartesian_product==False, the default value) or **many-to-many** between P and Q (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
-        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.        
+        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
     """
     if Q is None:
         Q = P
         cartesian_product = True
-        
+
     P, _ = _sanitise_array_input(P)
     Q, _ = _sanitise_array_input(Q)
-    
+
     if P.size == 0:
         raise ValueError("arg P contains no elements")
     if Q.size == 0:
@@ -2287,25 +2287,25 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
     if np.any(_isnan(P)):
         raise ValueError("arg P contains NaN values")
     if np.any(_isnan(Q)):
-        raise ValueError("arg Q contains NaN values")        
+        raise ValueError("arg Q contains NaN values")
     if not cartesian_product and P.shape != Q.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")       
+         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")         
+         raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if np.any(np.logical_or(P<0, P>1)):
         raise ValueError("arg P contains values outside unit interval")
     if np.any(np.logical_or(Q<0, Q>1)):
-        raise ValueError("arg Q contains values outside unit interval")        
+        raise ValueError("arg Q contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
     if require_valid_pmf and not np.allclose(np.sum(Q, axis=-1), 1):
-        raise ValueError("arg Q does not sum to unity across last axis")        
+        raise ValueError("arg Q does not sum to unity across last axis")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     if cartesian_product:
         return _cartesian_product_apply(P,Q, lambda P,Q: entropy_cross_pmf(P,Q,False,base,require_valid_pmf))
-    
+
     with np.errstate(invalid='ignore', divide='ignore'):
         H = P * np.log2(Q)
     H[P == 0] = 0
@@ -2317,73 +2317,73 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
 
 def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
-    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.    
-    
-    **Mathematical definition**:    
-    
+    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.
+
+    **Mathematical definition**:
+
     Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass associated with observing an outcome :math:`x` under distributions :math:`P`, :math:`Q`, the Kullback-Leibler divergence :math:`D_{\\mathrm{KL}}(P \\parallel Q)` is defined as:
-    
+
     .. math::
         D_{\\mathrm{KL}}(P \\parallel Q) = -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.
-        
+
     **Parameters**:
-        
+
     P, Q : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **one-to-one** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.
-        
+
         *cartesian_product==True and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **many-to-many** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.
-        
+
         *Q is None*: Equivalent to divergence_kullbackleibler_pmf(P, P, ... ). Thus, a shorthand syntax for computing Kullback-Leibler divergence (in bits) between all pairs of probability distributions in P is divergence_kullbackleibler_pmf(P).
     cartesian_product : boolean
         Indicates whether probability distributions are paired **one-to-one** between P and Q (cartesian_product==False, the default value) or **many-to-many** between P and Q (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
-        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.    
+        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
     """
     H_cross = entropy_cross_pmf(P, Q, cartesian_product, base, require_valid_pmf)
     H = entropy_pmf(P, base, require_valid_pmf)
-    
+
     H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
-    
+
     return H_cross - H
 
 
 def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
-    Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.    
-    
-    **Mathematical definition**:    
-    
+    Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
+
+    **Mathematical definition**:
+
     Denoting with :math:`P`, :math:`Q` probability distributions with common domain, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P \\parallel Q)` is defined as:
-    
+
     .. math::
         D_{\\mathrm{JS}}(P \\parallel Q) = \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)
-    
+
     where :math:`M = \\frac{1}{2}(P + Q)` and where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
-        
+
     **Parameters**:
-        
+
     P, Q : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **one-to-one** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.
-        
+
         *cartesian_product==True and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **many-to-many** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.
-        
+
         *Q is None*: Equivalent to divergence_jensenshannon_pmf(P, P, ... ). Thus, a shorthand syntax for computing Jensen-Shannon divergence (in bits) between all pairs of probability distributions in P is divergence_jensenshannon_pmf(P).
     cartesian_product : boolean
         Indicates whether probability distributions are paired **one-to-one** between P and Q (cartesian_product==False, the default value) or **many-to-many** between P and Q (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
-        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.        
-    """    
+        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
+    """
     if Q is None:
         Q = P
         cartesian_product = True
-        
+
     P, _ = _sanitise_array_input(P)
     Q, _ = _sanitise_array_input(Q)
-    
+
     if P.size == 0:
         raise ValueError("arg P contains no elements")
     if Q.size == 0:
@@ -2391,24 +2391,24 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
     if np.any(_isnan(P)):
         raise ValueError("arg P contains NaN values")
     if np.any(_isnan(Q)):
-        raise ValueError("arg Q contains NaN values")        
+        raise ValueError("arg Q contains NaN values")
     if not cartesian_product and P.shape != Q.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")       
+         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")         
+         raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if np.any(np.logical_or(P<0, P>1)):
         raise ValueError("arg P contains values outside unit interval")
     if np.any(np.logical_or(Q<0, Q>1)):
-        raise ValueError("arg Q contains values outside unit interval")        
+        raise ValueError("arg Q contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
     if require_valid_pmf and not np.allclose(np.sum(Q, axis=-1), 1):
-        raise ValueError("arg Q does not sum to unity across last axis")        
+        raise ValueError("arg Q does not sum to unity across last axis")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
-        
+
     if cartesian_product:
-        return _cartesian_product_apply(P,Q, lambda P,Q: divergence_jensenshannon_pmf(P,Q,False,base,require_valid_pmf))        
+        return _cartesian_product_apply(P,Q, lambda P,Q: divergence_jensenshannon_pmf(P,Q,False,base,require_valid_pmf))
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
     return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - 0.5*entropy_pmf(Q, base, require_valid_pmf)
@@ -2416,39 +2416,39 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
 
 def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
-    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.    
-    
-    **Mathematical definition**:    
-    
+    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
+
+    **Mathematical definition**:
+
     Denoting with :math:`P`, :math:`Q` probability distributions with common domain, the symmetrised Kullback-Leibler divergence :math:`D_{\\mathrm{SKL}}(P \\parallel Q)` is defined as:
 
     .. math::
         D_{\\mathrm{SKL}}(P \\parallel Q) = D_{\\mathrm{KL}}(P \\parallel Q) + D_{\\mathrm{KL}}(Q \\parallel P)
 
     where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
-        
+
     **Parameters**:
-        
+
     P, Q : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **one-to-one** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.
-        
+
         *cartesian_product==True and Q is not None*: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired **many-to-many** between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim>1 and Q.ndim>1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.
-        
+
         *Q is None*: Equivalent to divergence_kullbackleibler_symmetrised_pmf(P, P, ... ). Thus, a shorthand syntax for computing symmetrised Kullback-Leibler divergence (in bits) between all pairs of probability distributions in P is divergence_kullbackleibler_symmetrised_pmf(P).
     cartesian_product : boolean
         Indicates whether probability distributions are paired **one-to-one** between P and Q (cartesian_product==False, the default value) or **many-to-many** between P and Q (cartesian_product==True).
     base : float
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
-        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.        
-    """    
+        When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
+    """
     if Q is None:
         Q = P
         cartesian_product = True
-    
+
     H1 = divergence_kullbackleibler_pmf(P, Q, cartesian_product, base, require_valid_pmf)
     H2 = divergence_kullbackleibler_pmf(Q, P, cartesian_product, base, require_valid_pmf)
-    
+
     if cartesian_product:
         H2 = H2.T
     return H1 + H2
@@ -2471,7 +2471,7 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
         Alph2 = np.unique(Full_Alphabet[1,Full_Alphabet[1] != fill_value])
         A = np.zeros((2,Alph1.size*Alph2.size), dtype=Full_Alphabet.dtype)
         c = 0
-        for j in xrange(Alph2.size):        
+        for j in xrange(Alph2.size):
             for i in xrange(Alph1.size):
                 A[0,c] = Alph1[i]
                 A[1,c] = Alph2[j]
@@ -2510,28 +2510,28 @@ def _autocreate_alphabet(X, fill_value):
 def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
     """
     Applies a function to arrays X and Y, each containing discrete random variable realisations. (Internal function.)
-            
+
     **Parameters**:
-        
+
     X,Y : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
         *cartesian_product==False: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **one-to-one** between X and Y). When X.ndim==Y.ndim==1, returns a scalar based on calling function(X,Y). When X.ndim>1 and Y.ndim>1, returns an array with dimensions X.shape[:-1], based on calling function once for each variable pairing in the one-to-one relation.
-        
-        *cartesian_product==True: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar based on calling function(X,Y). When X.ndim>1 or Y.ndim>1, returns an array with dimensions np.append(X.shape[:-1],Y.shape[:-1]), based on calling function once for each variable pairing in the many-to-many relation.           
+
+        *cartesian_product==True: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired **many-to-many** between X and Y). When X.ndim==Y.ndim==1, returns a scalar based on calling function(X,Y). When X.ndim>1 or Y.ndim>1, returns an array with dimensions np.append(X.shape[:-1],Y.shape[:-1]), based on calling function once for each variable pairing in the many-to-many relation.
     function : function
         A function with two vector-valued arguments.
-     """   
+     """
     assert(X.ndim > 0 and Y.ndim > 0)
     assert(X.size > 0 and Y.size > 0)
     if Alphabet_X is not None or Alphabet_Y is not None:
         assert(Alphabet_X.ndim > 0 and Alphabet_Y.ndim > 0)
-        assert(Alphabet_X.size > 0 and Alphabet_Y.size > 0)        
+        assert(Alphabet_X.size > 0 and Alphabet_Y.size > 0)
 
     H = np.empty(np.append(X.shape[:-1], Y.shape[:-1]).astype('int'))
     if H.ndim > 0:
         H[:] = np.NaN
     else:
         H = np.float64(np.NaN)
-    
+
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     if Alphabet_X is not None or Alphabet_Y is not None:
@@ -2539,7 +2539,7 @@ def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
         Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
     H = np.reshape(H, (-1,1))
-    
+
     n = 0
     for i in xrange(X.shape[0]):
         for j in xrange(Y.shape[0]):
@@ -2548,15 +2548,15 @@ def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
             else:
                 H[n] = function(X[i], Y[j])
             n = n + 1
-            
+
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
-    
+
     return H
 
 
 def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet, fill_value):
-    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value, axis=-1)    
+    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value, axis=-1)
     if np.any(alphabet_sizes != fill_value):
         joint_alphabet_size = np.prod(alphabet_sizes[alphabet_sizes > 0])
         if joint_alphabet_size <= 0:
@@ -2576,10 +2576,10 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
     assert(np.all(Counts.astype('int') == Counts))
     assert(n_additional_empty_bins >= 0)
     Counts = Counts.astype('int')
-    
+
     if isinstance(estimator, str):
         estimator = estimator.upper().replace(' ', '')
-    
+
     if np.isreal(estimator) or estimator in ('ML', 'PERKS', 'MINIMAX'):
         if np.isreal(estimator):
             alpha = estimator
@@ -2595,26 +2595,26 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             Theta_0 = alpha / (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
         else:
             Theta_0 = 0
-            
+
     elif estimator == 'GOOD-TURING':
         # TODO We could also add a Chen-Chao vocabulary size estimator (See Bhat Suma's thesis)
-        
+
         # The following notation is based on Gale and Sampson (1995)
         # Determine histogram of counts N_r (index r denotes count)
         X = np.sort(Counts)
-        B = X[1:] != X[:-1] # Compute symbol change indicators        
+        B = X[1:] != X[:-1] # Compute symbol change indicators
         I = np.append(np.where(B), X.size-1) # Obtain symbol change positions
         N_r = np.zeros(X[I[-1]]+1)
         N_r[X[I]] = np.diff(np.append(-1, I)) # Compute run lengths
         N_r[0] = 0 # This initialisation ensures that unobserved symbols do not interfere
-        
+
         # Compute Z_r, a locally averaged version of N_r
         R = np.where(N_r)[0]
         Q = np.append(0, R[:-1])
         T = np.append(R[1:], 2*R[-1]-Q[-1])
         Z_r = np.zeros_like(N_r)
         Z_r[R] = N_r[R] / (0.5*(T-Q))
-        
+
         # Fit least squares regression line to plot of log(Z_r) versus log(r)
         x = np.log10(np.arange(1,Z_r.size))
         with np.errstate(invalid='ignore', divide='ignore'):
@@ -2627,13 +2627,13 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         # Compute smoothed value of N_r based on interpolation
         SmoothedN_r = np.zeros(N_r.size+1) # We need to refer to SmoothedN_{r+1} for all observed values of r
         SmoothedN_r[1:] = 10**(np.log10(np.arange(1,SmoothedN_r.size)) * m + c)
-        
+
         # Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
         # Variance of Turing estimate
-        with np.errstate(invalid='ignore', divide='ignore'):        
+        with np.errstate(invalid='ignore', divide='ignore'):
             VARr_T = (np.arange(N_r.size)+1)**2 * (1.0*np.append(N_r[1:],0)/(N_r**2)) * (1 + np.append(N_r[1:],0)/N_r)
             x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:],0) / N_r
-            y = (np.arange(N_r.size)+1) * 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])            
+            y = (np.arange(N_r.size)+1) * 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
         assert(turing_is_sig_diff[0] == False)
@@ -2645,27 +2645,27 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         else:
             # Use only non-smoothed estimates (except for SmoothedN_r[-1])
             SmoothedN_r[:-1] = N_r
-                
+
         # Estimate probability of encountering one particular symbol among the objects observed r times, r>0
         p_r = np.zeros(N_r.size)
         N = np.sum(Counts)
         p_r[1:] = (np.arange(1,N_r.size)+1) * 1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
         # Estimate probability of observing any unseen symbol
         p_r[0] = 1.0 * N_r[1] / N
-        
+
         # Assign probabilities to observed symbols
         Theta = np.array([p_r[r] for r in Counts])
         Theta[Counts == 0] = 0
-        
+
         # Normalise probabilities for observed symbols, so that they sum to one
         if np.any(Counts == 0) or n_additional_empty_bins > 0:
             Theta = (1-p_r[0]) * Theta / np.sum(Theta)
         else:
             warnings.warn("No unobserved symbols specified. Disregarding the probability mass allocated to any unobserved symbols.")
             Theta = Theta / np.sum(Theta)
-        
+
         # Divide p_0 among unobserved symbols
-        with np.errstate(invalid='ignore', divide='ignore'):        
+        with np.errstate(invalid='ignore', divide='ignore'):
             p_emptybin = p_r[0] / (np.sum(Counts == 0) + n_additional_empty_bins)
         Theta[Counts == 0] = p_emptybin
         # Theta_0 is the probability mass assigned to each additional empty bin
@@ -2673,7 +2673,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             Theta_0 = p_emptybin
         else:
             Theta_0 = 0
-        
+
     elif estimator == 'JAMES-STEIN':
         Theta, _ = _estimate_probabilities(Counts, 'ML')
         p_uniform = 1.0 / (Counts.size + n_additional_empty_bins)
@@ -2686,7 +2686,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             Lambda = 0
         elif np.isnan(Lambda):
             Lambda = 1
-            
+
         Theta = Lambda*p_uniform + (1-Lambda)*Theta
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
@@ -2712,10 +2712,10 @@ def _increment_binary_vector(X):
         if X[i] and not x:
             carry_1 = True
         X[i] = x
-        
+
         if not carry_1:
             break
-        
+
     return X
 
 
@@ -2736,7 +2736,7 @@ def _isnan_element(x):
 
 
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
-    assert(len(Symbol_matrices)==len(Fill_values))    
+    assert(len(Symbol_matrices)==len(Fill_values))
     FILL_VALUE = -1
     if np.any([A.dtype!='int' for A in Symbol_matrices]) or np.any(np.array(Fill_values) != FILL_VALUE):
         L = sklearn.preprocessing.LabelEncoder()
@@ -2745,11 +2745,11 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
         # TODO make sure to test with various (unusual) data types
         Symbol_matrices = [L.transform(A.ravel()).reshape(A.shape) for A in Symbol_matrices]
         Fill_values = [L.transform(np.atleast_1d(f)) for f in Fill_values]
-        
+
         for A, f in zip(Symbol_matrices, Fill_values):
             assert(not np.any(A == FILL_VALUE))
             A[A == f] = FILL_VALUE
-        
+
     assert(np.all([A.dtype=='int' for A in Symbol_matrices]))
     return Symbol_matrices, FILL_VALUE
 
@@ -2766,7 +2766,7 @@ def _sanitise_array_input(X, fill_value=-1):
 
     if isinstance(X, np.ma.MaskedArray):
         fill_value = X.fill_value
-        
+
         if X.dtype.char == 'S':
             current_dtype_len = int(str(X.dtype).split('S')[1])
             if current_dtype_len < len(fill_value):
@@ -2784,7 +2784,7 @@ def _sanitise_array_input(X, fill_value=-1):
 
     if X.size == 1 and X.ndim == 0:
         X = np.array((X,))
-                
+
     return X, np.array(fill_value)
 
 
