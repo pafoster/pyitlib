@@ -90,6 +90,7 @@ import warnings
 #TODO Add note in README on how functions accept numpy arrays, (or more generally array-like input). Thus, a straightforward approach is entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions support higher-dimensional input for convenience, allowingquantities to be computed for multiple random variables using one function call.
 #TODO Add information in documentation on when quantities are maximised or minimised
 
+
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated residual entropy [JaEC11] (also known as erasure entropy [VeWe06]) for an array X containing realisations of discrete random variables.
@@ -152,6 +153,7 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     
     return H_joint - information_binding(X, base, fill_value, estimator, Alphabet_X)
 
+
 def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated exogenous local information [JaEC11] for an array X containing realisations of discrete random variables.
@@ -210,6 +212,7 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphab
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
     """    
     return information_binding(X, base, fill_value, estimator, Alphabet_X) + information_multi(X, base, fill_value, estimator, Alphabet_X)
+
 
 def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None): #See `Anatomy of a bit'. Include?
     #Note: can be negative
@@ -271,6 +274,7 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=N
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.        
     """    
     return information_multi(X, base, fill_value, estimator, Alphabet_X) - information_binding(X, base, fill_value, estimator, Alphabet_X)
+
 
 def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
@@ -369,6 +373,7 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
         
     return I
 
+
 def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated co-information [Bell03] for an array X containing realisations of discrete random variables.
@@ -466,7 +471,8 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         M = _increment_binary_vector(M)
         
     return I
-    
+
+
 def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.
@@ -567,6 +573,7 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     
     return B
 
+
 def information_multi(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.
@@ -628,6 +635,7 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None)
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
     
     return np.sum(H) - H_joint
+
 
 def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None, Alphabet_Z=None):
     """
@@ -800,6 +808,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     return I
     
     pass
+
 
 def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
@@ -985,6 +994,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     
     return H        
     
+
 def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=False, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     #TODO Documentation should include properties for each of the normalisation factors
     """
@@ -1201,6 +1211,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
     
     return I / C
 
+
 def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the variation of information [Meil03] between arrays X and Y, each containing discrete random variable realisations.
@@ -1276,6 +1287,7 @@ def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value
         H2 = H2.T
     return H1 + H2    
 
+
 def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
@@ -1344,6 +1356,7 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     
     H = np.reshape(H, np.append(H.shape,np.ones(H_conditional.ndim-H.ndim)).astype('int'))
     return H - H_conditional
+
 
 def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
@@ -1512,7 +1525,8 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     H = np.reshape(H, orig_shape_H)
     
     return H        
-        
+
+
 def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
@@ -1579,6 +1593,7 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2, fill_
     H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
     return H_cross - H
         
+
 def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
@@ -1748,6 +1763,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     H = np.reshape(H, orig_shape_H)
     
     return H        
+
 
 def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
@@ -1966,6 +1982,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     
     return H
 
+
 def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X containing realisations of discrete random variables.
@@ -2072,6 +2089,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
     
     return H
+
 
 def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
@@ -2188,7 +2206,8 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     H = np.reshape(H, orig_shape_H)
     
     return H
-    
+
+
 def entropy_pmf(P, base=2, require_valid_pmf=True):
     """
     Returns the entropy (see e.g. [CoTh06]) of an array P representing a discrete probability distribution.    
@@ -2226,7 +2245,8 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
     H = H / np.log2(base)
 
     return H
-    
+
+
 def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):    
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.    
@@ -2293,7 +2313,8 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
     H = H / np.log2(base)
 
     return H
-    
+
+
 def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.    
@@ -2326,7 +2347,8 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, r
     H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
     
     return H_cross - H
-        
+
+
 def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.    
@@ -2390,7 +2412,7 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
     return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - 0.5*entropy_pmf(Q, base, require_valid_pmf)
-    
+
 
 def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
     """
@@ -2430,6 +2452,7 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=Fals
     if cartesian_product:
         H2 = H2.T
     return H1 + H2
+
 
 def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_value):
     if Alphabet.ndim == 1:
@@ -2473,7 +2496,8 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
             Counts = Counts[I]
         assert(np.all(np.any(Alphabet[:,1:] != Alphabet[:,:-1], axis=0)))
         return Counts, Alphabet
-    
+
+
 def _autocreate_alphabet(X, fill_value):
     Lengths = np.apply_along_axis(lambda x: np.unique(x).size, axis=-1, arr=X)
     max_length = np.max(Lengths)
@@ -2481,6 +2505,7 @@ def _autocreate_alphabet(X, fill_value):
         return np.append(x, np.tile(fill_value, max_length-x.size))
     Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)), axis=-1, arr=X)
     return (Alphabet, fill_value)
+
 
 def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
     """
@@ -2529,6 +2554,7 @@ def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
     
     return H
 
+
 def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet, fill_value):
     alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value, axis=-1)    
     if np.any(alphabet_sizes != fill_value):
@@ -2538,6 +2564,7 @@ def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet, fil
     else:
         joint_alphabet_size = 0
     return joint_alphabet_size - np.sum(np.all(np.atleast_2d(Alphabet) != fill_value, axis=0))
+
 
 def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
     #TODO Documentation should present the following guidelines:
@@ -2670,7 +2697,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         raise ValueError("invalid value specified for estimator")
 
     return Theta, Theta_0
-    
+
+
 def _increment_binary_vector(X):
     carry_1 = False
     x = X[0] ^ True
@@ -2690,6 +2718,7 @@ def _increment_binary_vector(X):
         
     return X
 
+
 def _isnan(X):
     X = np.array(X, copy=False)
     if X.dtype in ('int', 'float'):
@@ -2698,12 +2727,14 @@ def _isnan(X):
         f = np.vectorize(_isnan_element)
         return f(X)
 
+
 def _isnan_element(x):
     if isinstance(x, type(np.nan)):
         return np.isnan(x)
     else:
         return False
-    
+
+
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
     assert(len(Symbol_matrices)==len(Fill_values))    
     FILL_VALUE = -1
@@ -2722,15 +2753,17 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
     assert(np.all([A.dtype=='int' for A in Symbol_matrices]))
     return Symbol_matrices, FILL_VALUE
 
+
 def _remove_counts_at_fill_value(Counts, Alphabet, fill_value):
     I = np.any(np.atleast_2d(Alphabet) == fill_value, axis=0)
     if np.any(I):
         Counts = Counts[~I]
         Alphabet = Alphabet.T[~I].T
     return (Counts, Alphabet)
-    
+
+
 def _sanitise_array_input(X, fill_value=-1):
-    
+
     if isinstance(X, np.ma.MaskedArray):
         fill_value = X.fill_value
         
@@ -2754,6 +2787,7 @@ def _sanitise_array_input(X, fill_value=-1):
                 
     return X, np.array(fill_value)
 
+
 def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
     assert(not np.any(X == np.array(None)))
     assert(not np.any(Alphabet == np.array(None)))
@@ -2762,7 +2796,8 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
         J = Alphabet[i] != fill_value
         if np.setdiff1d(X[i,I],Alphabet[i,J]).size > 0: #NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
             raise ValueError("provided alphabet does not contain all observed symbols")
-    
+
+
 def _vstack_pad_with_fillvalue(Arrays, fill_value):
     max_length = max([A.shape[-1] for A in Arrays])
     Arrays = [np.append(A, np.tile(fill_value, np.append(A.shape[:-1], max_length-A.shape[-1]))) for A in Arrays]
