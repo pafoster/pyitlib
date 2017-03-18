@@ -1,0 +1,1447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pyitlib &#8212; pyitlib 0.1.10 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pyitlib 0.1.10 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="pyitlib">
+<h1>pyitlib<a class="headerlink" href="#pyitlib" title="Permalink to this headline">¶</a></h1>
+<p>pyitlib is an MIT-licensed library of information-theoretic methods for data analysis and machine learning, implemented in Python and NumPy.</p>
+<div class="section" id="module-discrete_random_variable">
+<span id="discrete-random-variable"></span><h2>discrete_random_variable<a class="headerlink" href="#module-discrete_random_variable" title="Permalink to this headline">¶</a></h2>
+<p>This module implements various information-theoretic quantities for discrete random variables.</p>
+<p>For ease of reference, function names follow the following convention:</p>
+<p>Function names beginning with &#8220;entropy&#8221; : Entropy measures</p>
+<p>Function names beginning with &#8220;information&#8221; : Mutual information measures</p>
+<p>Function names beginning with &#8220;divergence&#8221; : Divergence measures</p>
+<p>Function names ending with &#8220;pmf&#8221; : Functions operating on arrays of probability mass assignments (as opposed realisations of random variables)</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="17%" />
+<col width="11%" />
+<col width="6%" />
+<col width="6%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Generalises</th>
+<th class="head">Non-negativity</th>
+<th class="head">Symmetry</th>
+<th class="head">Identity</th>
+<th class="head">Metric properties</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_jensenshannon" title="discrete_random_variable.divergence_jensenshannon"><code class="xref py py-meth docutils literal"><span class="pre">divergence_jensenshannon()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Square root is a metric</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_jensenshannon_pmf" title="discrete_random_variable.divergence_jensenshannon_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_jensenshannon_pmf()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Square root is a metric</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler" title="discrete_random_variable.divergence_kullbackleibler"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_pmf" title="discrete_random_variable.divergence_kullbackleibler_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_pmf()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised" title="discrete_random_variable.divergence_kullbackleibler_symmetrised"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_symmetrised()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf" title="discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_symmetrised_pmf()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy" title="discrete_random_variable.entropy"><code class="xref py py-meth docutils literal"><span class="pre">entropy()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_conditional" title="discrete_random_variable.entropy_conditional"><code class="xref py py-meth docutils literal"><span class="pre">entropy_conditional()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_cross" title="discrete_random_variable.entropy_cross"><code class="xref py py-meth docutils literal"><span class="pre">entropy_cross()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_cross_pmf" title="discrete_random_variable.entropy_cross_pmf"><code class="xref py py-meth docutils literal"><span class="pre">entropy_cross_pmf()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_joint" title="discrete_random_variable.entropy_joint"><code class="xref py py-meth docutils literal"><span class="pre">entropy_joint()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_pmf" title="discrete_random_variable.entropy_pmf"><code class="xref py py-meth docutils literal"><span class="pre">entropy_pmf()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_residual" title="discrete_random_variable.entropy_residual"><code class="xref py py-meth docutils literal"><span class="pre">entropy_residual()</span></code></a></td>
+<td>information_variation</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_binding" title="discrete_random_variable.information_binding"><code class="xref py py-meth docutils literal"><span class="pre">information_binding()</span></code></a></td>
+<td>information_mutual</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_co" title="discrete_random_variable.information_co"><code class="xref py py-meth docutils literal"><span class="pre">information_co()</span></code></a></td>
+<td>information_mutual</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_enigmatic" title="discrete_random_variable.information_enigmatic"><code class="xref py py-meth docutils literal"><span class="pre">information_enigmatic()</span></code></a></td>
+<td>&nbsp;</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_exogenous_local" title="discrete_random_variable.information_exogenous_local"><code class="xref py py-meth docutils literal"><span class="pre">information_exogenous_local()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_interaction" title="discrete_random_variable.information_interaction"><code class="xref py py-meth docutils literal"><span class="pre">information_interaction()</span></code></a></td>
+<td>information_mutual</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_lautum" title="discrete_random_variable.information_lautum"><code class="xref py py-meth docutils literal"><span class="pre">information_lautum()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_multi" title="discrete_random_variable.information_multi"><code class="xref py py-meth docutils literal"><span class="pre">information_multi()</span></code></a></td>
+<td>information_mutual</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_mutual" title="discrete_random_variable.information_mutual"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_mutual_conditional" title="discrete_random_variable.information_mutual_conditional"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual_conditional()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_mutual_normalised" title="discrete_random_variable.information_mutual_normalised"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual_normalised()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>See docs</td>
+<td>No</td>
+<td>See docs</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_variation" title="discrete_random_variable.information_variation"><code class="xref py py-meth docutils literal"><span class="pre">information_variation()</span></code></a></td>
+<td>&nbsp;</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Is a metric</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils citation" frame="void" id="abpl12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[AbPl12]</td><td>Abdallah, S.A.; Plumbley, M.D.: A measure of statistical complexity based on predictive information with application to finite spin systems. In: Physics Letters A, Vol. 376, No. 4, 2012, P. 275-281.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="bell03" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Bell03]</td><td>Bell, A.J.: The co-information lattice. In: Proceedings of the International Workshop on Independent Component Analysis and Blind Signal Separation. 2003.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="coth06" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[CoTh06]</td><td>Cover, T.M.; Thomas, J.A.: Elements of information theory (2nd ed.). John Wiley &amp; Sons, 2006.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="croo15" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Croo15]</td><td>Crooks, G.E.: On measures of entropy and information. <a class="reference external" href="http://threeplusone.com/info">http://threeplusone.com/info</a>, retrieved 2017-03-16.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="gasa95" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[GaSa95]</td><td>Gale, W.A.; Sampson, G.: Good‐Turing frequency estimation without tears. In: Journal of Quantitative Linguistics, Vol. 2, No. 3, 1995, P. 217-237.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="han78" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Han78]</td><td>Han, T.S.: Nonnegative entropy measures of multivariate symmetric correlations. In: Information and Control, Vol. 36, 1978, P. 133-156.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="hast09" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[HaSt09]</td><td>Hausser, J.; Strimmer, K.: Entropy inference and the James-Stein estimator, with application to nonlinear gene association networks. In: Journal of Machine Learning Research, Vol. 10, 2009, P. 1469-1484.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="jabr03" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[JaBr03]</td><td>Jakulin, A.; Bratko, I.: Quantifying and visualizing attribute interactions. arXiv preprint cs/0308002, 2003.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="jaec11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[JaEC11]</td><td>James, R.G.; Ellison, C.J.; Crutchfield, J.P.: Anatomy of a bit: Information in a time series observation. In: Chaos: An Interdisciplinary Journal of Nonlinear Science, Vol. 21, No. 3, 2011.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="lin91" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Lin91]</td><td>Lin, J.: Divergence measures based on the Shannon entropy. In: IEEE Transactions on Information theory, Vol. 37, No. 1, 1991, P. 145-151.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="meil03" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Meil03]</td><td>Meilă, M.: Comparing clusterings by the variation of information. In: Learning theory and kernel machines. Springer, 2003, P. 173-187.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="murp12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Murp12]</td><td>Murphy, K. P.: Machine learning: a probabilistic perspective. MIT press, 2012.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="pave08" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[PaVe08]</td><td>Palomar, D. P.; Verdú, S.: Lautum information. In: IEEE transactions on information theory, Vol. 54, No. 3, 2008, P. 964-975.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="stve98" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[StVe98]</td><td>Studený, M.; Vejnarová, J.: The multiinformation function as a tool for measuring stochastic dependence. In: Learning in graphical models. Springer Netherlands, 1998, P. 261-297.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="vewe06" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[VeWe06]</td><td>Verdú, S.; Weissman, T.: Erasure entropy. In: Proc. IEEE International Symposium on Information Theory, 2006, P. 98-102.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="wata60" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Wata60]</td><td>Watanabe, S.: Information theoretical analysis of multivariate correlation. In: IBM Journal of research and development, Vol. 4, No. 1, 1960, P. 66-82.</td></tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="discrete_random_variable.divergence_jensenshannon">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_jensenshannon</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_jensenshannon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_jensenshannon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P_X\)</span>, <span class="math">\(P_Y\)</span> respectively probability distributions with common domain, associated with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the Jensen-Shannon divergence <span class="math">\(D_{\mathrm{JS}}(P_X \parallel P_Y)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{JS}}(P_X \parallel P_Y) = \frac{1}{2} D_{\mathrm{KL}}(P_X \parallel M) + \frac{1}{2} D_{\mathrm{KL}}(P_Y \parallel M)\]</div>
+<p>where <span class="math">\(M = \frac{1}{2}(P_X + P_Y)\)</span> and where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Jensen-Shannon divergence is estimated based on frequency tables. See below for a list of available estimators.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to divergence_jensenshannon(X, X, ... ). Thus, a shorthand syntax for computing Jensen-Shannon divergence (in bits) between all pairs of random variables in X is divergence_jensenshannon(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.divergence_jensenshannon_pmf">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_jensenshannon_pmf</code><span class="sig-paren">(</span><em>P</em>, <em>Q=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>require_valid_pmf=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_jensenshannon_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_jensenshannon_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P\)</span>, <span class="math">\(Q\)</span> probability distributions with common domain, the Jensen-Shannon divergence <span class="math">\(D_{\mathrm{JS}}(P \parallel Q)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{JS}}(P \parallel Q) = \frac{1}{2} D_{\mathrm{KL}}(P \parallel M) + \frac{1}{2} D_{\mathrm{KL}}(Q \parallel M)\]</div>
+<p>where <span class="math">\(M = \frac{1}{2}(P + Q)\)</span> and where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>P, Q <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>one-to-one</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.</p>
+<p><em>cartesian_product==True and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.</p>
+<p class="last"><em>Q is None</em>: Equivalent to divergence_jensenshannon_pmf(P, P, ... ). Thus, a shorthand syntax for computing Jensen-Shannon divergence (in bits) between all pairs of probability distributions in P is divergence_jensenshannon_pmf(P).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether probability distributions are paired <strong>one-to-one</strong> between P and Q (cartesian_product==False, the default value) or <strong>many-to-many</strong> between P and Q (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>require_valid_pmf <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.divergence_kullbackleibler">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the Kullback-Leibler divergence <span class="math">\(D_{\mathrm{KL}}(P_X \parallel P_Y)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{KL}}(P_X \parallel P_Y) = -\sum_x {P_X(x) \log {\frac{P_X(x)}{P_Y(x)}}}.\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_cross()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to divergence_kullbackleibler(X, X, ... ). Thus, a shorthand syntax for computing Kullback-Leibler divergence (in bits) between all pairs of random variables in X is divergence_kullbackleibler(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.divergence_kullbackleibler_pmf">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler_pmf</code><span class="sig-paren">(</span><em>P</em>, <em>Q=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>require_valid_pmf=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P(x)\)</span>, <span class="math">\(Q(x)\)</span> respectively the probability mass associated with observing an outcome <span class="math">\(x\)</span> under distributions <span class="math">\(P\)</span>, <span class="math">\(Q\)</span>, the Kullback-Leibler divergence <span class="math">\(D_{\mathrm{KL}}(P \parallel Q)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{KL}}(P \parallel Q) = -\sum_x {P(x) \log {\frac{P(x)}{Q(x)}}}.\]</div>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>P, Q <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>one-to-one</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.</p>
+<p><em>cartesian_product==True and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.</p>
+<p class="last"><em>Q is None</em>: Equivalent to divergence_kullbackleibler_pmf(P, P, ... ). Thus, a shorthand syntax for computing Kullback-Leibler divergence (in bits) between all pairs of probability distributions in P is divergence_kullbackleibler_pmf(P).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether probability distributions are paired <strong>one-to-one</strong> between P and Q (cartesian_product==False, the default value) or <strong>many-to-many</strong> between P and Q (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>require_valid_pmf <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.divergence_kullbackleibler_symmetrised">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler_symmetrised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler_symmetrised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P_X\)</span>, <span class="math">\(P_Y\)</span> respectively probability distributions with common domain, associated with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the symmetrised Kullback-Leibler divergence <span class="math">\(D_{\mathrm{SKL}}(P_X \parallel P_Y)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{SKL}}(P_X \parallel P_Y) = D_{\mathrm{KL}}(P_X \parallel P_Y) + D_{\mathrm{KL}}(P_Y \parallel P_X)\]</div>
+<p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Symmetrised Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_cross()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although symmetrised Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated divergence values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated divergence values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to divergence_kullbackleibler_symmetrised(X, X, ... ). Thus, a shorthand syntax for computing symmetrised Kullback-Leibler divergence (in bits) between all pairs of random variables in X is divergence_kullbackleibler_symmetrised(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler_symmetrised_pmf</code><span class="sig-paren">(</span><em>P</em>, <em>Q=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>require_valid_pmf=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler_symmetrised_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P\)</span>, <span class="math">\(Q\)</span> probability distributions with common domain, the symmetrised Kullback-Leibler divergence <span class="math">\(D_{\mathrm{SKL}}(P \parallel Q)\)</span> is defined as:</p>
+<div class="math">
+\[D_{\mathrm{SKL}}(P \parallel Q) = D_{\mathrm{KL}}(P \parallel Q) + D_{\mathrm{KL}}(Q \parallel P)\]</div>
+<p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>P, Q <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>one-to-one</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.</p>
+<p><em>cartesian_product==True and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.</p>
+<p class="last"><em>Q is None</em>: Equivalent to divergence_kullbackleibler_symmetrised_pmf(P, P, ... ). Thus, a shorthand syntax for computing symmetrised Kullback-Leibler divergence (in bits) between all pairs of probability distributions in P is divergence_kullbackleibler_symmetrised_pmf(P).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether probability distributions are paired <strong>one-to-one</strong> between P and Q (cartesian_product==False, the default value) or <strong>many-to-many</strong> between P and Q (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>require_valid_pmf <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing realisations of a discrete random variable.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P(x)\)</span> the probability of observing outcome <span class="math">\(x\)</span> of a discrete random variable <span class="math">\(X\)</span>, the entopy <span class="math">\(H(X)\)</span> is defined as:</p>
+<div class="math">
+\[H(X) = -\sum_x {P(x) \log {P(x)}}.\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Entropy is estimated based on frequency tables. See below for a list of available estimators.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar. When X.ndim&gt;1, returns an array of estimated entropies with dimensions X.shape[:-1].  X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_conditional">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_conditional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the conditional entropy <span class="math">\(H(X|Y)\)</span> is defined as:</p>
+<div class="math">
+\[H(X|Y) = H(X,Y) - H(Y)\]</div>
+<p>where <span class="math">\(H(\cdot,\cdot)\)</span> denotes the joint entropy and where <span class="math">\(H(\cdot)\)</span> denotes the entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Conditional entropy is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although conditional entropy is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated conditional entropies with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated conditional entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to entropy_conditional(X, X, ... ). Thus, a shorthand syntax for computing conditional entropies (in bits) between all pairs of random variables in X is entropy_conditional(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_cross">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_cross</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the cross entopy <span class="math">\(H^\times(X,Y)\)</span> is defined as:</p>
+<div class="math">
+\[H^\times(X,Y) = -\sum_x {P_X(x) \log {P_Y(x)}}.\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Cross entropy is estimated based on frequency tables. See below for a list of available estimators.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated cross entropies with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated cross entropies with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to entropy_cross(X, X, ... ). Thus, a shorthand syntax for computing cross entropies (in bits) between all pairs of random variables in X is entropy_cross(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_cross_pmf">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_cross_pmf</code><span class="sig-paren">(</span><em>P</em>, <em>Q=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>require_valid_pmf=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_cross_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_cross_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P(x)\)</span>, <span class="math">\(Q(x)\)</span> respectively the probability mass associated with observing an outcome <span class="math">\(x\)</span> under distributions <span class="math">\(P\)</span>, <span class="math">\(Q\)</span>, the cross entopy <span class="math">\(H^\times(P,Q)\)</span> is defined as:</p>
+<div class="math">
+\[H^\times(P,Q) = -\sum_x {P(x) \log {Q(x)}}.\]</div>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>P, Q <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape==Q.shape. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>one-to-one</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of cross entropies with dimensions P.shape[:-1]. Neither P nor Q may contain (floating point) NaN values.</p>
+<p><em>cartesian_product==True and Q is not None</em>: P and Q are arrays containing probability mass assignments, with P.shape[-1]==Q.shape[-1]. Probabilities in a distribution are indexed by the last axis in the respective arrays; multiple probability distributions in P and Q may be specified using preceding axes of the respective arrays (distributions are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==1, returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of cross entropies with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither P nor Q may contain (floating point) NaN values.</p>
+<p class="last"><em>Q is None</em>: Equivalent to entropy_cross_pmf(P, P, ... ). Thus, a shorthand syntax for computing cross entropies (in bits) between all pairs of probability distributions in P is entropy_cross_pmf(P).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether probability distributions are paired <strong>one-to-one</strong> between P and Q (cartesian_product==False, the default value) or <strong>many-to-many</strong> between P and Q (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>require_valid_pmf <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_joint">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_joint</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_joint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_joint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P(x_1, \ldots, x_n)\)</span> the probability of jointly observing outcomes <span class="math">\((x_1, \ldots, x_n)\)</span> of <span class="math">\(n\)</span> discrete random variables <span class="math">\((X_1, \ldots, X_n)\)</span>, the joint entopy <span class="math">\(H(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[H(X_1, \ldots, X_n) = -\sum_{x_1} \ldots \sum_{x_n} {P(x_1, \ldots, x_n ) \log {P(x_1, \ldots, x_n)}}.\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Joint entropy is estimated based on frequency tables. See below for a list of available estimators.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_pmf">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_pmf</code><span class="sig-paren">(</span><em>P</em>, <em>base=2</em>, <em>require_valid_pmf=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_pmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_pmf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the entropy (see e.g. [CoTh06]) of an array P representing a discrete probability distribution.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P(x)\)</span> the probability mass associated with observing an outcome <span class="math">\(x\)</span> under distribution <span class="math">\(P\)</span>, the entopy <span class="math">\(H(P)\)</span> is defined as:</p>
+<div class="math">
+\[H(P) = -\sum_x {P(x) \log {Q(x)}}.\]</div>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>P <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing probability mass assignments. Probabilities in a distribution are indexed by the last axis in the array; multiple probability distributions may be specified using preceding axes. When P.ndim==1, returns a scalar. When P.ndim&gt;1, returns an array of entropies with dimensions P.shape[:-1]. P may not contain (floating point) NaN values.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>require_valid_pmf <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.entropy_residual">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_residual</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated residual entropy [JaEC11] (also known as erasure entropy [VeWe06]) for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the residual entropy <span class="math">\(R(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[R(X_1, \ldots, X_n) = H(X_1, \ldots, X_n) - B(X_1, \ldots, X_n)\]</div>
+<p>where <span class="math">\(H(\cdot, \ldots, \cdot)\)</span> denotes the joint entropy and where <span class="math">\(B(\cdot, \ldots, \cdot)\)</span> denotes the binding information.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Residual information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although residual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_binding">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_binding</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_binding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_binding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the binding information <span class="math">\(B(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[B(X_1, \ldots, X_n) = H(X_1, \ldots, X_n) - \sum_{i=1}^{n} H(X_i | X_1, \ldots X_{i-1}, X_{i+1}, \ldots, X_n)\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where <span class="math">\(H(\cdot | \cdot)\)</span> denotes the conditional entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Binding information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although binding information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_co">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_co</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_co"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_co" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated co-information [Bell03] for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the co-information <span class="math">\(I(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[I(X_1, \ldots, X_n) = - \sum_{T \subseteq \{1,\ldots, n\}} (-1)^{|T|}  H(X_i : i \in T)\]</div>
+<p>where <span class="math">\(H(X_i : i \in T)\)</span> denotes the joint entropy of the subset of random variables specified by <span class="math">\(T\)</span>. Thus, co-information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.</p>
+<p>Note that co-information is equal in magnitude to the interaction information <span class="math">\(\mathrm{Int}(X_1, \ldots, X_n)\)</span>, with equality for the case where <span class="math">\(n\)</span> is even,</p>
+<div class="math">
+\[I(X_1, \ldots, X_n) = (-1)^n \mathrm{Int}(X_1, \ldots, X_n).    \]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Co-information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div>entropy_joint()</div></blockquote>
+<p>See below for a list of available estimators. Note that although co-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_enigmatic">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_enigmatic</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_enigmatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_enigmatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated enigmatic information [JaEC11] for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the enigmatic information <span class="math">\(Q(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[Q(X_1, \ldots, X_n) = T(X_1, \ldots, X_n) - B(X_1, \ldots, X_n)\]</div>
+<p>where <span class="math">\(T(\cdot, \ldots, \cdot)\)</span> denotes the multi-information and where <span class="math">\(B(\cdot, \ldots, \cdot)\)</span> denotes the binding information.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Enigmatic information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although enigmatic information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_exogenous_local">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_exogenous_local</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_exogenous_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_exogenous_local" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated exogenous local information [JaEC11] for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the exogenous local information <span class="math">\(W(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[W(X_1, \ldots, X_n) = T(X_1, \ldots, X_n) + B(X_1, \ldots, X_n)\]</div>
+<p>where <span class="math">\(T(\cdot, \ldots, \cdot)\)</span> denotes the multi-information and where <span class="math">\(B(\cdot, \ldots, \cdot)\)</span> denotes the binding information.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Exogenous local information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although exogenous local information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_interaction">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_interaction</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_interaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_interaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated interaction information [JaBr03] for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the interaction information <span class="math">\(\mathrm{Int}(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[\mathrm{Int}(X_1, \ldots, X_n) = - \sum_{T \subseteq \{1,\ldots, n\}} (-1)^{n-|T|}  H(X_i : i \in T)\]</div>
+<p>where <span class="math">\(H(X_i : i \in T)\)</span> denotes the joint entropy of the subset of random variables specified by <span class="math">\(T\)</span>. Thus, interaction information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.</p>
+<p>Note that interaction information is equal in magnitude to the co-information <span class="math">\(I(X_1, \ldots, X_n)\)</span>, with equality for the case where <span class="math">\(n\)</span> is even,</p>
+<div class="math">
+\[\mathrm{Int}(X_1, \ldots, X_n) = (-1)^n I(X_1, \ldots, X_n).\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Interaction information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div>entropy_joint()</div></blockquote>
+<p>See below for a list of available estimators. Note that although interaction information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to -1*entropy(). When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_lautum">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_lautum</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_lautum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_lautum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the lautum information [PaVe08] between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, and denoting with <span class="math">\(P_{XY}(x,y)\)</span> the probability of jointly observing outcomes <span class="math">\(x\)</span>, <span class="math">\(y\)</span> respectively with <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the lautum information <span class="math">\(L(X;Y)\)</span> is defined as:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+    L(X;Y) &amp;=&amp; -\sum_x \sum_y {P_X(x) P_Y(y) \log {\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\
+    &amp;=&amp; D_{\mathrm{KL}}(P_X P_Y \parallel P_{XY})
+\end{eqnarray}\end{split}\]</div>
+<p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence. Note that <em>lautum</em> is <em>mutual</em> spelt backwards; denoting with <span class="math">\(I(\cdot;\cdot)\)</span> the mutual information it may be shown (see e.g. [CoTh06]) that</p>
+<div class="math">
+\[\begin{eqnarray}
+    I(X;Y) &amp;=&amp; D_{\mathrm{KL}}(P_{XY} \parallel P_X P_Y).
+\end{eqnarray}\]</div>
+<p><strong>Estimation</strong>:</p>
+<p>Lautum information is estimated based on frequency tables. See below for a list of available estimators.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[:-1]==Y.shape[:-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to information_lautum(X, X, ... ). Thus, a shorthand syntax for computing lautum information (in bits) between all pairs of random variables in X is information_lautum(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_multi">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_multi</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the multi-information <span class="math">\(T(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<div class="math">
+\[T(X_1, \ldots, X_n) = \left( \sum_{i=1}^{n} H(X_i) \right) - H(X_1, \ldots, X_n)\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where <span class="math">\(H(\cdot, \ldots, \cdot)\)</span> denotes the joint entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Multi-information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although multi-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd>An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns the scalar 0. When X.ndim&gt;1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_mutual">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the mutual information <span class="math">\(I(X;Y)\)</span> is defined as:</p>
+<div class="math">
+\[I(X;Y) = H(X) - H(X|Y)\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where <span class="math">\(H(\cdot|\cdot)\)</span> denotes the conditional entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Mutual information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated mutual information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to information_mutual(X, X, ... ). Thus, a shorthand syntax for computing mutual information (in bits) between all pairs of random variables in X is information_mutual(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_mutual_conditional">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>Z</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em>, <em>Alphabet_Z=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_conditional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the conditional mutual information (see e.g. [CoTh06]) between arrays X and Y given array Z, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>,  <span class="math">\(Z\)</span>, the conditional mutual information <span class="math">\(I(X;Y|Z)\)</span> is defined as:</p>
+<div class="math">
+\[I(X;Y|Z) = H(X|Z) - H(X|Y,Z)\]</div>
+<p>where <span class="math">\(H(\cdot|\cdot)\)</span> denotes the conditional entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Conditional mutual information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although conditional mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y,Z <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False</em>: X,Y,Z are arrays containing discrete random variable realisations, with X.shape==Y.shape==Z.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X,Y,Z may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X,Y,Z). When X.ndim==Y.ndim==Z.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1 and Z.ndim&gt;1, returns an array of estimated conditional mutual information values with dimensions X.shape[:-1]. Neither X nor Y nor Z may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>cartesian_product==True</em>: X,Y,Z are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]==Z.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X,Y,Z may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X,Y,Z). When X.ndim==Y.ndim==Z.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1 or Z.ndim&gt;1, returns an array of estimated conditional mutual information values with dimensions np.append(X.shape[:-1],Y.shape[:-1],Z.shape[:-1]). Neither X nor Y nor Z may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X,Y,Z (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X,Y,Z (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y, Alphabet_Z <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y, Z may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y, Z respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y, Alphabet_Z respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y and Z). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y, Alphabet_Z. For example, specifying Alphabet_X=Alphabet_Y=Alphabet_Z=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array((1,1,1,1,2,2,2,2),((1,1,2,2,1,1,2,2),(1,2,1,2,1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_mutual_normalised">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_normalised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>norm_factor='Y'</em>, <em>cartesian_product=False</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_normalised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_normalised" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the normalised mutual information <span class="math">\(NI(X;Y)\)</span> is defined as:</p>
+<div class="math">
+\[NI(X;Y) = \frac{I(X;Y)}{C_n}\]</div>
+<p>where <span class="math">\(I\)</span> denotes the mutual information and where <span class="math">\(C_n\)</span> denotes a normalisation factor. Normalised mutual information is a dimensionless quantity, with <span class="math">\(C_n\)</span> alternatively defined as:</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+  C_{\text{X}} &amp;=&amp; H(X) \\
+  C_{\text{Y}} &amp;=&amp; H(Y) \\
+  C_{\text{X+Y}} &amp;=&amp; H(X) + H(Y) \\
+  C_{\text{MIN}} &amp;=&amp; \min \{ H(X), H(Y) \} \\
+  C_{\text{MAX}} &amp;=&amp; \max \{ H(X), H(Y) \} \\
+  C_{\text{XY}} &amp;=&amp; H(X,Y) \\
+  C_{\text{SQRT}} &amp;=&amp; \sqrt{H(X) H(Y)}
+\end{eqnarray}\end{split}\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> and <span class="math">\(H(\cdot,\cdot)\)</span> respectively denote the entropy and joint entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Normalised mutual information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although normalised mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated normalised information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated normalised information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to information_mutual_normalised(X, X, norm_factor, True). Thus, a shorthand syntax for computing normalised mutual information (based on C_n = C_Y as defined above) between all pairs of random variables in X is information_mutual_normalised(X).</p>
+</dd>
+<dt>norm_factor <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first">The desired normalisation factor, specified as a string. Internally, the supplied string is converted to upper case and spaces are discarded. Subsequently, the function tests for one of the following string values, each corresponding to an alternative normalisation factor as defined above:</p>
+<p><em>&#8216;X&#8217;</em></p>
+<p><em>&#8216;Y&#8217; (the default value)</em></p>
+<p><em>&#8216;X+Y&#8217; (equivalently &#8216;Y+X&#8217;)</em></p>
+<p><em>&#8216;MIN&#8217;</em></p>
+<p><em>&#8216;MAX&#8217;</em></p>
+<p><em>&#8216;XY&#8217; (equivalently YX)</em></p>
+<p class="last"><em>&#8216;SQRT&#8217;</em></p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="discrete_random_variable.information_variation">
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_variation</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the variation of information [Meil03] between arrays X and Y, each containing discrete random variable realisations.</p>
+<p><strong>Mathematical definition</strong>:</p>
+<p>Given discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the variation of information <span class="math">\(VI(X;Y)\)</span> is defined as:</p>
+<div class="math">
+\[VI(X;Y) = H(X|Y) + H(Y|X)\]</div>
+<p>where <span class="math">\(H(\cdot|\cdot)\)</span> denotes the conditional entropy.</p>
+<p><strong>Estimation</strong>:</p>
+<p>Variation of information is estimated based on frequency tables, using the following functions:</p>
+<blockquote>
+<div><p>entropy_joint()</p>
+<p>entropy()</p>
+</div></blockquote>
+<p>See below for a list of available estimators. Note that although variation of information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.</p>
+<p><strong>Parameters</strong>:</p>
+<dl class="docutils">
+<dt>X,Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first"><em>cartesian_product==False and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape==Y.shape. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>one-to-one</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 and Y.ndim&gt;1, returns an array of estimated information values with dimensions X.shape[:-1]. Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p><em>cartesian_product==True and Y is not None</em>: X and Y are arrays containing discrete random variable realisations, with X.shape[-1]==Y.shape[-1]. Successive realisations of a random variable are indexed by the last axis in the respective arrays; multiple random variables in X and Y may be specified using preceding axes of the respective arrays (random variables are paired <strong>many-to-many</strong> between X and Y). When X.ndim==Y.ndim==1, returns a scalar. When X.ndim&gt;1 or Y.ndim&gt;1, returns an array of estimated information values with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.</p>
+<p class="last"><em>Y is None</em>: Equivalent to information_variation(X, X, ... ). Thus, a shorthand syntax for computing variation of information (in bits) between all pairs of random variables in X is information_variation(X).</p>
+</dd>
+<dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X and Y (cartesian_product==False, the default value) or <strong>many-to-many</strong> between X and Y (cartesian_product==True).</dd>
+<dt>base <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>The desired logarithmic base (default 2).</dd>
+<dt>fill_value <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first">It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array&#8217;s object-internal placeholder value fill_value (this function&#8217;s fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function&#8217;s fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).</p>
+<p class="last">Data equal to the placeholder value are subsequently ignored.</p>
+</dd>
+<dt>estimator <span class="classifier-delimiter">:</span> <span class="classifier">str or float</span></dt>
+<dd><p class="first">The desired estimator (see above for details on estimators). Possible values are:</p>
+<blockquote class="last">
+<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<p><em>any floating point value</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.</p>
+<p><em>JAMES-STEIN</em> : James-Stein estimator [HaSt09].</p>
+<p><em>GOOD-TURING</em> : Good-Turing estimator [GaSa95].</p>
+</div></blockquote>
+</dd>
+<dt>Alphabet_X, Alphabet_Y <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as accepted by np.array())</span></dt>
+<dd><p class="first">Respectively an array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X, Y may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, Y respectively, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X, Alphabet_Y respectively; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.</p>
+<p class="last">NB: When specifying alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X, Alphabet_Y. For example, specifying Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
+</dd>
+</dl>
+<p><strong>Implementation notes</strong>:</p>
+<p>Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dimensionality_reduction">
+<span id="dimensionality-reduction"></span><h2>dimensionality_reduction<a class="headerlink" href="#module-dimensionality_reduction" title="Permalink to this headline">¶</a></h2>
+<p>This module implements dimensionality reduction methods, chiefly for discrete random variables.</p>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pyitlib</a><ul>
+<li><a class="reference internal" href="#module-discrete_random_variable">discrete_random_variable</a></li>
+<li><a class="reference internal" href="#module-dimensionality_reduction">dimensionality_reduction</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">pyitlib 0.1.10 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Peter Foster.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>
