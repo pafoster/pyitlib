@@ -1,0 +1,3 @@
+# Placeholder file so that `pip install -r requirements.txt` uses dependencies
+# from setup.py
+.

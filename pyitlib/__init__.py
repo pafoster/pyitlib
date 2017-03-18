@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #The MIT License (MIT)
 #
 #Copyright (c) 2016 Peter Foster <pyitlib@gmx.us>

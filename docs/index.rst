@@ -1,0 +1,32 @@
+.. pyitlib documentation master file, created by
+   sphinx-quickstart on Mon Dec  5 23:53:06 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+
+.. toctree::
+   :caption: Available modules:
+   :maxdepth: 2
+
+pyitlib
+=======
+.. include:: ../README.rst
+
+discrete_random_variable
+------------------------
+.. automodule:: discrete_random_variable
+   :members:
+   :undoc-members:
+
+dimensionality_reduction
+------------------------
+.. automodule:: dimensionality_reduction
+   :members:
+   :undoc-members:
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
