@@ -358,7 +358,7 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
@@ -457,7 +457,7 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
@@ -555,7 +555,7 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     # Exceptions thrown by entropy_joint
@@ -760,7 +760,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y,Z,Alphabet_Z), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y,fill_value_Z,fill_value_Alphabet_Z))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y, fill_value_Z, fill_value_Alphabet_Z))
     X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z = S
 
     if not cartesian_product:
@@ -775,14 +775,14 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
         Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))
         I = []
         for i in xrange(Z.shape[0]):
-            I.append(_cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: information_mutual_conditional(X,Y,Z[i],False,base,fill_value,estimator,Alphabet_X,Alphabet_Y,Alphabet_Z[i]), Alphabet_X,Alphabet_Y))
+            I.append(_cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: information_mutual_conditional(X, Y, Z[i], False, base, fill_value, estimator, Alphabet_X, Alphabet_Y, Alphabet_Z[i]), Alphabet_X, Alphabet_Y))
         shapeI_XY = I[0].shape
         if len(shapeI_Z) == 0:
             I = np.array(I)[0].reshape(shapeI_XY)
         else:
             I = np.array(I)
-            I = np.rollaxis(I,0,len(I.shape))
-            I = I.reshape(np.append(shapeI_XY,shapeI_Z).astype('int'))
+            I = np.rollaxis(I, 0, len(I.shape))
+            I = I.reshape(np.append(shapeI_XY, shapeI_Z).astype('int'))
         return I
 
     # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
@@ -793,12 +793,12 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))
     orig_shape_I = I.shape
-    I = np.reshape(I, (-1,1))
+    I = np.reshape(I, (-1, 1))
 
     for i in xrange(X.shape[0]):
-        I_ = ( entropy_joint(np.vstack((X[i],Z[i])), base, fill_value, estimator,_vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Z[i]),fill_value)) +
-            entropy_joint(np.vstack((Y[i],Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i],Alphabet_Z[i]),fill_value)) -
-            entropy_joint(np.vstack((X[i],Y[i],Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i],Alphabet_Z[i]),fill_value)) -
+        I_ = ( entropy_joint(np.vstack((X[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Z[i]), fill_value)) +
+            entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
+            entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
             entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]) )
         I[i] = I_
 
@@ -924,7 +924,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -934,7 +934,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: information_lautum(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
+        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: information_lautum(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
@@ -942,7 +942,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
@@ -950,18 +950,18 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     for i in xrange(X.shape[0]):
         # Sort X and Y jointly, so that we can determine joint symbol probabilities
         JointXY = np.vstack((X[i], Y[i]))
-        JointXY = JointXY[:,JointXY[0].argsort(kind='mergesort')]
-        JointXY = JointXY[:,JointXY[1].argsort(kind='mergesort')]
+        JointXY = JointXY[:, JointXY[0].argsort(kind='mergesort')]
+        JointXY = JointXY[:, JointXY[1].argsort(kind='mergesort')]
 
         # Compute symbol run-lengths
-        B = np.any(JointXY[:,1:] != JointXY[:,:-1], axis=0) # Compute symbol change indicators
+        B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0) # Compute symbol change indicators
 
         I = np.append(np.where(B), JointXY.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
 
-        alphabet_XY = JointXY[:,I]
+        alphabet_XY = JointXY[:, I]
         if estimator != 'ML':
-            L, alphabet_XY = _append_empty_bins_using_alphabet(L, alphabet_XY, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value), fill_value)
+            L, alphabet_XY = _append_empty_bins_using_alphabet(L, alphabet_XY, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value), fill_value)
         L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY, fill_value)
         if not np.any(L):
             continue
@@ -972,22 +972,22 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         # In this way, we can subsequently integrate across variables X, Y.
         alphabet_X = np.unique(alphabet_XY[0])
         alphabet_Y = np.unique(alphabet_XY[1])
-        P_XY_reshaped = np.zeros((alphabet_Y.size,alphabet_X.size))
+        P_XY_reshaped = np.zeros((alphabet_Y.size, alphabet_X.size))
         j = 0; k = 0; c = 0;
         for c in xrange(P_XY.size):
-            if c > 0 and alphabet_XY[1,c] != alphabet_XY[1,c-1]:
+            if c > 0 and alphabet_XY[1, c] != alphabet_XY[1, c-1]:
                 k = 0
-            while alphabet_X[k] != alphabet_XY[0,c]:
+            while alphabet_X[k] != alphabet_XY[0, c]:
                 k = k + 1
-            while alphabet_Y[j] != alphabet_XY[1,c]:
+            while alphabet_Y[j] != alphabet_XY[1, c]:
                 j = j + 1
-            P_XY_reshaped[j,k] = P_XY[c]
+            P_XY_reshaped[j, k] = P_XY[c]
 
         # Integrate across X, Y
-        P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1,-1))
+        P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1, -1))
         P_Y = np.reshape(np.sum(P_XY_reshaped, axis=1), (-1, 1))
 
-        H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y, (1,-1)), np.reshape(P_XY_reshaped, (1,-1)), False, base)
+        H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y, (1, -1)), np.reshape(P_XY_reshaped, (1, -1)), False, base)
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -1136,7 +1136,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
          raise ValueError("trailing dimensions of args 1 and 2 do not match")
     # NB: No base parameter needed here, therefore no test!
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     I = information_mutual(X, Y, cartesian_product, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X, Alphabet_Y=Alphabet_Y)
@@ -1144,33 +1144,33 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
     norm_factor = norm_factor.upper().replace(' ', '')
     if norm_factor == 'Y':
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
 
         C = H2
     elif norm_factor == 'X':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
 
         C = H1
     elif norm_factor == 'Y+X' or norm_factor == 'X+Y':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
 
         C = H1 + H2
     elif norm_factor == 'MIN':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
 
         C = np.minimum(H1, H2)
     elif norm_factor == 'MAX':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
 
         C = np.maximum(H1, H2)
     elif norm_factor == 'XY' or norm_factor == 'YX':
@@ -1188,22 +1188,22 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
             Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
 
             orig_shape_H = H.shape
-            H = np.reshape(H, (-1,1))
+            H = np.reshape(H, (-1, 1))
 
             for i in xrange(X.shape[0]):
-                H[i] = entropy_joint(np.vstack((X[i], Y[i])), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value))
+                H[i] = entropy_joint(np.vstack((X[i], Y[i])), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value))
             H = np.reshape(H, orig_shape_H)
 
             C = H
         else:
-            H = _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X,Alphabet_Y),fill_value)), Alphabet_X,Alphabet_Y)
+            H = _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X, Alphabet_Y), fill_value)), Alphabet_X, Alphabet_Y)
 
             C = H
     elif norm_factor == 'SQRT':
         H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
         H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),H2.shape).astype('int'))
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
 
         C = np.sqrt(H1 * H2)
     else:
@@ -1354,7 +1354,7 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     H_conditional = entropy_conditional(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
 
-    H = np.reshape(H, np.append(H.shape,np.ones(H_conditional.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape, np.ones(H_conditional.ndim-H.ndim)).astype('int'))
     return H - H_conditional
 
 
@@ -1459,7 +1459,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -1469,7 +1469,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_cross(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
+        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_cross(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
@@ -1477,7 +1477,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
@@ -1487,13 +1487,13 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     Y = np.sort(Y, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
-    C = Y[:,1:] != Y[:,:-1]
+    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
+    C = Y[:, 1:] != Y[:, :-1]
     for i in xrange(X.shape[0]):
         I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
 
-        alphabet_X = X[i,I]
+        alphabet_X = X[i, I]
         if estimator != 'ML':
             L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)
         L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -1504,7 +1504,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
         J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, J)) # Compute run lengths
 
-        alphabet_Y = Y[i,J]
+        alphabet_Y = Y[i, J]
         if estimator != 'ML':
             L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
@@ -1590,7 +1590,7 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2, fill_
     H_cross = entropy_cross(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
 
-    H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape, np.ones(H_cross.ndim-H.ndim)).astype('int'))
     return H_cross - H
 
 
@@ -1697,7 +1697,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -1707,7 +1707,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: divergence_jensenshannon(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
+        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: divergence_jensenshannon(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
@@ -1715,7 +1715,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
@@ -1725,13 +1725,13 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     Y = np.sort(Y, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
-    C = Y[:,1:] != Y[:,:-1]
+    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
+    C = Y[:, 1:] != Y[:, :-1]
     for i in xrange(X.shape[0]):
         I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
 
-        alphabet_X = X[i,I]
+        alphabet_X = X[i, I]
         if estimator != 'ML':
             L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)
         L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -1742,7 +1742,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
         J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, J)) # Compute run lengths
 
-        alphabet_Y = Y[i,J]
+        alphabet_Y = Y[i, J]
         if estimator != 'ML':
             L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
@@ -1954,7 +1954,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X,Y,Alphabet_Y), (fill_value_X,fill_value_Alphabet_X,fill_value_Y,fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -1964,7 +1964,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X,Y, lambda X,Y,Alphabet_X,Alphabet_Y: entropy_conditional(X,Y,False,base,fill_value,estimator,Alphabet_X,Alphabet_Y), Alphabet_X,Alphabet_Y)
+        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_conditional(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
@@ -1972,10 +1972,10 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     for i in xrange(X.shape[0]):
-        H[i] = entropy_joint(np.vstack((X[i],Y[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i],Alphabet_Y[i]),fill_value)) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
+        H[i] = entropy_joint(np.vstack((X[i], Y[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value)) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -2057,7 +2057,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
@@ -2067,14 +2067,14 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     # Sort columns
     for i in xrange(X.shape[0]):
-        X = X[:,X[i].argsort(kind='mergesort')]
+        X = X[:, X[i].argsort(kind='mergesort')]
 
     # Compute symbol run-lengths
-    B = np.any(X[:,1:] != X[:,:-1], axis=0) # Compute symbol change indicators
+    B = np.any(X[:, 1:] != X[:, :-1], axis=0) # Compute symbol change indicators
     I = np.append(np.where(B), X.shape[1]-1) # Obtain symbol change positions
     L = np.diff(np.append(-1, I)) # Compute run lengths
 
-    alphabet_X = X[:,I]
+    alphabet_X = X[:, I]
     if estimator != 'ML':
         n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X, fill_value)
     else:
@@ -2162,7 +2162,7 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X,Alphabet_X), (fill_value_X,fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     H = np.empty(X.shape[:-1])
@@ -2175,7 +2175,7 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
 
@@ -2183,12 +2183,12 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     X = np.sort(X, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:,1:] != X[:,:-1] # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
     for i in xrange(X.shape[0]):
         I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
         L = np.diff(np.append(-1, I)) # Compute run lengths
 
-        alphabet_X = X[i,I]
+        alphabet_X = X[i, I]
         if estimator != 'ML':
             n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X[i], fill_value)
         else:
@@ -2304,7 +2304,7 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
-        return _cartesian_product_apply(P,Q, lambda P,Q: entropy_cross_pmf(P,Q,False,base,require_valid_pmf))
+        return _cartesian_product_apply(P, Q, lambda P, Q: entropy_cross_pmf(P, Q, False, base, require_valid_pmf))
 
     with np.errstate(invalid='ignore', divide='ignore'):
         H = P * np.log2(Q)
@@ -2344,7 +2344,7 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, r
     H_cross = entropy_cross_pmf(P, Q, cartesian_product, base, require_valid_pmf)
     H = entropy_pmf(P, base, require_valid_pmf)
 
-    H = np.reshape(H, np.append(H.shape,np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape, np.ones(H_cross.ndim-H.ndim)).astype('int'))
 
     return H_cross - H
 
@@ -2408,7 +2408,7 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
-        return _cartesian_product_apply(P,Q, lambda P,Q: divergence_jensenshannon_pmf(P,Q,False,base,require_valid_pmf))
+        return _cartesian_product_apply(P, Q, lambda P, Q: divergence_jensenshannon_pmf(P, Q, False, base, require_valid_pmf))
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
     return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - 0.5*entropy_pmf(Q, base, require_valid_pmf)
@@ -2459,7 +2459,7 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
         assert(Full_Alphabet.ndim==1)
         A = np.setdiff1d(Full_Alphabet[Full_Alphabet!=fill_value], Alphabet, assume_unique=True)
         Alphabet = np.append(Alphabet, A)
-        Counts = np.append(Counts, np.tile(0,Alphabet.size-Counts.size))
+        Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
         I = Alphabet.argsort(kind='mergesort')
         Alphabet = Alphabet[I]
         Counts = Counts[I]
@@ -2467,34 +2467,34 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
         return Counts, Alphabet
     else:
         assert(Full_Alphabet.shape[0] == 2 and Alphabet.shape[0] == 2)
-        Alph1 = np.unique(Full_Alphabet[0,Full_Alphabet[0] != fill_value])
-        Alph2 = np.unique(Full_Alphabet[1,Full_Alphabet[1] != fill_value])
-        A = np.zeros((2,Alph1.size*Alph2.size), dtype=Full_Alphabet.dtype)
+        Alph1 = np.unique(Full_Alphabet[0, Full_Alphabet[0] != fill_value])
+        Alph2 = np.unique(Full_Alphabet[1, Full_Alphabet[1] != fill_value])
+        A = np.zeros((2, Alph1.size*Alph2.size), dtype=Full_Alphabet.dtype)
         c = 0
         for j in xrange(Alph2.size):
             for i in xrange(Alph1.size):
-                A[0,c] = Alph1[i]
-                A[1,c] = Alph2[j]
+                A[0, c] = Alph1[i]
+                A[1, c] = Alph2[j]
                 c = c + 1
-        Unseen = np.ones(A.shape[-1],dtype='bool')
+        Unseen = np.ones(A.shape[-1], dtype='bool')
         i = 0; j = 0;
         while i < Alphabet.shape[-1] and j < A.shape[-1]:
-            if np.all(Alphabet[:,i] == A[:,j]):
+            if np.all(Alphabet[:, i] == A[:, j]):
                 Unseen[j] = False
                 j = j + 1
                 i = i + 1
-            elif np.any(Alphabet[:,i] > A[:,j]):
+            elif np.any(Alphabet[:, i] > A[:, j]):
                 j = j + 1
             else:
                 i = i + 1
-        Alphabet = np.hstack((Alphabet, A[:,Unseen]))
-        Counts = np.append(Counts, np.tile(0,Alphabet.size-Counts.size))
+        Alphabet = np.hstack((Alphabet, A[:, Unseen]))
+        Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
         # Sort columns
         for i in xrange(Alphabet.shape[0]):
             I = Alphabet[i].argsort(kind='mergesort')
-            Alphabet = Alphabet[:,I]
+            Alphabet = Alphabet[:, I]
             Counts = Counts[I]
-        assert(np.all(np.any(Alphabet[:,1:] != Alphabet[:,:-1], axis=0)))
+        assert(np.all(np.any(Alphabet[:, 1:] != Alphabet[:, :-1], axis=0)))
         return Counts, Alphabet
 
 
@@ -2507,7 +2507,7 @@ def _autocreate_alphabet(X, fill_value):
     return (Alphabet, fill_value)
 
 
-def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
+def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
     """
     Applies a function to arrays X and Y, each containing discrete random variable realisations. (Internal function.)
 
@@ -2538,7 +2538,7 @@ def _cartesian_product_apply(X,Y,function,Alphabet_X=None,Alphabet_Y=None):
         Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
         Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
     orig_shape_H = H.shape
-    H = np.reshape(H, (-1,1))
+    H = np.reshape(H, (-1, 1))
 
     n = 0
     for i in xrange(X.shape[0]):
@@ -2616,23 +2616,23 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         Z_r[R] = N_r[R] / (0.5*(T-Q))
 
         # Fit least squares regression line to plot of log(Z_r) versus log(r)
-        x = np.log10(np.arange(1,Z_r.size))
+        x = np.log10(np.arange(1, Z_r.size))
         with np.errstate(invalid='ignore', divide='ignore'):
             y = np.log10(Z_r[1:])
         x = x[np.isfinite(y)]
         y = y[np.isfinite(y)]
-        m, c = np.linalg.lstsq(np.vstack([x,np.ones(x.size)]).T, y)[0]
+        m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y)[0]
         if m >= -1:
             warnings.warn("Regression slope < -1 requirement in linear Good-Turing estimate not satisfied")
         # Compute smoothed value of N_r based on interpolation
         SmoothedN_r = np.zeros(N_r.size+1) # We need to refer to SmoothedN_{r+1} for all observed values of r
-        SmoothedN_r[1:] = 10**(np.log10(np.arange(1,SmoothedN_r.size)) * m + c)
+        SmoothedN_r[1:] = 10**(np.log10(np.arange(1, SmoothedN_r.size)) * m + c)
 
         # Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
         # Variance of Turing estimate
         with np.errstate(invalid='ignore', divide='ignore'):
-            VARr_T = (np.arange(N_r.size)+1)**2 * (1.0*np.append(N_r[1:],0)/(N_r**2)) * (1 + np.append(N_r[1:],0)/N_r)
-            x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:],0) / N_r
+            VARr_T = (np.arange(N_r.size)+1)**2 * (1.0*np.append(N_r[1:], 0)/(N_r**2)) * (1 + np.append(N_r[1:], 0)/N_r)
+            x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:], 0) / N_r
             y = (np.arange(N_r.size)+1) * 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
@@ -2649,7 +2649,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         # Estimate probability of encountering one particular symbol among the objects observed r times, r>0
         p_r = np.zeros(N_r.size)
         N = np.sum(Counts)
-        p_r[1:] = (np.arange(1,N_r.size)+1) * 1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
+        p_r[1:] = (np.arange(1, N_r.size)+1) * 1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
         # Estimate probability of observing any unseen symbol
         p_r[0] = 1.0 * N_r[1] / N
 
@@ -2783,7 +2783,7 @@ def _sanitise_array_input(X, fill_value=-1):
         X = np.array(X, copy=False)
 
     if X.size == 1 and X.ndim == 0:
-        X = np.array((X,))
+        X = np.array((X, ))
 
     return X, np.array(fill_value)
 
@@ -2794,7 +2794,7 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
     for i in xrange(X.shape[0]):
         I = X[i] != fill_value
         J = Alphabet[i] != fill_value
-        if np.setdiff1d(X[i,I],Alphabet[i,J]).size > 0: # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
+        if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0: # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
             raise ValueError("provided alphabet does not contain all observed symbols")
 
 
