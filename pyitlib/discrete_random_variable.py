@@ -2501,6 +2501,7 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
 def _autocreate_alphabet(X, fill_value):
     Lengths = np.apply_along_axis(lambda x: np.unique(x).size, axis=-1, arr=X)
     max_length = np.max(Lengths)
+
     def pad_with_fillvalue(x):
         return np.append(x, np.tile(fill_value, max_length-x.size))
     Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)), axis=-1, arr=X)
@@ -2636,8 +2637,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             y = (np.arange(N_r.size)+1) * 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
-        assert(turing_is_sig_diff[0] == False)
-        T = np.where(turing_is_sig_diff == False)[0]  # NB: 0th element can be safely ignored, since always 0
+        assert(turing_is_sig_diff[0] == np.array(False))
+        T = np.where(turing_is_sig_diff == np.array(False))[0]  # NB: 0th element can be safely ignored, since always 0
         if T.size > 1:
             thresh_r = T[1]
             # Use smoothed estimates from the first non-significant np.abs(SmoothedN_r-N_r) position onwards
