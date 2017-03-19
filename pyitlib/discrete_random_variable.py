@@ -214,7 +214,7 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphab
     return information_binding(X, base, fill_value, estimator, Alphabet_X) + information_multi(X, base, fill_value, estimator, Alphabet_X)
 
 
-def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None): # See `Anatomy of a bit'. Include?
+def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):  # See `Anatomy of a bit'. Include?
     # Note: can be negative
     # Note: equals multivariate mutual information when N=3, can test for this
     """
@@ -361,7 +361,7 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
     S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     I = 0
@@ -460,7 +460,7 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     I = 0
@@ -954,10 +954,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         JointXY = JointXY[:, JointXY[1].argsort(kind='mergesort')]
 
         # Compute symbol run-lengths
-        B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0) # Compute symbol change indicators
+        B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0)  # Compute symbol change indicators
 
-        I = np.append(np.where(B), JointXY.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) # Compute run lengths
+        I = np.append(np.where(B), JointXY.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, I))  # Compute run lengths
 
         alphabet_XY = JointXY[:, I]
         if estimator != 'ML':
@@ -1182,8 +1182,8 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
                 H = np.float64(np.NaN)
 
             # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            Y = np.reshape(Y, (-1, Y.shape[-1])) # Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            Y = np.reshape(Y, (-1, Y.shape[-1]))  # Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
             Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
             Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
 
@@ -1487,11 +1487,11 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     Y = np.sort(Y, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1]  # Compute symbol change indicators
     C = Y[:, 1:] != Y[:, :-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) # Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, I))  # Compute run lengths
 
         alphabet_X = X[i, I]
         if estimator != 'ML':
@@ -1501,8 +1501,8 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
             continue
         P1, _ = _estimate_probabilities(L, estimator)
 
-        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, J)) # Compute run lengths
+        J = np.append(np.where(C[i]), Y.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, J))  # Compute run lengths
 
         alphabet_Y = Y[i, J]
         if estimator != 'ML':
@@ -1725,11 +1725,11 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     Y = np.sort(Y, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1]  # Compute symbol change indicators
     C = Y[:, 1:] != Y[:, :-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) # Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, I))  # Compute run lengths
 
         alphabet_X = X[i, I]
         if estimator != 'ML':
@@ -1739,8 +1739,8 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
             continue
         P1, _ = _estimate_probabilities(L, estimator)
 
-        J = np.append(np.where(C[i]), Y.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, J)) # Compute run lengths
+        J = np.append(np.where(C[i]), Y.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, J))  # Compute run lengths
 
         alphabet_Y = Y[i, J]
         if estimator != 'ML':
@@ -2060,7 +2060,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
     X, Alphabet_X = S
 
-    X = np.reshape(X, (-1, X.shape[-1])) # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
@@ -2070,9 +2070,9 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         X = X[:, X[i].argsort(kind='mergesort')]
 
     # Compute symbol run-lengths
-    B = np.any(X[:, 1:] != X[:, :-1], axis=0) # Compute symbol change indicators
-    I = np.append(np.where(B), X.shape[1]-1) # Obtain symbol change positions
-    L = np.diff(np.append(-1, I)) # Compute run lengths
+    B = np.any(X[:, 1:] != X[:, :-1], axis=0)  # Compute symbol change indicators
+    I = np.append(np.where(B), X.shape[1]-1)  # Obtain symbol change positions
+    L = np.diff(np.append(-1, I))  # Compute run lengths
 
     alphabet_X = X[:, I]
     if estimator != 'ML':
@@ -2183,10 +2183,10 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     X = np.sort(X, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:, 1:] != X[:, :-1] # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1]  # Compute symbol change indicators
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1) # Obtain symbol change positions
-        L = np.diff(np.append(-1, I)) # Compute run lengths
+        I = np.append(np.where(B[i]), X.shape[1]-1)  # Obtain symbol change positions
+        L = np.diff(np.append(-1, I))  # Compute run lengths
 
         alphabet_X = X[i, I]
         if estimator != 'ML':
@@ -2602,11 +2602,11 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         # The following notation is based on Gale and Sampson (1995)
         # Determine histogram of counts N_r (index r denotes count)
         X = np.sort(Counts)
-        B = X[1:] != X[:-1] # Compute symbol change indicators
-        I = np.append(np.where(B), X.size-1) # Obtain symbol change positions
+        B = X[1:] != X[:-1]  # Compute symbol change indicators
+        I = np.append(np.where(B), X.size-1)  # Obtain symbol change positions
         N_r = np.zeros(X[I[-1]]+1)
-        N_r[X[I]] = np.diff(np.append(-1, I)) # Compute run lengths
-        N_r[0] = 0 # This initialisation ensures that unobserved symbols do not interfere
+        N_r[X[I]] = np.diff(np.append(-1, I))  # Compute run lengths
+        N_r[0] = 0  # This initialisation ensures that unobserved symbols do not interfere
 
         # Compute Z_r, a locally averaged version of N_r
         R = np.where(N_r)[0]
@@ -2625,7 +2625,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         if m >= -1:
             warnings.warn("Regression slope < -1 requirement in linear Good-Turing estimate not satisfied")
         # Compute smoothed value of N_r based on interpolation
-        SmoothedN_r = np.zeros(N_r.size+1) # We need to refer to SmoothedN_{r+1} for all observed values of r
+        SmoothedN_r = np.zeros(N_r.size+1)  # We need to refer to SmoothedN_{r+1} for all observed values of r
         SmoothedN_r[1:] = 10**(np.log10(np.arange(1, SmoothedN_r.size)) * m + c)
 
         # Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
@@ -2637,7 +2637,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
         assert(turing_is_sig_diff[0] == False)
-        T = np.where(turing_is_sig_diff == False)[0] # NB: 0th element can be safely ignored, since always 0
+        T = np.where(turing_is_sig_diff == False)[0]  # NB: 0th element can be safely ignored, since always 0
         if T.size > 1:
             thresh_r = T[1]
             # Use smoothed estimates from the first non-significant np.abs(SmoothedN_r-N_r) position onwards
@@ -2794,7 +2794,7 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
     for i in xrange(X.shape[0]):
         I = X[i] != fill_value
         J = Alphabet[i] != fill_value
-        if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0: # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
+        if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:  # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
             raise ValueError("provided alphabet does not contain all observed symbols")
 
 
