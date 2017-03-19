@@ -797,9 +797,9 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
 
     for i in xrange(X.shape[0]):
         I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Z[i]), fill_value)) +
-            entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
-            entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
-            entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
+              entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
+              entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
+              entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
         I[i] = I_
 
     # Reverse re-shaping
