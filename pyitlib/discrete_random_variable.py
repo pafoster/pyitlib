@@ -754,9 +754,9 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     if Z.shape[:-1] != Alphabet_Z.shape[:-1]:
         raise ValueError("leading dimensions of args Z and Alphabet_Z do not match")
     if not cartesian_product and (X.shape != Y.shape or X.shape != Z.shape):
-         raise ValueError("dimensions of args 1, 2, 3 do not match")
+        raise ValueError("dimensions of args 1, 2, 3 do not match")
     if cartesian_product and (X.shape[-1] != Y.shape[-1] or X.shape[-1] != Z.shape[-1]):
-         raise ValueError("trailing dimensions of args 1, 2, 3 do not match")
+        raise ValueError("trailing dimensions of args 1, 2, 3 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -918,9 +918,9 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
         raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")
+        raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -973,7 +973,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         alphabet_X = np.unique(alphabet_XY[0])
         alphabet_Y = np.unique(alphabet_XY[1])
         P_XY_reshaped = np.zeros((alphabet_Y.size, alphabet_X.size))
-        j = 0; k = 0; c = 0;
+        j = k = c = 0
         for c in xrange(P_XY.size):
             if c > 0 and alphabet_XY[1, c] != alphabet_XY[1, c-1]:
                 k = 0
@@ -1131,9 +1131,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
     if not isinstance(norm_factor, str):
         raise ValueError("arg norm_factor not a string")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")
+        raise ValueError("trailing dimensions of args 1 and 2 do not match")
     # NB: No base parameter needed here, therefore no test!
 
     S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
@@ -1455,7 +1455,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1, est
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
         raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -1693,7 +1693,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
         raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -1948,9 +1948,9 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
         raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
     if not cartesian_product and X.shape != Y.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")
+        raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -2289,9 +2289,9 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
     if np.any(_isnan(Q)):
         raise ValueError("arg Q contains NaN values")
     if not cartesian_product and P.shape != Q.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")
+        raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if np.any(np.logical_or(P < 0, P > 1)):
         raise ValueError("arg P contains values outside unit interval")
     if np.any(np.logical_or(Q < 0, Q > 1)):
@@ -2393,9 +2393,9 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
     if np.any(_isnan(Q)):
         raise ValueError("arg Q contains NaN values")
     if not cartesian_product and P.shape != Q.shape:
-         raise ValueError("dimensions of args 1 and 2 do not match")
+        raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
-         raise ValueError("trailing dimensions of args 1 and 2 do not match")
+        raise ValueError("trailing dimensions of args 1 and 2 do not match")
     if np.any(np.logical_or(P < 0, P > 1)):
         raise ValueError("arg P contains values outside unit interval")
     if np.any(np.logical_or(Q < 0, Q > 1)):
@@ -2477,7 +2477,7 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_valu
                 A[1, c] = Alph2[j]
                 c = c + 1
         Unseen = np.ones(A.shape[-1], dtype='bool')
-        i = 0; j = 0;
+        i = j = 0
         while i < Alphabet.shape[-1] and j < A.shape[-1]:
             if np.all(Alphabet[:, i] == A[:, j]):
                 Unseen[j] = False
