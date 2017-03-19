@@ -796,10 +796,10 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     I = np.reshape(I, (-1, 1))
 
     for i in xrange(X.shape[0]):
-        I_ = ( entropy_joint(np.vstack((X[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Z[i]), fill_value)) +
+        I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Z[i]), fill_value)) +
             entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
             entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
-            entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]) )
+            entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
         I[i] = I_
 
     # Reverse re-shaping
@@ -2234,7 +2234,7 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
         raise ValueError("arg P contains no elements")
     if np.any(_isnan(P)):
         raise ValueError("arg P contains NaN values")
-    if np.any(np.logical_or(P<0, P>1)):
+    if np.any(np.logical_or(P < 0, P > 1)):
         raise ValueError("arg P contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
@@ -2292,9 +2292,9 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
          raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
          raise ValueError("trailing dimensions of args 1 and 2 do not match")
-    if np.any(np.logical_or(P<0, P>1)):
+    if np.any(np.logical_or(P < 0, P > 1)):
         raise ValueError("arg P contains values outside unit interval")
-    if np.any(np.logical_or(Q<0, Q>1)):
+    if np.any(np.logical_or(Q < 0, Q > 1)):
         raise ValueError("arg Q contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
@@ -2396,9 +2396,9 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
          raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and P.shape[-1] != Q.shape[-1]:
          raise ValueError("trailing dimensions of args 1 and 2 do not match")
-    if np.any(np.logical_or(P<0, P>1)):
+    if np.any(np.logical_or(P < 0, P > 1)):
         raise ValueError("arg P contains values outside unit interval")
-    if np.any(np.logical_or(Q<0, Q>1)):
+    if np.any(np.logical_or(Q < 0, Q > 1)):
         raise ValueError("arg Q contains values outside unit interval")
     if require_valid_pmf and not np.allclose(np.sum(P, axis=-1), 1):
         raise ValueError("arg P does not sum to unity across last axis")
@@ -2456,8 +2456,8 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=Fals
 
 def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_value):
     if Alphabet.ndim == 1:
-        assert(Full_Alphabet.ndim==1)
-        A = np.setdiff1d(Full_Alphabet[Full_Alphabet!=fill_value], Alphabet, assume_unique=True)
+        assert(Full_Alphabet.ndim == 1)
+        A = np.setdiff1d(Full_Alphabet[Full_Alphabet != fill_value], Alphabet, assume_unique=True)
         Alphabet = np.append(Alphabet, A)
         Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
         I = Alphabet.argsort(kind='mergesort')
@@ -2736,9 +2736,9 @@ def _isnan_element(x):
 
 
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
-    assert(len(Symbol_matrices)==len(Fill_values))
+    assert(len(Symbol_matrices) == len(Fill_values))
     FILL_VALUE = -1
-    if np.any([A.dtype!='int' for A in Symbol_matrices]) or np.any(np.array(Fill_values) != FILL_VALUE):
+    if np.any([A.dtype != 'int' for A in Symbol_matrices]) or np.any(np.array(Fill_values) != FILL_VALUE):
         L = sklearn.preprocessing.LabelEncoder()
         F = [np.atleast_1d(v) for v in Fill_values]
         L.fit(np.concatenate([A.ravel() for A in Symbol_matrices] + F))
@@ -2750,7 +2750,7 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
             assert(not np.any(A == FILL_VALUE))
             A[A == f] = FILL_VALUE
 
-    assert(np.all([A.dtype=='int' for A in Symbol_matrices]))
+    assert(np.all([A.dtype == 'int' for A in Symbol_matrices]))
     return Symbol_matrices, FILL_VALUE
 
 
