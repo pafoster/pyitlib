@@ -627,7 +627,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     return B
 
 
-def information_multi(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_multi(X, base=2, fill_value=-1, estimator='ML',
+                      Alphabet_X=None):
     """
     Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.
 
