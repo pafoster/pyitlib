@@ -119,7 +119,8 @@ import warnings
 # minimised
 
 
-def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
+                     Alphabet_X=None):
     """
     Returns the estimated residual entropy [JaEC11] (also known as erasure entropy [VeWe06]) for an array X containing realisations of discrete random variables.
 
@@ -179,7 +180,8 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
 
-    return H_joint - information_binding(X, base, fill_value, estimator, Alphabet_X)
+    return H_joint - information_binding(X, base, fill_value, estimator,
+                                         Alphabet_X)
 
 
 def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
