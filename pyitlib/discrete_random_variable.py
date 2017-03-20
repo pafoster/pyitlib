@@ -1031,7 +1031,8 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     else:
         return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: information_lautum(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
-    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
+    # equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -1043,28 +1044,34 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
 
     for i in xrange(X.shape[0]):
-        # Sort X and Y jointly, so that we can determine joint symbol probabilities
+        # Sort X and Y jointly, so that we can determine joint symbol
+        # probabilities
         JointXY = np.vstack((X[i], Y[i]))
         JointXY = JointXY[:, JointXY[0].argsort(kind='mergesort')]
         JointXY = JointXY[:, JointXY[1].argsort(kind='mergesort')]
 
         # Compute symbol run-lengths
-        B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0)  # Compute symbol change indicators
+        # Compute symbol change indicators
+        B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0)
 
-        I = np.append(np.where(B), JointXY.shape[1]-1)  # Obtain symbol change positions
-        L = np.diff(np.append(-1, I))  # Compute run lengths
+        # Obtain symbol change positions
+        I = np.append(np.where(B), JointXY.shape[1]-1)
+        # Compute run lengths
+        L = np.diff(np.append(-1, I))
 
         alphabet_XY = JointXY[:, I]
         if estimator != 'ML':
             L, alphabet_XY = _append_empty_bins_using_alphabet(L, alphabet_XY, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value), fill_value)
-        L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY, fill_value)
+        L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY,
+                                                      fill_value)
         if not np.any(L):
             continue
         P_XY, _ = _estimate_probabilities(L, estimator)
 
-        # Assign probabilities in P_XY to P_XY_reshaped, a matrix which exhaustively
-        # records probabilities for all elements in the cartesian product of alphabets.
-        # In this way, we can subsequently integrate across variables X, Y.
+        # Assign probabilities in P_XY to P_XY_reshaped, a matrix which
+        # exhaustively records probabilities for all elements in the cartesian
+        # product of alphabets. In this way, we can subsequently integrate
+        # across variables X, Y.
         alphabet_X = np.unique(alphabet_XY[0])
         alphabet_Y = np.unique(alphabet_XY[1])
         P_XY_reshaped = np.zeros((alphabet_Y.size, alphabet_X.size))
@@ -1082,7 +1089,11 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1, -1))
         P_Y = np.reshape(np.sum(P_XY_reshaped, axis=1), (-1, 1))
 
-        H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y, (1, -1)), np.reshape(P_XY_reshaped, (1, -1)), False, base)
+        H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y,
+                                                         (1, -1)),
+                                              np.reshape(P_XY_reshaped,
+                                                         (1, -1)),
+                                              False, base)
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
