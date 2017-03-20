@@ -1970,7 +1970,10 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
+                                           base=2, fill_value=-1,
+                                           estimator='ML', Alphabet_X=None,
+                                           Alphabet_Y=None):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
 
@@ -2037,15 +2040,19 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False, b
         cartesian_product = True
         Alphabet_Y = Alphabet_X
 
-    H1 = divergence_kullbackleibler(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
-    H2 = divergence_kullbackleibler(Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X)
+    H1 = divergence_kullbackleibler(X, Y, cartesian_product, base, fill_value,
+                                    estimator, Alphabet_X, Alphabet_Y)
+    H2 = divergence_kullbackleibler(Y, X, cartesian_product, base, fill_value,
+                                    estimator, Alphabet_Y, Alphabet_X)
 
     if cartesian_product:
         H2 = H2.T
     return H1 + H2
 
 
-def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
+                        fill_value=-1, estimator='ML', Alphabet_X=None,
+                        Alphabet_Y=None):
     """
     Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
 
@@ -2118,15 +2125,19 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
+                                                                  fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
+                                                                 fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -2159,7 +2170,12 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
+                                                   Y, Alphabet_Y),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X,
+                                                   fill_value_Y,
+                                                   fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -2171,7 +2187,8 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2, fill_value=-
     else:
         return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_conditional(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
-    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
+    # equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
