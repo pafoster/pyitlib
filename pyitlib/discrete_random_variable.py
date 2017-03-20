@@ -896,7 +896,9 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     pass
 
 
-def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def information_lautum(X, Y=None, cartesian_product=False, base=2,
+                       fill_value=-1, estimator='ML', Alphabet_X=None,
+                       Alphabet_Y=None):
     """
     Returns the lautum information [PaVe08] between arrays X and Y, each containing discrete random variable realisations.
 
@@ -972,12 +974,14 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
     if Alphabet_Y is not None:
         Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
+                                                                 fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1010,7 +1014,12 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2, fill_value=-1
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
+                                                   Y, Alphabet_Y),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X,
+                                                   fill_value_Y,
+                                                   fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
