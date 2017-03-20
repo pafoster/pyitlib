@@ -1437,7 +1437,9 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
     return H1 + H2
 
 
-def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def information_mutual(X, Y=None, cartesian_product=False, base=2,
+                       fill_value=-1, estimator='ML', Alphabet_X=None,
+                       Alphabet_Y=None):
     """
     Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
 
@@ -1500,10 +1502,14 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2, fill_value=-1
 
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
     """
-    H_conditional = entropy_conditional(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
+    H_conditional = entropy_conditional(X, Y, cartesian_product, base,
+                                        fill_value, estimator, Alphabet_X,
+                                        Alphabet_Y)
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
 
-    H = np.reshape(H, np.append(H.shape, np.ones(H_conditional.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape,
+                                np.ones(H_conditional.ndim -
+                                        H.ndim)).astype('int'))
     return H - H_conditional
 
 
