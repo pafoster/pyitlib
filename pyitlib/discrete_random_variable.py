@@ -2255,14 +2255,18 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
 
     """
-    # TODO If we add joint observation function, we can reduce code duplication in this function.
-    # TODO NB: The joint observation function must honour missing data fill values.
+    # TODO If we add joint observation function, we can reduce code duplication
+    # in this function.
+    # TODO NB: The joint observation function must honour missing data fill
+    # values.
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -2279,10 +2283,14 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X))
     X, Alphabet_X = S
 
-    X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape X, so that we may handle multi-dimensional arrays equivalently
+    # and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
@@ -2292,9 +2300,12 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         X = X[:, X[i].argsort(kind='mergesort')]
 
     # Compute symbol run-lengths
-    B = np.any(X[:, 1:] != X[:, :-1], axis=0)  # Compute symbol change indicators
-    I = np.append(np.where(B), X.shape[1]-1)  # Obtain symbol change positions
-    L = np.diff(np.append(-1, I))  # Compute run lengths
+    # Compute symbol change indicators
+    B = np.any(X[:, 1:] != X[:, :-1], axis=0)
+    # Obtain symbol change positions
+    I = np.append(np.where(B), X.shape[1]-1)
+    # Compute run lengths
+    L = np.diff(np.append(-1, I))
 
     alphabet_X = X[:, I]
     if estimator != 'ML':
@@ -2307,7 +2318,8 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     # P_0 is the probability mass assigned to each additional empty bin
     P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
-    H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
+    H_0 = n_additional_empty_bins * P_0 * \
+        -np.log2(P_0 + np.spacing(0)) / np.log2(base)
     H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
 
     return H
@@ -2361,13 +2373,16 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
 
     """
-    # NB: We would be able to reduce code duplication by invoking entropy_cross(X,X). However, performance would likely be lower!
+    # NB: We would be able to reduce code duplication by invoking
+    # entropy_cross(X,X). However, performance would likely be lower!
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -2384,7 +2399,9 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     H = np.empty(X.shape[:-1])
@@ -2393,7 +2410,8 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     else:
         H = np.float64(np.NaN)
 
-    # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H and X, so that we may handle multi-dimensional arrays
+    # equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     orig_shape_H = H.shape
@@ -2401,18 +2419,25 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
 
-    # NB: This is not joint entropy. Elements in each row are sorted independently
+    # NB: This is not joint entropy. Elements in each row are sorted
+    # independently
     X = np.sort(X, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:, 1:] != X[:, :-1]  # Compute symbol change indicators
+    # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1)  # Obtain symbol change positions
-        L = np.diff(np.append(-1, I))  # Compute run lengths
+        # Obtain symbol change positions
+        I = np.append(np.where(B[i]), X.shape[1]-1)
+        # Compute run lengths
+        L = np.diff(np.append(-1, I))
 
         alphabet_X = X[i, I]
         if estimator != 'ML':
-            n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X[i], fill_value)
+            n_additional_empty_bins = \
+                _determine_number_additional_empty_bins(L, alphabet_X,
+                                                        Alphabet_X[i],
+                                                        fill_value)
         else:
             n_additional_empty_bins = 0
         L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -2421,7 +2446,8 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
         # P_0 is the probability mass assigned to each additional empty bin
         P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
-        H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
+        H_0 = n_additional_empty_bins * P_0 * \
+            -np.log2(P_0 + np.spacing(0)) / np.log2(base)
         H[i] = entropy_pmf(P, base, require_valid_pmf=False) + H_0
 
     # Reverse re-shaping
