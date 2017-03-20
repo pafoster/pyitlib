@@ -2668,7 +2668,9 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
         0.5*entropy_pmf(Q, base, require_valid_pmf)
 
 
-def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
+def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
+                                               cartesian_product=False, base=2,
+                                               require_valid_pmf=True):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
 
@@ -2700,18 +2702,22 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=Fals
         Q = P
         cartesian_product = True
 
-    H1 = divergence_kullbackleibler_pmf(P, Q, cartesian_product, base, require_valid_pmf)
-    H2 = divergence_kullbackleibler_pmf(Q, P, cartesian_product, base, require_valid_pmf)
+    H1 = divergence_kullbackleibler_pmf(P, Q, cartesian_product, base,
+                                        require_valid_pmf)
+    H2 = divergence_kullbackleibler_pmf(Q, P, cartesian_product, base,
+                                        require_valid_pmf)
 
     if cartesian_product:
         H2 = H2.T
     return H1 + H2
 
 
-def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_value):
+def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet,
+                                      fill_value):
     if Alphabet.ndim == 1:
         assert(Full_Alphabet.ndim == 1)
-        A = np.setdiff1d(Full_Alphabet[Full_Alphabet != fill_value], Alphabet, assume_unique=True)
+        A = np.setdiff1d(Full_Alphabet[Full_Alphabet != fill_value], Alphabet,
+                         assume_unique=True)
         Alphabet = np.append(Alphabet, A)
         Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
         I = Alphabet.argsort(kind='mergesort')
@@ -2810,20 +2816,25 @@ def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
     return H
 
 
-def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet, fill_value):
-    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value, axis=-1)
+def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet,
+                                            fill_value):
+    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value,
+                            axis=-1)
     if np.any(alphabet_sizes != fill_value):
         joint_alphabet_size = np.prod(alphabet_sizes[alphabet_sizes > 0])
         if joint_alphabet_size <= 0:
             raise ValueError("Numerical overflow detected. Joint alphabet size too large.")
     else:
         joint_alphabet_size = 0
-    return joint_alphabet_size - np.sum(np.all(np.atleast_2d(Alphabet) != fill_value, axis=0))
+    return joint_alphabet_size - \
+        np.sum(np.all(np.atleast_2d(Alphabet) != fill_value, axis=0))
 
 
 def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
     # TODO Documentation should present the following guidelines:
-    # 1) Good-Turing may be used if slope requirement satisfied and if unobserved symbols have been defined (TODO Clarify what the requirement is)
+    # 1) Good-Turing may be used if slope requirement satisfied and if
+    # unobserved symbols have been defined (TODO Clarify what the requirement
+    # is)
     # 2) James-Stein approach may be used as an alternative
     # 3) Dirichlet prior may be used in all other cases
 
@@ -2841,13 +2852,16 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         elif estimator == 'PERKS':
             alpha = 1.0 / (Counts.size+n_additional_empty_bins)
         elif estimator == 'MINIMAX':
-            alpha = np.sqrt(np.sum(Counts)) / (Counts.size+n_additional_empty_bins)
+            alpha = np.sqrt(np.sum(Counts)) / \
+                (Counts.size+n_additional_empty_bins)
         else:
             alpha = 0
-        Theta = (Counts+alpha) / (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
+        Theta = (Counts+alpha) / \
+            (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
-            Theta_0 = alpha / (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
+            Theta_0 = alpha / (1.0*np.sum(Counts) +
+                               alpha*(Counts.size+n_additional_empty_bins))
         else:
             Theta_0 = 0
 
