@@ -1775,7 +1775,9 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
     return H_cross - H
 
 
-def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
+                             fill_value=-1, estimator='ML', Alphabet_X=None,
+                             Alphabet_Y=None):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
 
@@ -1839,15 +1841,19 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
+                                                                  fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
+                                                                 fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1878,7 +1884,12 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
+                                                   Y, Alphabet_Y),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X,
+                                                   fill_value_Y,
+                                                   fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -1890,7 +1901,8 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     else:
         return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: divergence_jensenshannon(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
 
-    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
+    # equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
@@ -1901,44 +1913,56 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2, fill_va
     _verify_alphabet_sufficiently_large(X, Alphabet_X, fill_value)
     _verify_alphabet_sufficiently_large(Y, Alphabet_Y, fill_value)
 
-    # NB: Observations are not considered jointly, thus elements in each row are sorted independently
+    # NB: Observations are not considered jointly, thus elements in each row
+    # are sorted independently
     X = np.sort(X, axis=1)
     Y = np.sort(Y, axis=1)
 
     # Compute symbol run-lengths
-    B = X[:, 1:] != X[:, :-1]  # Compute symbol change indicators
+    # Compute symbol change indicators
+    B = X[:, 1:] != X[:, :-1]
     C = Y[:, 1:] != Y[:, :-1]
     for i in xrange(X.shape[0]):
-        I = np.append(np.where(B[i]), X.shape[1]-1)  # Obtain symbol change positions
-        L = np.diff(np.append(-1, I))  # Compute run lengths
+        # Obtain symbol change positions
+        I = np.append(np.where(B[i]), X.shape[1]-1)
+        # Compute run lengths
+        L = np.diff(np.append(-1, I))
 
         alphabet_X = X[i, I]
         if estimator != 'ML':
-            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X, Alphabet_X[i], fill_value)
+            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X,
+                                                              Alphabet_X[i],
+                                                              fill_value)
         L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
         if not np.any(L):
             continue
         P1, _ = _estimate_probabilities(L, estimator)
 
-        J = np.append(np.where(C[i]), Y.shape[1]-1)  # Obtain symbol change positions
-        L = np.diff(np.append(-1, J))  # Compute run lengths
+        # Obtain symbol change positions
+        J = np.append(np.where(C[i]), Y.shape[1]-1)
+        # Compute run lengths
+        L = np.diff(np.append(-1, J))
 
         alphabet_Y = Y[i, J]
         if estimator != 'ML':
-            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y, Alphabet_Y[i], fill_value)
+            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y,
+                                                              Alphabet_Y[i],
+                                                              fill_value)
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
         if not np.any(L):
             continue
         P2, _ = _estimate_probabilities(L, estimator)
 
-        # Merge probability distributions, so that common symbols have common array location
+        # Merge probability distributions, so that common symbols have common
+        # array location
         Alphabet = np.union1d(alphabet_X, alphabet_Y)
         P = np.zeros_like(Alphabet, dtype=P1.dtype)
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
         P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
         Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
 
-        H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - 0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
+        H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - \
+            0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
