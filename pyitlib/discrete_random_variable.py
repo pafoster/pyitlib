@@ -499,17 +499,22 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X))
     X, Alphabet_X = S
 
-    X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape X, so that we may handle multi-dimensional arrays equivalently
+    # and iterate across 0th axis
+    X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     I = 0
     M = np.zeros(X.shape[0]).astype('bool')
     M = _increment_binary_vector(M)
     while np.any(M):
-        I -= (-1)**(np.sum(M)) * entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
+        I -= (-1)**(np.sum(M)) * \
+            entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
         M = _increment_binary_vector(M)
 
     return I
