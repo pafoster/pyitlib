@@ -1357,7 +1357,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     return I / C
 
 
-def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def information_variation(X, Y=None, cartesian_product=False, base=2,
+                          fill_value=-1, estimator='ML', Alphabet_X=None,
+                          Alphabet_Y=None):
     """
     Returns the variation of information [Meil03] between arrays X and Y, each containing discrete random variable realisations.
 
@@ -1425,8 +1427,10 @@ def information_variation(X, Y=None, cartesian_product=False, base=2, fill_value
         cartesian_product = True
         Alphabet_Y = Alphabet_X
 
-    H1 = entropy_conditional(X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y)
-    H2 = entropy_conditional(Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X)
+    H1 = entropy_conditional(X, Y, cartesian_product, base, fill_value,
+                             estimator, Alphabet_X, Alphabet_Y)
+    H2 = entropy_conditional(Y, X, cartesian_product, base, fill_value,
+                             estimator, Alphabet_Y, Alphabet_X)
 
     if cartesian_product:
         H2 = H2.T
