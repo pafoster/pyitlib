@@ -3,11 +3,23 @@
 #
 # Copyright (c) 2016 Peter Foster <pyitlib@gmx.us>
 #
-# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 #
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 """
 This module implements various information-theoretic quantities for discrete random variables.
@@ -74,21 +86,37 @@ import numpy as np
 import sklearn.preprocessing
 import warnings
 
-# Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls, prefer flags, convenient defaults for possible interactive use). Focus on data analysis. Documentation.
+# Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,
+# prefer flags, convenient defaults for possible interactive use). Focus on
+# data analysis. Documentation.
 # TODO Get source code on github
 # TODO Get documentation on github
 # TODO Add guidance on which estimator to use (within module doc)
 # TODO Add notes on interpretation of each measure (within each function doc)
-# TODO Add basic equalities and properties, followed by interpretation (within each function doc)
+# TODO Add basic equalities and properties, followed by interpretation (within
+# each function doc)
 # TODO Note about which measures are metrics (within each function doc).
 # TODO Add information diagrams (within each function doc).
-# TODO Implement joint observation mapping function encode/map_joint_observations. This works by sorting and returning unique observations, similar to entropy_joint()
+# TODO Implement joint observation mapping function
+# encode/map_joint_observations. This works by sorting and returning unique
+# observations, similar to entropy_joint()
 # TODO Implement generalised Jensen-Shannon divergence
-# TODO Information bottleneck and deterministic information bottleneck (See Strose and Schwab 2016). NB Can be used in either supervised or unsupervised manner. Implement in separate module. Implement the earlier hierarchical aggolerative clustering approach as well?. The approaches should also incorporate `de-noising' capability: With probability p, corrupt observations with a random symbol. The learnt model should also have a way of discarding un-used input features (feture selection).
+# TODO Information bottleneck and deterministic information bottleneck (See
+# Strose and Schwab 2016). NB Can be used in either supervised or unsupervised
+# manner. Implement in separate module. Implement the earlier hierarchical
+# aggolerative clustering approach as well?. The approaches should also
+# incorporate `de-noising' capability: With probability p, corrupt observations
+# with a random symbol. The learnt model should also have a way of discarding
+# un-used input features (feture selection).
 # TODO Re-arrange functions based on dependencies
 # TODO Set up project email address pyitlib@gmx.us
-# TODO Add note in README on how functions accept numpy arrays, (or more generally array-like input). Thus, a straightforward approach is entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions support higher-dimensional input for convenience, allowingquantities to be computed for multiple random variables using one function call.
-# TODO Add information in documentation on when quantities are maximised or minimised
+# TODO Add note in README on how functions accept numpy arrays, (or more
+# generally array-like input). Thus, a straightforward approach is
+# entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions
+# support higher-dimensional input for convenience, allowingquantities to be
+# computed for multiple random variables using one function call.
+# TODO Add information in documentation on when quantities are maximised or
+# minimised
 
 
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
@@ -2804,15 +2832,22 @@ def _vstack_pad_with_fillvalue(Arrays, fill_value):
     Arrays = [np.append(A, np.tile(fill_value, np.append(A.shape[:-1], max_length-A.shape[-1]))) for A in Arrays]
     return np.vstack((Arrays))
 
-# TODO What happens if there are no observations due to all data missing? Write some tests to ensure nan is returned?
+# TODO What happens if there are no observations due to all data missing? Write
+# some tests to ensure nan is returned?
 # TODO String processing bug observed in SherlockML -- Pokemon challenge
-# TODO should we be testing for string type directly in _sanitise_array_input? -- which types do we need to test for? S a U ? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-# TODO Which data types may we permit explicitly using whitelist? See https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# TODO should we be testing for string type directly in _sanitise_array_input?
+# -- which types do we need to test for? S a U ? See
+# https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
+# TODO Which data types may we permit explicitly using whitelist? See
+# https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 # TODO Support for pandas (missing data via .isnull()).
 
-# NB: The following tests should also determine what happens when data contain None, but fill value is not None
-# TODO Test _determine_number_additional_empty_bins using None fill_value etc. / add assertions
-# TODO Test _append_empty_bins_using_alphabet using None fill_value etc. / add assertions
+# NB: The following tests should also determine what happens when data contain
+# None, but fill value is not None
+# TODO Test _determine_number_additional_empty_bins using None fill_value etc.
+# / add assertions
+# TODO Test _append_empty_bins_using_alphabet using None fill_value etc. / add
+# assertions
 # TODO Test _autocreate_alphabet using None fill_value / add assertions
 # TODO Test _remove_counts_at_fill_value / add assertions
 # TODO Test _vstack_pad_with_fillvalue / add assertions
