@@ -246,7 +246,8 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
         information_multi(X, base, fill_value, estimator, Alphabet_X)
 
 
-def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):  # See `Anatomy of a bit'. Include?
+def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
+                          Alphabet_X=None):  # See `Anatomy of a bit'. Include?
     # Note: can be negative
     # Note: equals multivariate mutual information when N=3, can test for this
     """
@@ -305,7 +306,8 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=N
 
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
     """
-    return information_multi(X, base, fill_value, estimator, Alphabet_X) - information_binding(X, base, fill_value, estimator, Alphabet_X)
+    return information_multi(X, base, fill_value, estimator, Alphabet_X) - \
+        information_binding(X, base, fill_value, estimator, Alphabet_X)
 
 
 def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
