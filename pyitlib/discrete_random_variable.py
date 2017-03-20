@@ -2866,7 +2866,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             Theta_0 = 0
 
     elif estimator == 'GOOD-TURING':
-        # TODO We could also add a Chen-Chao vocabulary size estimator (See Bhat Suma's thesis)
+        # TODO We could also add a Chen-Chao vocabulary size estimator (See
+        # Bhat Suma's thesis)
 
         # The following notation is based on Gale and Sampson (1995)
         # Determine histogram of counts N_r (index r denotes count)
@@ -2875,7 +2876,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         I = np.append(np.where(B), X.size-1)  # Obtain symbol change positions
         N_r = np.zeros(X[I[-1]]+1)
         N_r[X[I]] = np.diff(np.append(-1, I))  # Compute run lengths
-        N_r[0] = 0  # This initialisation ensures that unobserved symbols do not interfere
+        N_r[0] = 0  # Ensures that unobserved symbols do not interfere
 
         # Compute Z_r, a locally averaged version of N_r
         R = np.where(N_r)[0]
@@ -2894,31 +2895,41 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         if m >= -1:
             warnings.warn("Regression slope < -1 requirement in linear Good-Turing estimate not satisfied")
         # Compute smoothed value of N_r based on interpolation
-        SmoothedN_r = np.zeros(N_r.size+1)  # We need to refer to SmoothedN_{r+1} for all observed values of r
-        SmoothedN_r[1:] = 10**(np.log10(np.arange(1, SmoothedN_r.size)) * m + c)
+        # We need to refer to SmoothedN_{r+1} for all observed values of r
+        SmoothedN_r = np.zeros(N_r.size+1)
+        SmoothedN_r[1:] = 10**(np.log10(np.arange(1, SmoothedN_r.size)) *
+                               m + c)
 
-        # Determine threshold value of r at which to use smoothed values of N_r (SmoothedN_r), as apposed to straightforward N_r.
+        # Determine threshold value of r at which to use smoothed values of N_r
+        # (SmoothedN_r), as apposed to straightforward N_r.
         # Variance of Turing estimate
         with np.errstate(invalid='ignore', divide='ignore'):
-            VARr_T = (np.arange(N_r.size)+1)**2 * (1.0*np.append(N_r[1:], 0)/(N_r**2)) * (1 + np.append(N_r[1:], 0)/N_r)
+            VARr_T = (np.arange(N_r.size)+1)**2 * \
+                (1.0*np.append(N_r[1:], 0)/(N_r**2)) * \
+                (1 + np.append(N_r[1:], 0)/N_r)
             x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:], 0) / N_r
-            y = (np.arange(N_r.size)+1) * 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
+            y = (np.arange(N_r.size)+1) * \
+                1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
             assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
             turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
         assert(turing_is_sig_diff[0] == np.array(False))
-        T = np.where(turing_is_sig_diff == np.array(False))[0]  # NB: 0th element can be safely ignored, since always 0
+        # NB: 0th element can be safely ignored, since always 0
+        T = np.where(turing_is_sig_diff == np.array(False))[0]
         if T.size > 1:
             thresh_r = T[1]
-            # Use smoothed estimates from the first non-significant np.abs(SmoothedN_r-N_r) position onwards
+            # Use smoothed estimates from the first non-significant
+            # np.abs(SmoothedN_r-N_r) position onwards
             SmoothedN_r[:thresh_r] = N_r[:thresh_r]
         else:
             # Use only non-smoothed estimates (except for SmoothedN_r[-1])
             SmoothedN_r[:-1] = N_r
 
-        # Estimate probability of encountering one particular symbol among the objects observed r times, r>0
+        # Estimate probability of encountering one particular symbol among the
+        # objects observed r times, r>0
         p_r = np.zeros(N_r.size)
         N = np.sum(Counts)
-        p_r[1:] = (np.arange(1, N_r.size)+1) * 1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
+        p_r[1:] = (np.arange(1, N_r.size)+1) * \
+            1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
         # Estimate probability of observing any unseen symbol
         p_r[0] = 1.0 * N_r[1] / N
 
@@ -2935,7 +2946,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
 
         # Divide p_0 among unobserved symbols
         with np.errstate(invalid='ignore', divide='ignore'):
-            p_emptybin = p_r[0] / (np.sum(Counts == 0) + n_additional_empty_bins)
+            p_emptybin = p_r[0] / (np.sum(Counts == 0) +
+                                   n_additional_empty_bins)
         Theta[Counts == 0] = p_emptybin
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
@@ -2947,7 +2959,10 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         Theta, _ = _estimate_probabilities(Counts, 'ML')
         p_uniform = 1.0 / (Counts.size + n_additional_empty_bins)
         with np.errstate(invalid='ignore', divide='ignore'):
-            Lambda = (1-np.sum(Theta**2)) / ((np.sum(Counts)-1) * (np.sum((p_uniform-Theta)**2)+n_additional_empty_bins*p_uniform**2))
+            Lambda = (1-np.sum(Theta**2)) / \
+                ((np.sum(Counts)-1) *
+                 (np.sum((p_uniform-Theta)**2) +
+                  n_additional_empty_bins*p_uniform**2))
 
         if Lambda > 1:
             Lambda = 1
@@ -3007,12 +3022,14 @@ def _isnan_element(x):
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
     assert(len(Symbol_matrices) == len(Fill_values))
     FILL_VALUE = -1
-    if np.any([A.dtype != 'int' for A in Symbol_matrices]) or np.any(np.array(Fill_values) != FILL_VALUE):
+    if np.any([A.dtype != 'int' for A in Symbol_matrices]) or \
+            np.any(np.array(Fill_values) != FILL_VALUE):
         L = sklearn.preprocessing.LabelEncoder()
         F = [np.atleast_1d(v) for v in Fill_values]
         L.fit(np.concatenate([A.ravel() for A in Symbol_matrices] + F))
         # TODO make sure to test with various (unusual) data types
-        Symbol_matrices = [L.transform(A.ravel()).reshape(A.shape) for A in Symbol_matrices]
+        Symbol_matrices = [L.transform(A.ravel()).reshape(A.shape) for A in
+                           Symbol_matrices]
         Fill_values = [L.transform(np.atleast_1d(f)) for f in Fill_values]
 
         for A, f in zip(Symbol_matrices, Fill_values):
@@ -3039,7 +3056,9 @@ def _sanitise_array_input(X, fill_value=-1):
         if X.dtype.char == 'S':
             current_dtype_len = int(str(X.dtype).split('S')[1])
             if current_dtype_len < len(fill_value):
-                # Fix numpy's broken array string type behaviour which causes X.filled() placeholder entries to be no longer than non-placeholder entries
+                # Fix numpy's broken array string type behaviour which causes
+                # X.filled() placeholder entries to be no longer than
+                # non-placeholder entries
                 warnings.warn("Changing numpy array dtype internally to accommodate fill_value string length")
                 M = X.mask
                 X = np.array(X.filled(), dtype='S'+str(len(fill_value)))
@@ -3063,13 +3082,18 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
     for i in xrange(X.shape[0]):
         I = X[i] != fill_value
         J = Alphabet[i] != fill_value
-        if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:  # NB: This causes issues when both arguments contain None. But it is always called after observations have all been mapped to integers.
+        # NB: This causes issues when both arguments contain None. But it is
+        # always called after observations have all been mapped to integers.
+        if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:
             raise ValueError("provided alphabet does not contain all observed symbols")
 
 
 def _vstack_pad_with_fillvalue(Arrays, fill_value):
     max_length = max([A.shape[-1] for A in Arrays])
-    Arrays = [np.append(A, np.tile(fill_value, np.append(A.shape[:-1], max_length-A.shape[-1]))) for A in Arrays]
+    Arrays = [np.append(A, np.tile(fill_value,
+                                   np.append(A.shape[:-1],
+                                             max_length-A.shape[-1])))
+              for A in Arrays]
     return np.vstack((Arrays))
 
 # TODO What happens if there are no observations due to all data missing? Write
