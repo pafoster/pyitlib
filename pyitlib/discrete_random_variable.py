@@ -2495,7 +2495,8 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
     return H
 
 
-def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
+def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
+                      require_valid_pmf=True):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.
 
@@ -2563,7 +2564,8 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_
     return H
 
 
-def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
+def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
+                                   require_valid_pmf=True):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.
 
@@ -2589,15 +2591,18 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2, r
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass assignments in each distribution sum to 1. When set to false, no such test is performed, thus allowing incomplete probability distributions to be processed.
     """
-    H_cross = entropy_cross_pmf(P, Q, cartesian_product, base, require_valid_pmf)
+    H_cross = entropy_cross_pmf(P, Q, cartesian_product, base,
+                                require_valid_pmf)
     H = entropy_pmf(P, base, require_valid_pmf)
 
-    H = np.reshape(H, np.append(H.shape, np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape,
+                                np.ones(H_cross.ndim-H.ndim)).astype('int'))
 
     return H_cross - H
 
 
-def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
+def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
+                                 require_valid_pmf=True):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
 
@@ -2659,7 +2664,8 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2, req
         return _cartesian_product_apply(P, Q, lambda P, Q: divergence_jensenshannon_pmf(P, Q, False, base, require_valid_pmf))
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
-    return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - 0.5*entropy_pmf(Q, base, require_valid_pmf)
+    return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - \
+        0.5*entropy_pmf(Q, base, require_valid_pmf)
 
 
 def divergence_kullbackleibler_symmetrised_pmf(P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True):
