@@ -1101,7 +1101,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=False, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+def information_mutual_normalised(X, Y=None, norm_factor='Y',
+                                  cartesian_product=False, fill_value=-1,
+                                  estimator='ML', Alphabet_X=None,
+                                  Alphabet_Y=None):
     # TODO Documentation should include properties for each of the normalisation factors
     """
     Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.
@@ -1200,15 +1203,19 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
+                                                                  fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
+                                                                 fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1242,41 +1249,64 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
         raise ValueError("trailing dimensions of args 1 and 2 do not match")
     # NB: No base parameter needed here, therefore no test!
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
+                                                   Y, Alphabet_Y),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X,
+                                                   fill_value_Y,
+                                                   fill_value_Alphabet_Y))
     X, Alphabet_X, Y, Alphabet_Y = S
 
-    I = information_mutual(X, Y, cartesian_product, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X, Alphabet_Y=Alphabet_Y)
+    I = information_mutual(X, Y, cartesian_product, fill_value=fill_value,
+                           estimator=estimator, Alphabet_X=Alphabet_X,
+                           Alphabet_Y=Alphabet_Y)
 
     norm_factor = norm_factor.upper().replace(' ', '')
     if norm_factor == 'Y':
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
+        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_Y)
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
+                                      H2.shape).astype('int'))
 
         C = H2
     elif norm_factor == 'X':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
+        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_X)
+        H1 = np.reshape(H1, np.append(H1.shape,
+                                      np.ones(I.ndim-H1.ndim)).astype('int'))
 
         C = H1
     elif norm_factor == 'Y+X' or norm_factor == 'X+Y':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
+        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_X)
+        H1 = np.reshape(H1, np.append(H1.shape,
+                                      np.ones(I.ndim-H1.ndim)).astype('int'))
+        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_Y)
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
+                                      H2.shape).astype('int'))
 
         C = H1 + H2
     elif norm_factor == 'MIN':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
+        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_X)
+        H1 = np.reshape(H1, np.append(H1.shape,
+                                      np.ones(I.ndim-H1.ndim)).astype('int'))
+        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_Y)
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
+                                      H2.shape).astype('int'))
 
         C = np.minimum(H1, H2)
     elif norm_factor == 'MAX':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
+        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_X)
+        H1 = np.reshape(H1, np.append(H1.shape,
+                                      np.ones(I.ndim-H1.ndim)).astype('int'))
+        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_Y)
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
+                                      H2.shape).astype('int'))
 
         C = np.maximum(H1, H2)
     elif norm_factor == 'XY' or norm_factor == 'YX':
@@ -1287,9 +1317,14 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
             else:
                 H = np.float64(np.NaN)
 
-            # Re-shape H and X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            X = np.reshape(X, (-1, X.shape[-1]))  # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
-            Y = np.reshape(Y, (-1, Y.shape[-1]))  # Re-shape Y, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+            # Re-shape H and X, so that we may handle multi-dimensional arrays
+            # equivalently and iterate across 0th axis
+            # Re-shape X, so that we may handle multi-dimensional arrays
+            # equivalently and iterate across 0th axis
+            X = np.reshape(X, (-1, X.shape[-1]))
+            # Re-shape Y, so that we may handle multi-dimensional arrays
+            # equivalently and iterate across 0th axis
+            Y = np.reshape(Y, (-1, Y.shape[-1]))
             Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
             Alphabet_Y = np.reshape(Alphabet_Y, (-1, Alphabet_Y.shape[-1]))
 
@@ -1306,10 +1341,14 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y', cartesian_product=
 
             C = H
     elif norm_factor == 'SQRT':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape, np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim), H2.shape).astype('int'))
+        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_X)
+        H1 = np.reshape(H1, np.append(H1.shape,
+                                      np.ones(I.ndim-H1.ndim)).astype('int'))
+        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
+                     Alphabet_X=Alphabet_Y)
+        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
+                                      H2.shape).astype('int'))
 
         C = np.sqrt(H1 * H2)
     else:
