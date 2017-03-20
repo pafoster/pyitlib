@@ -310,7 +310,8 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
         information_binding(X, base, fill_value, estimator, Alphabet_X)
 
 
-def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_interaction(X, base=2, fill_value=-1, estimator='ML',
+                            Alphabet_X=None):
     """
     Returns the estimated interaction information [JaBr03] for an array X containing realisations of discrete random variables.
 
@@ -372,10 +373,12 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML', Alphabet_X
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
