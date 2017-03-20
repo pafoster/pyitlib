@@ -184,7 +184,8 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
                                          Alphabet_X)
 
 
-def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
+                                Alphabet_X=None):
     """
     Returns the estimated exogenous local information [JaEC11] for an array X containing realisations of discrete random variables.
 
@@ -241,7 +242,8 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML', Alphab
 
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
     """
-    return information_binding(X, base, fill_value, estimator, Alphabet_X) + information_multi(X, base, fill_value, estimator, Alphabet_X)
+    return information_binding(X, base, fill_value, estimator, Alphabet_X) + \
+        information_multi(X, base, fill_value, estimator, Alphabet_X)
 
 
 def information_enigmatic(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):  # See `Anatomy of a bit'. Include?
