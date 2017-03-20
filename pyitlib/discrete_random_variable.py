@@ -520,7 +520,8 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     return I
 
 
-def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_binding(X, base=2, fill_value=-1, estimator='ML',
+                        Alphabet_X=None):
     """
     Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.
 
@@ -583,7 +584,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
         Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
 
     # Exceptions needed to create Alphabet_X correctly if None
     # Not all of these are needed, however we include them for consistency.
@@ -602,13 +604,16 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X))
     X, Alphabet_X = S
 
     # Exceptions thrown by entropy_joint
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
     B = H_joint
-    # Re-shape X, so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape X, so that we may handle multi-dimensional arrays equivalently
+    # and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
     M = np.arange(X.shape[0])
@@ -616,7 +621,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=Non
     for i in xrange(X.shape[0]):
         B -= H_joint
         if X.shape[0] > 1:
-            B += entropy_joint(X[M != i], base, fill_value, estimator, Alphabet_X[M != i])
+            B += entropy_joint(X[M != i], base, fill_value, estimator,
+                               Alphabet_X[M != i])
 
     return B
 
