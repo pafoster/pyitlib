@@ -691,7 +691,10 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
     return np.sum(H) - H_joint
 
 
-def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fill_value=-1, estimator='ML', Alphabet_X=None, Alphabet_Y=None, Alphabet_Z=None):
+def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
+                                   fill_value=-1, estimator='ML',
+                                   Alphabet_X=None, Alphabet_Y=None,
+                                   Alphabet_Z=None):
     """
     Returns the conditional mutual information (see e.g. [CoTh06]) between arrays X and Y given array Z, each containing discrete random variable realisations.
 
@@ -756,20 +759,26 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     Z, fill_value_Z = _sanitise_array_input(Z, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
+                                                                 fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
+                                                                  fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
+                                                                 fill_value_Y)
     if Alphabet_Z is not None:
-        Alphabet_Z, fill_value_Alphabet_Z = _sanitise_array_input(Alphabet_Z, fill_value)
+        Alphabet_Z, fill_value_Alphabet_Z = _sanitise_array_input(Alphabet_Z,
+                                                                  fill_value)
         Alphabet_Z, _ = _autocreate_alphabet(Alphabet_Z, fill_value_Alphabet_Z)
     else:
-        Alphabet_Z, fill_value_Alphabet_Z = _autocreate_alphabet(Z, fill_value_Z)
+        Alphabet_Z, fill_value_Alphabet_Z = _autocreate_alphabet(Z,
+                                                                 fill_value_Z)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -809,12 +818,21 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
         raise ValueError("leading dimensions of args Z and Alphabet_Z do not match")
     if not cartesian_product and (X.shape != Y.shape or X.shape != Z.shape):
         raise ValueError("dimensions of args 1, 2, 3 do not match")
-    if cartesian_product and (X.shape[-1] != Y.shape[-1] or X.shape[-1] != Z.shape[-1]):
+    if cartesian_product and (X.shape[-1] != Y.shape[-1] or
+                              X.shape[-1] != Z.shape[-1]):
         raise ValueError("trailing dimensions of args 1, 2, 3 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z), (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y, fill_value_Z, fill_value_Alphabet_Z))
+    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
+                                                   Y, Alphabet_Y,
+                                                   Z, Alphabet_Z),
+                                                  (fill_value_X,
+                                                   fill_value_Alphabet_X,
+                                                   fill_value_Y,
+                                                   fill_value_Alphabet_Y,
+                                                   fill_value_Z,
+                                                   fill_value_Alphabet_Z))
     X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z = S
 
     if not cartesian_product:
@@ -839,7 +857,8 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
             I = I.reshape(np.append(shapeI_XY, shapeI_Z).astype('int'))
         return I
 
-    # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays equivalently and iterate across 0th axis
+    # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays
+    # equivalently and iterate across 0th axis
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
     Z = np.reshape(Z, (-1, Z.shape[-1]))
@@ -850,9 +869,22 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2, fil
     I = np.reshape(I, (-1, 1))
 
     for i in xrange(X.shape[0]):
-        I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Z[i]), fill_value)) +
-              entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
-              entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value)) -
+        I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value,
+                            estimator,
+                            _vstack_pad_with_fillvalue((Alphabet_X[i],
+                                                        Alphabet_Z[i]),
+                                                       fill_value)) +
+              entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value,
+                            estimator,
+                            _vstack_pad_with_fillvalue((Alphabet_Y[i],
+                                                        Alphabet_Z[i]),
+                                                       fill_value)) -
+              entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value,
+                            estimator,
+                            _vstack_pad_with_fillvalue((Alphabet_X[i],
+                                                        Alphabet_Y[i],
+                                                        Alphabet_Z[i]),
+                                                       fill_value)) -
               entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
         I[i] = I_
 
