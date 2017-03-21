@@ -847,7 +847,12 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))
         I = []
         for i in xrange(Z.shape[0]):
-            I.append(_cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: information_mutual_conditional(X, Y, Z[i], False, base, fill_value, estimator, Alphabet_X, Alphabet_Y, Alphabet_Z[i]), Alphabet_X, Alphabet_Y))
+            def f(X, Y, Alphabet_X, Alphabet_Y):
+                return information_mutual_conditional(X, Y, Z[i], False, base,
+                                                      fill_value, estimator,
+                                                      Alphabet_X, Alphabet_Y,
+                                                      Alphabet_Z[i])
+            I.append(_cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y))
         shapeI_XY = I[0].shape
         if len(shapeI_Z) == 0:
             I = np.array(I)[0].reshape(shapeI_XY)
@@ -1029,7 +1034,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: information_lautum(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
+        def f(X, Y, Alphabet_X, Alphabet_Y):
+            return information_lautum(X, Y, False, base, fill_value, estimator,
+                                      Alphabet_X, Alphabet_Y)
+        return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
     # equivalently and iterate across 0th axis
@@ -1337,7 +1345,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
 
             C = H
         else:
-            H = _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X, Alphabet_Y), fill_value)), Alphabet_X, Alphabet_Y)
+            def f(X, Y, Alphabet_X, Alphabet_Y):
+                return entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X, Alphabet_Y), fill_value))
+            H = _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
             C = H
     elif norm_factor == 'SQRT':
@@ -1634,7 +1644,10 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_cross(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
+        def f(X, Y, Alphabet_X, Alphabet_Y):
+            return entropy_cross(X, Y, False, base, fill_value, estimator,
+                                 Alphabet_X, Alphabet_Y)
+        return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
     # equivalently and iterate across 0th axis
@@ -1899,7 +1912,10 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: divergence_jensenshannon(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
+        def f(X, Y, Alphabet_X, Alphabet_Y):
+            return divergence_jensenshannon(X, Y, False, base, fill_value,
+                                            estimator, Alphabet_X, Alphabet_Y)
+        return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
     # equivalently and iterate across 0th axis
@@ -2185,7 +2201,10 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.NaN)
     else:
-        return _cartesian_product_apply(X, Y, lambda X, Y, Alphabet_X, Alphabet_Y: entropy_conditional(X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y), Alphabet_X, Alphabet_Y)
+        def f(X, Y, Alphabet_X, Alphabet_Y):
+            return entropy_conditional(X, Y, False, base, fill_value,
+                                       estimator, Alphabet_X, Alphabet_Y)
+        return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
     # equivalently and iterate across 0th axis
@@ -2553,7 +2572,9 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
-        return _cartesian_product_apply(P, Q, lambda P, Q: entropy_cross_pmf(P, Q, False, base, require_valid_pmf))
+        def f(P, Q):
+            return entropy_cross_pmf(P, Q, False, base, require_valid_pmf)
+        return _cartesian_product_apply(P, Q, f)
 
     with np.errstate(invalid='ignore', divide='ignore'):
         H = P * np.log2(Q)
@@ -2661,7 +2682,10 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
-        return _cartesian_product_apply(P, Q, lambda P, Q: divergence_jensenshannon_pmf(P, Q, False, base, require_valid_pmf))
+        def f(P, Q):
+            return divergence_jensenshannon_pmf(P, Q, False, base,
+                                                require_valid_pmf)
+        return _cartesian_product_apply(P, Q, f)
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
     return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - \
@@ -2764,7 +2788,8 @@ def _autocreate_alphabet(X, fill_value):
 
     def pad_with_fillvalue(x):
         return np.append(x, np.tile(fill_value, max_length-x.size))
-    Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)), axis=-1, arr=X)
+    Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)),
+                                   axis=-1, arr=X)
     return (Alphabet, fill_value)
 
 
