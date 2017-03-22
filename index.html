@@ -53,7 +53,7 @@
 <h1>pyitlib<a class="headerlink" href="#pyitlib" title="Permalink to this headline">¶</a></h1>
 <p>pyitlib is an MIT-licensed library of information-theoretic methods for data analysis and machine learning, implemented in Python and NumPy.</p>
 <p>API documentation is available online at <a class="reference external" href="https://pafoster.github.io/pyitlib/">https://pafoster.github.io/pyitlib/</a>.</p>
-<p>pyitlib implements the following 19 measures on discrete random variables, with full support for missing data:</p>
+<p>pyitlib implements the following 19 measures on discrete random variables:</p>
 <ul class="simple">
 <li>Entropy</li>
 <li>Joint entropy</li>
@@ -82,6 +82,7 @@
 <li>James-Stein</li>
 <li>Good-Turing</li>
 </ul>
+<p>Missing data are supported, either using fill values or NumPy masked arrays.</p>
 <div class="section" id="module-discrete_random_variable">
 <span id="discrete-random-variable"></span><h2>discrete_random_variable<a class="headerlink" href="#module-discrete_random_variable" title="Permalink to this headline">¶</a></h2>
 <p>This module implements various information-theoretic quantities for discrete random variables.</p>
@@ -909,7 +910,7 @@
 <p>where <span class="math">\(H(X_i : i \in T)\)</span> denotes the joint entropy of the subset of random variables specified by <span class="math">\(T\)</span>. Thus, co-information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.</p>
 <p>Note that co-information is equal in magnitude to the interaction information <span class="math">\(\mathrm{Int}(X_1, \ldots, X_n)\)</span>, with equality for the case where <span class="math">\(n\)</span> is even,</p>
 <div class="math">
-\[I(X_1, \ldots, X_n) = (-1)^n \mathrm{Int}(X_1, \ldots, X_n).    \]</div>
+\[I(X_1, \ldots, X_n) = (-1)^n \mathrm{Int}(X_1, \ldots, X_n).\]</div>
 <p><strong>Estimation</strong>:</p>
 <p>Co-information is estimated based on frequency tables, using the following functions:</p>
 <blockquote>
