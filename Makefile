@@ -10,4 +10,4 @@ docs:
 copy-docs:
 	cp -r docs/_build/html/* ../pyitlib_pages
 
-.PHONY: test sdist docs
+.PHONY: test sdist docs copy-docs
