@@ -391,7 +391,8 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -495,7 +496,8 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -581,7 +583,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
         Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
@@ -600,7 +603,8 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -811,11 +815,14 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     if _isnan(fill_value_Z):
         raise ValueError("fill value for arg Z is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if Z.shape[:-1] != Alphabet_Z.shape[:-1]:
-        raise ValueError("leading dimensions of args Z and Alphabet_Z do not match")
+        raise ValueError("leading dimensions of args Z and Alphabet_Z do not "
+                         "match")
     if not cartesian_product and (X.shape != Y.shape or X.shape != Z.shape):
         raise ValueError("dimensions of args 1, 2, 3 do not match")
     if cartesian_product and (X.shape[-1] != Y.shape[-1] or
@@ -976,13 +983,15 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
+                                                                  fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
         Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
                                                                  fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y, fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
+                                                                  fill_value)
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
         Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
@@ -1009,9 +1018,11 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if not cartesian_product and X.shape != Y.shape:
         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
@@ -1113,7 +1124,8 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
                                   cartesian_product=False, fill_value=-1,
                                   estimator='ML', Alphabet_X=None,
                                   Alphabet_Y=None):
-    # TODO Documentation should include properties for each of the normalisation factors
+    # TODO Documentation should include properties for each of the
+    # normalisation factors
     """
     Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.
 
@@ -1246,9 +1258,11 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if not isinstance(norm_factor, str):
         raise ValueError("arg norm_factor not a string")
     if not cartesian_product and X.shape != Y.shape:
@@ -1621,9 +1635,11 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
         raise ValueError("dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
@@ -1889,9 +1905,11 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
         raise ValueError("dimensions of args 1 and 2 do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
@@ -2132,7 +2150,8 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
 
     """
-    # TODO Add note in documentation (for other functions where appropriate) about creating joint observations using appropriate function
+    # TODO Add note in documentation (for other functions where appropriate)
+    # about creating joint observations using appropriate function
     if Y is None:
         Y = X
         cartesian_product = True
@@ -2176,9 +2195,11 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
+                         "match")
     if not cartesian_product and X.shape != Y.shape:
         raise ValueError("dimensions of args 1 and 2 do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
@@ -2298,7 +2319,8 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -2414,7 +2436,8 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not "
+                         "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
@@ -2848,7 +2871,8 @@ def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet,
     if np.any(alphabet_sizes != fill_value):
         joint_alphabet_size = np.prod(alphabet_sizes[alphabet_sizes > 0])
         if joint_alphabet_size <= 0:
-            raise ValueError("Numerical overflow detected. Joint alphabet size too large.")
+            raise ValueError("Numerical overflow detected. Joint alphabet "
+                             "size too large.")
     else:
         joint_alphabet_size = 0
     return joint_alphabet_size - \
@@ -2918,7 +2942,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         y = y[np.isfinite(y)]
         m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y)[0]
         if m >= -1:
-            warnings.warn("Regression slope < -1 requirement in linear Good-Turing estimate not satisfied")
+            warnings.warn("Regression slope < -1 requirement in linear "
+                          "Good-Turing estimate not satisfied")
         # Compute smoothed value of N_r based on interpolation
         # We need to refer to SmoothedN_{r+1} for all observed values of r
         SmoothedN_r = np.zeros(N_r.size+1)
@@ -2966,7 +2991,9 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         if np.any(Counts == 0) or n_additional_empty_bins > 0:
             Theta = (1-p_r[0]) * Theta / np.sum(Theta)
         else:
-            warnings.warn("No unobserved symbols specified. Disregarding the probability mass allocated to any unobserved symbols.")
+            warnings.warn("No unobserved symbols specified. Disregarding the "
+                          "probability mass allocated to any unobserved "
+                          "symbols.")
             Theta = Theta / np.sum(Theta)
 
         # Divide p_0 among unobserved symbols
@@ -3084,7 +3111,8 @@ def _sanitise_array_input(X, fill_value=-1):
                 # Fix numpy's broken array string type behaviour which causes
                 # X.filled() placeholder entries to be no longer than
                 # non-placeholder entries
-                warnings.warn("Changing numpy array dtype internally to accommodate fill_value string length")
+                warnings.warn("Changing numpy array dtype internally to "
+                              "accommodate fill_value string length")
                 M = X.mask
                 X = np.array(X.filled(), dtype='S'+str(len(fill_value)))
                 X[M] = fill_value
@@ -3110,7 +3138,8 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
         # NB: This causes issues when both arguments contain None. But it is
         # always called after observations have all been mapped to integers.
         if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:
-            raise ValueError("provided alphabet does not contain all observed symbols")
+            raise ValueError("provided alphabet does not contain all observed "
+                             "symbols")
 
 
 def _vstack_pad_with_fillvalue(Arrays, fill_value):
