@@ -89,8 +89,6 @@ import warnings
 # Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,
 # prefer flags, convenient defaults for possible interactive use). Focus on
 # data analysis. Documentation.
-# TODO Get source code on github
-# TODO Get documentation on github
 # TODO Add guidance on which estimator to use (within module doc)
 # TODO Add notes on interpretation of each measure (within each function doc)
 # TODO Add basic equalities and properties, followed by interpretation (within
@@ -122,60 +120,111 @@ import warnings
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
                      Alphabet_X=None):
     """
-    Returns the estimated residual entropy [JaEC11] (also known as erasure entropy [VeWe06]) for an array X containing realisations of discrete random variables.
+    Returns the estimated residual entropy [JaEC11] (also known as erasure
+    entropy [VeWe06]) for an array X containing realisations of discrete random
+    variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the residual entropy :math:`R(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the residual
+    entropy :math:`R(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         R(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - B(X_1, \\ldots, X_n)
 
-    where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
+    where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy and
+    where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
 
     **Estimation**:
 
-    Residual information is estimated based on frequency tables, using the following functions:
+    Residual information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although residual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although residual
+    information is a non-negative quantity, depending on the chosen estimator
+    the obtained estimate may be negative.
 
     **Parameters**:
 
-    X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array containing discrete random variable realisations. Successive realisations of a random variable are indexed by the last axis in the array; multiple random variables may be specified using preceding axes. When X.ndim==1, returns a scalar and is equivalent to entropy(). When X.ndim>1, returns a scalar based on jointly considering all random variables indexed in the array. X may not contain (floating point) NaN values. Missing data may be specified using numpy masked arrays, as well as using using standard numpy array/array-like objects; see below for details.
+    X : numpy array (or array-like object such as a list of immutables, as \
+    accepted by np.array())
+        An array containing discrete random variable realisations. Successive
+        realisations of a random variable are indexed by the last axis in the
+        array; multiple random variables may be specified using preceding axes.
+        When X.ndim==1, returns a scalar and is equivalent to entropy(). When
+        X.ndim>1, returns a scalar based on jointly considering all random
+        variables indexed in the array. X may not contain (floating point) NaN
+        values. Missing data may be specified using numpy masked arrays, as
+        well as using using standard numpy array/array-like objects; see below
+        for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as well as using using standard numpy array/array-like objects with assigned placeholder values. When using numpy masked arrays, this function invokes np.ma.filled() internally, so that missing data are represented with the array's object-internal placeholder value fill_value (this function's fill_value parameter is ignored in such cases). When using standard numpy array/array-like objects, this function's fill_value parameter is used to specify the placeholder value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays, as
+        well as using using standard numpy array/array-like objects with
+        assigned placeholder values. When using numpy masked arrays, this
+        function invokes np.ma.filled() internally, so that missing data are
+        represented with the array's object-internal placeholder value
+        fill_value (this function's fill_value parameter is ignored in such
+        cases). When using standard numpy array/array-like objects, this
+        function's fill_value parameter is used to specify the placeholder
+        value for missing data (defaults to -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
-        The desired estimator (see above for details on estimators). Possible values are:
+        The desired estimator (see above for details on estimators). Possible
+        values are:
 
             *'ML' (the default value)* : Maximum likelihood estimator.
 
-            *any floating point value* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome as specified).
+            *any floating point value* : Maximum a posteriori esimator using
+            Dirichlet prior (equivalent to maximum likelihood with pseudo-count
+            for each outcome as specified).
 
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior
+            (equivalent to maximum likelihood with pseudo-count for each
+            outcome set to 1/L, where L is the number of possible outcomes.
 
-            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to sqrt(N)/L, where N is the total number of realisations and where L is the number of possible outcomes.
+            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior
+            (equivalent to maximum likelihood with pseudo-count for each
+            outcome set to sqrt(N)/L, where N is the total number of
+            realisations and where L is the number of possible outcomes.
 
             *JAMES-STEIN* : James-Stein estimator [HaSt09].
 
             *GOOD-TURING* : Good-Turing estimator [GaSa95].
 
-    Alphabet_X : numpy array (or array-like object such as a list of immutables, as accepted by np.array())
-        An array specifying the alphabet/alphabets of possible outcomes that random variable realisations in array X may assume. Defaults to None, in which case the alphabet/alphabets of possible outcomes is/are implicitly based the observed outcomes in array X, with no additional, unobserved outcomes. In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets including unobserved outcomes. For such cases, successive possible outcomes of a random variable are indexed by the last axis in Alphabet_X; multiple alphabets may be specified using preceding axes, with the requirement X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may be specified either using numpy masked arrays, or by padding with the chosen placeholder fill_value.
+    Alphabet_X : numpy array (or array-like object such as a list of \
+    immutables, as accepted by np.array())
+        An array specifying the alphabet/alphabets of possible outcomes that
+        random variable realisations in array X may assume. Defaults to None,
+        in which case the alphabet/alphabets of possible outcomes is/are
+        implicitly based the observed outcomes in array X, with no additional,
+        unobserved outcomes. In combination with any estimator other than
+        maximum likelihood, it may be useful to specify alphabets including
+        unobserved outcomes. For such cases, successive possible outcomes of a
+        random variable are indexed by the last axis in Alphabet_X; multiple
+        alphabets may be specified using preceding axes, with the requirement
+        X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may
+        be specified either using numpy masked arrays, or by padding with the
+        chosen placeholder fill_value.
 
-        NB: When specifying multiple alphabets, an alphabet of possible joint outcomes is always implicit from the alphabets of possible (marginal) outcomes in Alphabet_X. For example, specifying Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+        NB: When specifying multiple alphabets, an alphabet of possible joint
+        outcomes is always implicit from the alphabets of possible (marginal)
+        outcomes in Alphabet_X. For example, specifying
+        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
+        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
 
     **Implementation notes**:
 
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    Before estimation, outcomes are mapped to the set of non-negative integers
+    internally, with the value -1 representing missing data. To avoid this
+    internal conversion step, supply integer data and use the default fill
+    value -1.
 
     """
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
@@ -187,26 +236,32 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
 def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
                                 Alphabet_X=None):
     """
-    Returns the estimated exogenous local information [JaEC11] for an array X containing realisations of discrete random variables.
+    Returns the estimated exogenous local information [JaEC11] for an array X
+    containing realisations of discrete random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the exogenous local information :math:`W(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the exogenous
+    local information :math:`W(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         W(X_1, \\ldots, X_n) = T(X_1, \\ldots, X_n) + B(X_1, \\ldots, X_n)
 
-    where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
+    where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and
+    where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
 
     **Estimation**:
 
-    Exogenous local information is estimated based on frequency tables, using the following functions:
+    Exogenous local information is estimated based on frequency tables, using
+    the following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although exogenous local information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although exogenous
+    local information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -251,26 +306,32 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
     # Note: can be negative
     # Note: equals multivariate mutual information when N=3, can test for this
     """
-    Returns the estimated enigmatic information [JaEC11] for an array X containing realisations of discrete random variables.
+    Returns the estimated enigmatic information [JaEC11] for an array X
+    containing realisations of discrete random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the enigmatic information :math:`Q(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the enigmatic
+    information :math:`Q(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         Q(X_1, \\ldots, X_n) = T(X_1, \\ldots, X_n) - B(X_1, \\ldots, X_n)
 
-    where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
+    where :math:`T(\\cdot, \\ldots, \\cdot)` denotes the multi-information and
+    where :math:`B(\\cdot, \\ldots, \\cdot)` denotes the binding information.
 
     **Estimation**:
 
-    Enigmatic information is estimated based on frequency tables, using the following functions:
+    Enigmatic information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although enigmatic information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although enigmatic
+    information is a non-negative quantity, depending on the chosen estimator
+    the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -313,29 +374,40 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
 def information_interaction(X, base=2, fill_value=-1, estimator='ML',
                             Alphabet_X=None):
     """
-    Returns the estimated interaction information [JaBr03] for an array X containing realisations of discrete random variables.
+    Returns the estimated interaction information [JaBr03] for an array X
+    containing realisations of discrete random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the interaction information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the interaction
+    information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)
 
-    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of random variables specified by :math:`T`. Thus, interaction information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.
+    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of
+    random variables specified by :math:`T`. Thus, interaction information is
+    an alternating sum of joint entropies, with the sets of random variables
+    used to compute the joint entropy in each term selected from the power set
+    of available random variables.
 
-    Note that interaction information is equal in magnitude to the co-information :math:`I(X_1, \\ldots, X_n)`, with equality for the case where :math:`n` is even,
+    Note that interaction information is equal in magnitude to the
+    co-information :math:`I(X_1, \\ldots, X_n)`, with equality for the case
+    where :math:`n` is even,
 
     .. math::
         \\mathrm{Int}(X_1, \\ldots, X_n) = (-1)^n I(X_1, \\ldots, X_n).
 
     **Estimation**:
 
-    Interaction information is estimated based on frequency tables, using the following functions:
+    Interaction information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
-    See below for a list of available estimators. Note that although interaction information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    interaction information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -419,29 +491,40 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
 
 def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
-    Returns the estimated co-information [Bell03] for an array X containing realisations of discrete random variables.
+    Returns the estimated co-information [Bell03] for an array X containing
+    realisations of discrete random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the co-information :math:`I(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the
+    co-information :math:`I(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{|T|}  H(X_i : i \in T)
 
-    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of random variables specified by :math:`T`. Thus, co-information is an alternating sum of joint entropies, with the sets of random variables used to compute the joint entropy in each term selected from the power set of available random variables.
+    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of
+    random variables specified by :math:`T`. Thus, co-information is an
+    alternating sum of joint entropies, with the sets of random variables used
+    to compute the joint entropy in each term selected from the power set of
+    available random variables.
 
-    Note that co-information is equal in magnitude to the interaction information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)`, with equality for the case where :math:`n` is even,
+    Note that co-information is equal in magnitude to the interaction
+    information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)`, with equality for the
+    case where :math:`n` is even,
 
     .. math::
         I(X_1, \\ldots, X_n) = (-1)^n \\mathrm{Int}(X_1, \\ldots, X_n).
 
     **Estimation**:
 
-    Co-information is estimated based on frequency tables, using the following functions:
+    Co-information is estimated based on frequency tables, using the following
+    functions:
 
         entropy_joint()
 
-    See below for a list of available estimators. Note that although co-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    co-information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -525,11 +608,14 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 def information_binding(X, base=2, fill_value=-1, estimator='ML',
                         Alphabet_X=None):
     """
-    Returns the estimated binding information [AbPl12] (also known as dual total correlation [Han78]) for an array X containing realisations of discrete random variables.
+    Returns the estimated binding information [AbPl12] (also known as dual
+    total correlation [Han78]) for an array X containing realisations of
+    discrete random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the binding information :math:`B(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the binding
+    information :math:`B(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)
@@ -538,13 +624,16 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
 
     **Estimation**:
 
-    Binding information is estimated based on frequency tables, using the following functions:
+    Binding information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although binding information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although binding
+    information is a non-negative quantity, depending on the chosen estimator
+    the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -634,11 +723,14 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
 def information_multi(X, base=2, fill_value=-1, estimator='ML',
                       Alphabet_X=None):
     """
-    Returns the estimated multi-information [StVe98] (also known as total correlation [Wata60]) for an array X containing realisations of discrete random variables.
+    Returns the estimated multi-information [StVe98] (also known as total
+    correlation [Wata60]) for an array X containing realisations of discrete
+    random variables.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X_1, \ldots, X_n`, the multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:
+    Given discrete random variables :math:`X_1, \ldots, X_n`, the
+    multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
         T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) - H(X_1, \\ldots, X_n)
@@ -647,13 +739,16 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
 
     **Estimation**:
 
-    Multi-information is estimated based on frequency tables, using the following functions:
+    Multi-information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although multi-information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    multi-information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -700,11 +795,14 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
                                    Alphabet_X=None, Alphabet_Y=None,
                                    Alphabet_Z=None):
     """
-    Returns the conditional mutual information (see e.g. [CoTh06]) between arrays X and Y given array Z, each containing discrete random variable realisations.
+    Returns the conditional mutual information (see e.g. [CoTh06]) between
+    arrays X and Y given array Z, each containing discrete random variable
+    realisations.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X`, :math:`Y`,  :math:`Z`, the conditional mutual information :math:`I(X;Y|Z)` is defined as:
+    Given discrete random variables :math:`X`, :math:`Y`,  :math:`Z`, the
+    conditional mutual information :math:`I(X;Y|Z)` is defined as:
 
     .. math::
         I(X;Y|Z) = H(X|Z) - H(X|Y,Z)
@@ -713,13 +811,16 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
 
     **Estimation**:
 
-    Conditional mutual information is estimated based on frequency tables, using the following functions:
+    Conditional mutual information is estimated based on frequency tables,
+    using the following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although conditional mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    conditional mutual information is a non-negative quantity, depending on the
+    chosen estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -757,7 +858,10 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
 
     **Implementation notes**:
 
-    Before estimation, outcomes are mapped to the set of non-negative integers internally, with the value -1 representing missing data. To avoid this internal conversion step, supply integer data and use the default fill value -1.
+    Before estimation, outcomes are mapped to the set of non-negative integers
+    internally, with the value -1 representing missing data. To avoid this
+    internal conversion step, supply integer data and use the default fill
+    value -1.
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
@@ -912,11 +1016,16 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
                        fill_value=-1, estimator='ML', Alphabet_X=None,
                        Alphabet_Y=None):
     """
-    Returns the lautum information [PaVe08] between arrays X and Y, each containing discrete random variable realisations.
+    Returns the lautum information [PaVe08] between arrays X and Y, each
+    containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, and denoting with :math:`P_{XY}(x,y)` the probability of jointly observing outcomes :math:`x`, :math:`y` respectively with :math:`X`, :math:`Y`, the lautum information :math:`L(X;Y)` is defined as:
+    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability
+    of observing an outcome :math:`x` with discrete random variables :math:`X`,
+    :math:`Y`, and denoting with :math:`P_{XY}(x,y)` the probability of jointly
+    observing outcomes :math:`x`, :math:`y` respectively with :math:`X`,
+    :math:`Y`, the lautum information :math:`L(X;Y)` is defined as:
 
     .. math::
         \\begin{eqnarray}
@@ -924,7 +1033,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
             &=& D_{\\mathrm{KL}}(P_X P_Y \\parallel P_{XY})
         \\end{eqnarray}
 
-    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence. Note that *lautum* is *mutual* spelt backwards; denoting with :math:`I(\\cdot;\\cdot)` the mutual information it may be shown (see e.g. [CoTh06]) that
+    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
+    Kullback-Leibler divergence. Note that *lautum* is *mutual* spelt
+    backwards; denoting with :math:`I(\\cdot;\\cdot)` the mutual information it
+    may be shown (see e.g. [CoTh06]) that
 
     .. math::
         \\begin{eqnarray}
@@ -933,7 +1045,8 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
 
     **Estimation**:
 
-    Lautum information is estimated based on frequency tables. See below for a list of available estimators.
+    Lautum information is estimated based on frequency tables. See below for a
+    list of available estimators.
 
     **Parameters**:
 
@@ -1127,16 +1240,20 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     # TODO Documentation should include properties for each of the
     # normalisation factors
     """
-    Returns the normalised mutual information between arrays X and Y, each containing discrete random variable realisations.
+    Returns the normalised mutual information between arrays X and Y, each
+    containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X`, :math:`Y`, the normalised mutual information :math:`NI(X;Y)` is defined as:
+    Given discrete random variables :math:`X`, :math:`Y`, the normalised mutual
+    information :math:`NI(X;Y)` is defined as:
 
     .. math::
         NI(X;Y) = \\frac{I(X;Y)}{C_n}
 
-    where :math:`I` denotes the mutual information and where :math:`C_n` denotes a normalisation factor. Normalised mutual information is a dimensionless quantity, with :math:`C_n` alternatively defined as:
+    where :math:`I` denotes the mutual information and where :math:`C_n`
+    denotes a normalisation factor. Normalised mutual information is a
+    dimensionless quantity, with :math:`C_n` alternatively defined as:
 
     .. math::
          \\begin{eqnarray}
@@ -1149,17 +1266,21 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
            C_{\\text{SQRT}} &=& \\sqrt{H(X) H(Y)}
          \\end{eqnarray}
 
-    where :math:`H(\\cdot)` and :math:`H(\\cdot,\\cdot)` respectively denote the entropy and joint entropy.
+    where :math:`H(\\cdot)` and :math:`H(\\cdot,\\cdot)` respectively denote
+    the entropy and joint entropy.
 
     **Estimation**:
 
-    Normalised mutual information is estimated based on frequency tables, using the following functions:
+    Normalised mutual information is estimated based on frequency tables, using
+    the following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although normalised mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although normalised
+    mutual information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -1385,11 +1506,13 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
                           fill_value=-1, estimator='ML', Alphabet_X=None,
                           Alphabet_Y=None):
     """
-    Returns the variation of information [Meil03] between arrays X and Y, each containing discrete random variable realisations.
+    Returns the variation of information [Meil03] between arrays X and Y, each
+    containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X`, :math:`Y`, the variation of information :math:`VI(X;Y)` is defined as:
+    Given discrete random variables :math:`X`, :math:`Y`, the variation of
+    information :math:`VI(X;Y)` is defined as:
 
     .. math::
         VI(X;Y) = H(X|Y) + H(Y|X)
@@ -1398,13 +1521,16 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
 
     **Estimation**:
 
-    Variation of information is estimated based on frequency tables, using the following functions:
+    Variation of information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although variation of information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although variation
+    of information is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -1465,26 +1591,32 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
                        fill_value=-1, estimator='ML', Alphabet_X=None,
                        Alphabet_Y=None):
     """
-    Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
+    Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y,
+    each containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X`, :math:`Y`, the mutual information :math:`I(X;Y)` is defined as:
+    Given discrete random variables :math:`X`, :math:`Y`, the mutual
+    information :math:`I(X;Y)` is defined as:
 
     .. math::
         I(X;Y) = H(X) - H(X|Y)
 
-    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot|\\cdot)` denotes the conditional entropy.
+    where :math:`H(\\cdot)` denotes the entropy and where
+    :math:`H(\\cdot|\\cdot)` denotes the conditional entropy.
 
     **Estimation**:
 
-    Mutual information is estimated based on frequency tables, using the following functions:
+    Mutual information is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although mutual information is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although mutual
+    information is a non-negative quantity, depending on the chosen estimator
+    the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -1540,18 +1672,22 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
 def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
                   estimator='ML', Alphabet_X=None, Alphabet_Y=None):
     """
-    Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each containing discrete random variable realisations.
+    Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each
+    containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, the cross entopy :math:`H^\\times(X,Y)` is defined as:
+    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability
+    of observing an outcome :math:`x` with discrete random variables :math:`X`,
+    :math:`Y`, the cross entopy :math:`H^\\times(X,Y)` is defined as:
 
     .. math::
         H^\\times(X,Y) = -\\sum_x {P_X(x) \\log {P_Y(x)}}.
 
     **Estimation**:
 
-    Cross entropy is estimated based on frequency tables. See below for a list of available estimators.
+    Cross entropy is estimated based on frequency tables. See below for a list
+    of available estimators.
 
     **Parameters**:
 
@@ -1737,7 +1873,8 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
                                fill_value=-1, estimator='ML', Alphabet_X=None,
                                Alphabet_Y=None):
     """
-    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
+    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
+    X and Y, each containing discrete random variable realisations.
 
     **Mathematical definition**:
 
@@ -1748,13 +1885,16 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
 
     **Estimation**:
 
-    Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:
+    Kullback-Leibler divergence is estimated based on frequency tables, using
+    the following functions:
 
         entropy_cross()
 
         entropy()
 
-    See below for a list of available estimators. Note that although Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    Kullback-Leibler divergence is a non-negative quantity, depending on the
+    chosen estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -1808,20 +1948,27 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
                              fill_value=-1, estimator='ML', Alphabet_X=None,
                              Alphabet_Y=None):
     """
-    Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
+    Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each
+    containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:
+    Denoting with :math:`P_X`, :math:`P_Y` respectively probability
+    distributions with common domain, associated with discrete random variables
+    :math:`X`, :math:`Y`, the Jensen-Shannon divergence
+    :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:
 
     .. math::
         D_{\\mathrm{JS}}(P_X \\parallel P_Y) = \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)
 
-    where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+    where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where
+    :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
+    Kullback-Leibler divergence.
 
     **Estimation**:
 
-    Jensen-Shannon divergence is estimated based on frequency tables. See below for a list of available estimators.
+    Jensen-Shannon divergence is estimated based on frequency tables. See below
+    for a list of available estimators.
 
     **Parameters**:
 
@@ -2009,11 +2156,15 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
                                            estimator='ML', Alphabet_X=None,
                                            Alphabet_Y=None):
     """
-    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays X and Y, each containing discrete random variable realisations.
+    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
+    X and Y, each containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P_X`, :math:`P_Y` respectively probability distributions with common domain, associated with discrete random variables :math:`X`, :math:`Y`, the symmetrised Kullback-Leibler divergence :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:
+    Denoting with :math:`P_X`, :math:`P_Y` respectively probability
+    distributions with common domain, associated with discrete random variables
+    :math:`X`, :math:`Y`, the symmetrised Kullback-Leibler divergence
+    :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:
 
     .. math::
         D_{\\mathrm{SKL}}(P_X \\parallel P_Y) = D_{\\mathrm{KL}}(P_X \\parallel P_Y) + D_{\\mathrm{KL}}(P_Y \\parallel P_X)
@@ -2022,13 +2173,16 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
 
     **Estimation**:
 
-    Symmetrised Kullback-Leibler divergence is estimated based on frequency tables, using the following functions:
+    Symmetrised Kullback-Leibler divergence is estimated based on frequency
+    tables, using the following functions:
 
         entropy_cross()
 
         entropy()
 
-    See below for a list of available estimators. Note that although symmetrised Kullback-Leibler divergence is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    symmetrised Kullback-Leibler divergence is a non-negative quantity,
+    depending on the chosen estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -2088,26 +2242,32 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
                         fill_value=-1, estimator='ML', Alphabet_X=None,
                         Alphabet_Y=None):
     """
-    Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y, each containing discrete random variable realisations.
+    Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y,
+    each containing discrete random variable realisations.
 
     **Mathematical definition**:
 
-    Given discrete random variables :math:`X`, :math:`Y`, the conditional entropy :math:`H(X|Y)` is defined as:
+    Given discrete random variables :math:`X`, :math:`Y`, the conditional
+    entropy :math:`H(X|Y)` is defined as:
 
     .. math::
         H(X|Y) = H(X,Y) - H(Y)
 
-    where :math:`H(\\cdot,\\cdot)` denotes the joint entropy and where :math:`H(\\cdot)` denotes the entropy.
+    where :math:`H(\\cdot,\\cdot)` denotes the joint entropy and where
+    :math:`H(\\cdot)` denotes the entropy.
 
     **Estimation**:
 
-    Conditional entropy is estimated based on frequency tables, using the following functions:
+    Conditional entropy is estimated based on frequency tables, using the
+    following functions:
 
         entropy_joint()
 
         entropy()
 
-    See below for a list of available estimators. Note that although conditional entropy is a non-negative quantity, depending on the chosen estimator the obtained estimate may be negative.
+    See below for a list of available estimators. Note that although
+    conditional entropy is a non-negative quantity, depending on the chosen
+    estimator the obtained estimate may be negative.
 
     **Parameters**:
 
@@ -2247,7 +2407,8 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
 
 def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
-    Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X containing realisations of discrete random variables.
+    Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X
+    containing realisations of discrete random variables.
 
     **Mathematical definition**:
 
@@ -2258,7 +2419,8 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     **Estimation**:
 
-    Joint entropy is estimated based on frequency tables. See below for a list of available estimators.
+    Joint entropy is estimated based on frequency tables. See below for a list
+    of available estimators.
 
     **Parameters**:
 
@@ -2368,18 +2530,22 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
 def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
-    Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing realisations of a discrete random variable.
+    Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing
+    realisations of a discrete random variable.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P(x)` the probability of observing outcome :math:`x` of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined as:
+    Denoting with :math:`P(x)` the probability of observing outcome :math:`x`
+    of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined
+    as:
 
     .. math::
         H(X) = -\\sum_x {P(x) \\log {P(x)}}.
 
     **Estimation**:
 
-    Entropy is estimated based on frequency tables. See below for a list of available estimators.
+    Entropy is estimated based on frequency tables. See below for a list of
+    available estimators.
 
     **Parameters**:
 
@@ -2500,11 +2666,14 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
 def entropy_pmf(P, base=2, require_valid_pmf=True):
     """
-    Returns the entropy (see e.g. [CoTh06]) of an array P representing a discrete probability distribution.
+    Returns the entropy (see e.g. [CoTh06]) of an array P representing a
+    discrete probability distribution.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P(x)` the probability mass associated with observing an outcome :math:`x` under distribution :math:`P`, the entopy :math:`H(P)` is defined as:
+    Denoting with :math:`P(x)` the probability mass associated with observing
+    an outcome :math:`x` under distribution :math:`P`, the entopy :math:`H(P)`
+    is defined as:
 
     .. math::
         H(P) = -\\sum_x {P(x) \\log {Q(x)}}.
@@ -2540,11 +2709,15 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
 def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
                       require_valid_pmf=True):
     """
-    Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each representing a discrete probability distribution.
+    Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each
+    representing a discrete probability distribution.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass associated with observing an outcome :math:`x` under distributions :math:`P`, :math:`Q`, the cross entopy :math:`H^\\times(P,Q)` is defined as:
+    Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass
+    associated with observing an outcome :math:`x` under distributions
+    :math:`P`, :math:`Q`, the cross entopy :math:`H^\\times(P,Q)` is defined
+    as:
 
     .. math::
         H^\\times(P,Q) = -\\sum_x {P(x) \\log {Q(x)}}.
@@ -2611,11 +2784,15 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
 def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
                                    require_valid_pmf=True):
     """
-    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays P and Q, each representing a discrete probability distribution.
+    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
+    P and Q, each representing a discrete probability distribution.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass associated with observing an outcome :math:`x` under distributions :math:`P`, :math:`Q`, the Kullback-Leibler divergence :math:`D_{\\mathrm{KL}}(P \\parallel Q)` is defined as:
+    Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass
+    associated with observing an outcome :math:`x` under distributions
+    :math:`P`, :math:`Q`, the Kullback-Leibler divergence
+    :math:`D_{\\mathrm{KL}}(P \\parallel Q)` is defined as:
 
     .. math::
         D_{\\mathrm{KL}}(P \\parallel Q) = -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.
@@ -2648,7 +2825,8 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
 def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
                                  require_valid_pmf=True):
     """
-    Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
+    Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each
+    representing a discrete probability distribution.
 
     **Mathematical definition**:
 
@@ -2657,7 +2835,9 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
     .. math::
         D_{\\mathrm{JS}}(P \\parallel Q) = \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)
 
-    where :math:`M = \\frac{1}{2}(P + Q)` and where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+    where :math:`M = \\frac{1}{2}(P + Q)` and where
+    :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
+    Kullback-Leibler divergence.
 
     **Parameters**:
 
@@ -2719,16 +2899,20 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
                                                cartesian_product=False, base=2,
                                                require_valid_pmf=True):
     """
-    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays P and Q, each representing a discrete probability distribution.
+    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
+    P and Q, each representing a discrete probability distribution.
 
     **Mathematical definition**:
 
-    Denoting with :math:`P`, :math:`Q` probability distributions with common domain, the symmetrised Kullback-Leibler divergence :math:`D_{\\mathrm{SKL}}(P \\parallel Q)` is defined as:
+    Denoting with :math:`P`, :math:`Q` probability distributions with common
+    domain, the symmetrised Kullback-Leibler divergence
+    :math:`D_{\\mathrm{SKL}}(P \\parallel Q)` is defined as:
 
     .. math::
         D_{\\mathrm{SKL}}(P \\parallel Q) = D_{\\mathrm{KL}}(P \\parallel Q) + D_{\\mathrm{KL}}(Q \\parallel P)
 
-    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
+    Kullback-Leibler divergence.
 
     **Parameters**:
 
@@ -2818,7 +3002,8 @@ def _autocreate_alphabet(X, fill_value):
 
 def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
     """
-    Applies a function to arrays X and Y, each containing discrete random variable realisations. (Internal function.)
+    Applies a function to arrays X and Y, each containing discrete random
+    variable realisations. (Internal function.)
 
     **Parameters**:
 
