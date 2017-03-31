@@ -741,10 +741,12 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = \
+            _sanitise_array_input(Alphabet_X, fill_value)
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = \
+            _autocreate_alphabet(X, fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1315,20 +1317,19 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     for i in xrange(X.shape[0]):
         I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value,
                             estimator,
-                            _vstack_pad_with_fillvalue((Alphabet_X[i],
-                                                        Alphabet_Z[i]),
-                                                       fill_value)) +
+                            _vstack_pad((Alphabet_X[i],
+                                         Alphabet_Z[i]),
+                                        fill_value)) +
               entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value,
                             estimator,
-                            _vstack_pad_with_fillvalue((Alphabet_Y[i],
-                                                        Alphabet_Z[i]),
-                                                       fill_value)) -
+                            _vstack_pad((Alphabet_Y[i],
+                                         Alphabet_Z[i]),
+                                        fill_value)) -
               entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value,
                             estimator,
-                            _vstack_pad_with_fillvalue((Alphabet_X[i],
-                                                        Alphabet_Y[i],
-                                                        Alphabet_Z[i]),
-                                                       fill_value)) -
+                            _vstack_pad((Alphabet_X[i],
+                                         Alphabet_Y[i],
+                                         Alphabet_Z[i]), fill_value)) -
               entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
         I[i] = I_
 
@@ -1585,7 +1586,12 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
 
         alphabet_XY = JointXY[:, I]
         if estimator != 'ML':
-            L, alphabet_XY = _append_empty_bins_using_alphabet(L, alphabet_XY, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value), fill_value)
+            L, alphabet_XY = \
+                _append_empty_bins_using_alphabet(L, alphabet_XY,
+                                                  _vstack_pad((Alphabet_X[i],
+                                                               Alphabet_Y[i]),
+                                                              fill_value),
+                                                  fill_value)
         L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY,
                                                       fill_value)
         if not np.any(L):
@@ -1935,13 +1941,22 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
             H = np.reshape(H, (-1, 1))
 
             for i in xrange(X.shape[0]):
-                H[i] = entropy_joint(np.vstack((X[i], Y[i])), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value))
+                H[i] = entropy_joint(np.vstack((X[i], Y[i])),
+                                     fill_value=fill_value,
+                                     estimator=estimator,
+                                     Alphabet_X=_vstack_pad((Alphabet_X[i],
+                                                             Alphabet_Y[i]),
+                                                            fill_value))
             H = np.reshape(H, orig_shape_H)
 
             C = H
         else:
             def f(X, Y, Alphabet_X, Alphabet_Y):
-                return entropy_joint(np.vstack((X, Y)), fill_value=fill_value, estimator=estimator, Alphabet_X=_vstack_pad_with_fillvalue((Alphabet_X, Alphabet_Y), fill_value))
+                return entropy_joint(np.vstack((X, Y)), fill_value=fill_value,
+                                     estimator=estimator,
+                                     Alphabet_X=_vstack_pad((Alphabet_X,
+                                                             Alphabet_Y),
+                                                            fill_value))
             H = _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
             C = H
@@ -3294,7 +3309,11 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     H = np.reshape(H, (-1, 1))
 
     for i in xrange(X.shape[0]):
-        H[i] = entropy_joint(np.vstack((X[i], Y[i])), base, fill_value, estimator, _vstack_pad_with_fillvalue((Alphabet_X[i], Alphabet_Y[i]), fill_value)) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
+        H[i] = entropy_joint(np.vstack((X[i], Y[i])), base, fill_value,
+                             estimator, _vstack_pad((Alphabet_X[i],
+                                                     Alphabet_Y[i]),
+                                                    fill_value)) - \
+            entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -3457,7 +3476,9 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     alphabet_X = X[:, I]
     if estimator != 'ML':
-        n_additional_empty_bins = _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X, fill_value)
+        n_additional_empty_bins = \
+            _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X,
+                                                    fill_value)
     else:
         n_additional_empty_bins = 0
     L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -4446,7 +4467,7 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
                              "symbols")
 
 
-def _vstack_pad_with_fillvalue(Arrays, fill_value):
+def _vstack_pad(Arrays, fill_value):
     max_length = max([A.shape[-1] for A in Arrays])
     Arrays = [np.append(A, np.tile(fill_value,
                                    np.append(A.shape[:-1],
@@ -4472,4 +4493,4 @@ def _vstack_pad_with_fillvalue(Arrays, fill_value):
 # assertions
 # TODO Test _autocreate_alphabet using None fill_value / add assertions
 # TODO Test _remove_counts_at_fill_value / add assertions
-# TODO Test _vstack_pad_with_fillvalue / add assertions
+# TODO Test _vstack_pad / add assertions
