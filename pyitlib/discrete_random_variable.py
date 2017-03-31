@@ -471,7 +471,8 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
-        \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)
+        \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq
+        \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)
 
     where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of
     random variables specified by :math:`T`. Thus, interaction information is
@@ -632,7 +633,8 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     co-information :math:`I(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
-        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{|T|}  H(X_i : i \in T)
+        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}}
+        (-1)^{|T|}  H(X_i : i \in T)
 
     where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of
     random variables specified by :math:`T`. Thus, co-information is an
@@ -794,9 +796,11 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     information :math:`B(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
-        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)
+        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) -
+        \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)
 
-    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.
+    where :math:`H(\\cdot)` denotes the entropy and where
+    :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.
 
     **Estimation**:
 
@@ -952,9 +956,11 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
     multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
-        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) - H(X_1, \\ldots, X_n)
+        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) -
+        H(X_1, \\ldots, X_n)
 
-    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.
+    where :math:`H(\\cdot)` denotes the entropy and where
+    :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.
 
     **Estimation**:
 
@@ -1086,8 +1092,8 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
 
     **Parameters**:
 
-    X,Y,Z : numpy array (or array-like object such as a list of immutables, as \
-    accepted by np.array())
+    X,Y,Z : numpy array (or array-like object such as a list of immutables, \
+    as accepted by np.array())
         *cartesian_product==False*: X,Y,Z are arrays containing discrete random
         variable realisations, with X.shape==Y.shape==Z.shape. Successive
         realisations of a random variable are indexed by the last axis in the
@@ -1351,7 +1357,8 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
 
     .. math::
         \\begin{eqnarray}
-            L(X;Y) &=& -\\sum_x \\sum_y {P_X(x) P_Y(y) \\log {\\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\\\
+            L(X;Y) &=& -\\sum_x \\sum_y
+            {P_X(x) P_Y(y) \\log {\\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\\\
             &=& D_{\\mathrm{KL}}(P_X P_Y \\parallel P_{XY})
         \\end{eqnarray}
 
@@ -2258,7 +2265,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
 
     Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability
     of observing an outcome :math:`x` with discrete random variables :math:`X`,
-    :math:`Y`, the cross entopy :math:`H^\\times(X,Y)` is defined as:
+    :math:`Y`, the cross entropy :math:`H^\\times(X,Y)` is defined as:
 
     .. math::
         H^\\times(X,Y) = -\\sum_x {P_X(x) \\log {P_Y(x)}}.
@@ -2516,10 +2523,14 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
 
     **Mathematical definition**:
 
-    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, the Kullback-Leibler divergence :math:`D_{\\mathrm{KL}}(P_X \\parallel P_Y)` is defined as:
+    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability
+    of observing an outcome :math:`x` with discrete random variables :math:`X`,
+    :math:`Y`, the Kullback-Leibler divergence
+    :math:`D_{\\mathrm{KL}}(P_X\\parallel P_Y)` is defined as:
 
     .. math::
-        D_{\\mathrm{KL}}(P_X \\parallel P_Y) = -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.
+        D_{\\mathrm{KL}}(P_X \\parallel P_Y) =
+        -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.
 
     **Estimation**:
 
@@ -2657,7 +2668,9 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:
 
     .. math::
-        D_{\\mathrm{JS}}(P_X \\parallel P_Y) = \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)
+        D_{\\mathrm{JS}}(P_X \\parallel P_Y) =
+        \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) +
+        \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)
 
     where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where
     :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
@@ -2730,7 +2743,9 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
             Dirichlet prior (equivalent to maximum likelihood with pseudo-count
             for each outcome as specified).
 
-            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.
+            *PERKS* : Maximum a posteriori esimator using Dirichlet prior
+            (equivalent to maximum likelihood with pseudo-count for each
+            outcome set to 1/L, where L is the number of possible outcomes.
 
             *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior
             (equivalent to maximum likelihood with pseudo-count for each
@@ -2923,9 +2938,12 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
     :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:
 
     .. math::
-        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) = D_{\\mathrm{KL}}(P_X \\parallel P_Y) + D_{\\mathrm{KL}}(P_Y \\parallel P_X)
+        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) =
+        D_{\\mathrm{KL}}(P_X \\parallel P_Y) +
+        D_{\\mathrm{KL}}(P_Y \\parallel P_X)
 
-    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.
+    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
+    Kullback-Leibler divergence.
 
     **Estimation**:
 
@@ -3291,10 +3309,14 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
 
     **Mathematical definition**:
 
-    Denoting with :math:`P(x_1, \\ldots, x_n)` the probability of jointly observing outcomes :math:`(x_1, \\ldots, x_n)` of :math:`n` discrete random variables :math:`(X_1, \ldots, X_n)`, the joint entopy :math:`H(X_1, \\ldots, X_n)` is defined as:
+    Denoting with :math:`P(x_1, \\ldots, x_n)` the probability of jointly
+    observing outcomes :math:`(x_1, \\ldots, x_n)` of :math:`n` discrete random
+    variables :math:`(X_1, \ldots, X_n)`, the joint entropy
+    :math:`H(X_1, \\ldots, X_n)` is defined as:
 
     .. math::
-        H(X_1, \\ldots, X_n) = -\\sum_{x_1} \\ldots \\sum_{x_n} {P(x_1, \\ldots, x_n ) \\log {P(x_1, \\ldots, x_n)}}.
+        H(X_1, \\ldots, X_n) = -\\sum_{x_1} \\ldots \\sum_{x_n}
+        {P(x_1, \\ldots, x_n ) \\log {P(x_1, \\ldots, x_n)}}.
 
     **Estimation**:
 
@@ -3459,8 +3481,8 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     **Mathematical definition**:
 
     Denoting with :math:`P(x)` the probability of observing outcome :math:`x`
-    of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined
-    as:
+    of a discrete random variable :math:`X`, the entropy :math:`H(X)` is
+    defined as:
 
     .. math::
         H(X) = -\\sum_x {P(x) \\log {P(x)}}.
@@ -3634,7 +3656,7 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
     **Mathematical definition**:
 
     Denoting with :math:`P(x)` the probability mass associated with observing
-    an outcome :math:`x` under distribution :math:`P`, the entopy :math:`H(P)`
+    an outcome :math:`x` under distribution :math:`P`, the entropy :math:`H(P)`
     is defined as:
 
     .. math::
@@ -3687,7 +3709,7 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
 
     Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass
     associated with observing an outcome :math:`x` under distributions
-    :math:`P`, :math:`Q`, the cross entopy :math:`H^\\times(P,Q)` is defined
+    :math:`P`, :math:`Q`, the cross entropy :math:`H^\\times(P,Q)` is defined
     as:
 
     .. math::
@@ -3790,7 +3812,8 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
     :math:`D_{\\mathrm{KL}}(P \\parallel Q)` is defined as:
 
     .. math::
-        D_{\\mathrm{KL}}(P \\parallel Q) = -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.
+        D_{\\mathrm{KL}}(P \\parallel Q) =
+        -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.
 
     **Parameters**:
 
@@ -3850,10 +3873,14 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
 
     **Mathematical definition**:
 
-    Denoting with :math:`P`, :math:`Q` probability distributions with common domain, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P \\parallel Q)` is defined as:
+    Denoting with :math:`P`, :math:`Q` probability distributions with common
+    domain, the Jensen-Shannon divergence
+    :math:`D_{\\mathrm{JS}}(P \\parallel Q)` is defined as:
 
     .. math::
-        D_{\\mathrm{JS}}(P \\parallel Q) = \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)
+        D_{\\mathrm{JS}}(P \\parallel Q) =
+        \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) +
+        \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)
 
     where :math:`M = \\frac{1}{2}(P + Q)` and where
     :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
@@ -3954,7 +3981,9 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
     :math:`D_{\\mathrm{SKL}}(P \\parallel Q)` is defined as:
 
     .. math::
-        D_{\\mathrm{SKL}}(P \\parallel Q) = D_{\\mathrm{KL}}(P \\parallel Q) + D_{\\mathrm{KL}}(Q \\parallel P)
+        D_{\\mathrm{SKL}}(P \\parallel Q) =
+        D_{\\mathrm{KL}}(P \\parallel Q) +
+        D_{\\mathrm{KL}}(Q \\parallel P)
 
     where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the
     Kullback-Leibler divergence.
