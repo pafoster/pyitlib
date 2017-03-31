@@ -390,7 +390,9 @@ distributions with common domain, associated with discrete random variables
 <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the Jensen-Shannon divergence
 <span class="math">\(D_{\mathrm{JS}}(P_X \parallel P_Y)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{JS}}(P_X \parallel P_Y) = \frac{1}{2} D_{\mathrm{KL}}(P_X \parallel M) + \frac{1}{2} D_{\mathrm{KL}}(P_Y \parallel M)\]</div>
+\[D_{\mathrm{JS}}(P_X \parallel P_Y) =
+\frac{1}{2} D_{\mathrm{KL}}(P_X \parallel M) +
+\frac{1}{2} D_{\mathrm{KL}}(P_Y \parallel M)\]</div>
 <p>where <span class="math">\(M = \frac{1}{2}(P_X + P_Y)\)</span> and where
 <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the
 Kullback-Leibler divergence.</p>
@@ -455,7 +457,9 @@ values are:</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
-<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</p>
+<p><em>PERKS</em> : Maximum a posteriori esimator using Dirichlet prior
+(equivalent to maximum likelihood with pseudo-count for each
+outcome set to 1/L, where L is the number of possible outcomes.</p>
 <p><em>MINIMAX</em> : Maximum a posteriori esimator using Dirichlet prior
 (equivalent to maximum likelihood with pseudo-count for each
 outcome set to sqrt(N)/L, where N is the total number of
@@ -492,9 +496,13 @@ value -1.</p>
 <dd><p>Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each
 representing a discrete probability distribution.</p>
 <p><strong>Mathematical definition</strong>:</p>
-<p>Denoting with <span class="math">\(P\)</span>, <span class="math">\(Q\)</span> probability distributions with common domain, the Jensen-Shannon divergence <span class="math">\(D_{\mathrm{JS}}(P \parallel Q)\)</span> is defined as:</p>
+<p>Denoting with <span class="math">\(P\)</span>, <span class="math">\(Q\)</span> probability distributions with common
+domain, the Jensen-Shannon divergence
+<span class="math">\(D_{\mathrm{JS}}(P \parallel Q)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{JS}}(P \parallel Q) = \frac{1}{2} D_{\mathrm{KL}}(P \parallel M) + \frac{1}{2} D_{\mathrm{KL}}(Q \parallel M)\]</div>
+\[D_{\mathrm{JS}}(P \parallel Q) =
+\frac{1}{2} D_{\mathrm{KL}}(P \parallel M) +
+\frac{1}{2} D_{\mathrm{KL}}(Q \parallel M)\]</div>
 <p>where <span class="math">\(M = \frac{1}{2}(P + Q)\)</span> and where
 <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the
 Kullback-Leibler divergence.</p>
@@ -544,9 +552,13 @@ to be processed.</dd>
 <dd><p>Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
 X and Y, each containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
-<p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the Kullback-Leibler divergence <span class="math">\(D_{\mathrm{KL}}(P_X \parallel P_Y)\)</span> is defined as:</p>
+<p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability
+of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>,
+<span class="math">\(Y\)</span>, the Kullback-Leibler divergence
+<span class="math">\(D_{\mathrm{KL}}(P_X\parallel P_Y)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{KL}}(P_X \parallel P_Y) = -\sum_x {P_X(x) \log {\frac{P_X(x)}{P_Y(x)}}}.\]</div>
+\[D_{\mathrm{KL}}(P_X \parallel P_Y) =
+-\sum_x {P_X(x) \log {\frac{P_X(x)}{P_Y(x)}}}.\]</div>
 <p><strong>Estimation</strong>:</p>
 <p>Kullback-Leibler divergence is estimated based on frequency tables, using
 the following functions:</p>
@@ -659,7 +671,8 @@ associated with observing an outcome <span class="math">\(x\)</span> under distr
 <span class="math">\(P\)</span>, <span class="math">\(Q\)</span>, the Kullback-Leibler divergence
 <span class="math">\(D_{\mathrm{KL}}(P \parallel Q)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{KL}}(P \parallel Q) = -\sum_x {P(x) \log {\frac{P(x)}{Q(x)}}}.\]</div>
+\[D_{\mathrm{KL}}(P \parallel Q) =
+-\sum_x {P(x) \log {\frac{P(x)}{Q(x)}}}.\]</div>
 <p><strong>Parameters</strong>:</p>
 <dl class="docutils">
 <dt>P, Q <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as     accepted by np.array())</span></dt>
@@ -711,8 +724,11 @@ distributions with common domain, associated with discrete random variables
 <span class="math">\(X\)</span>, <span class="math">\(Y\)</span>, the symmetrised Kullback-Leibler divergence
 <span class="math">\(D_{\mathrm{SKL}}(P_X \parallel P_Y)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{SKL}}(P_X \parallel P_Y) = D_{\mathrm{KL}}(P_X \parallel P_Y) + D_{\mathrm{KL}}(P_Y \parallel P_X)\]</div>
-<p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the Kullback-Leibler divergence.</p>
+\[D_{\mathrm{SKL}}(P_X \parallel P_Y) =
+D_{\mathrm{KL}}(P_X \parallel P_Y) +
+D_{\mathrm{KL}}(P_Y \parallel P_X)\]</div>
+<p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the
+Kullback-Leibler divergence.</p>
 <p><strong>Estimation</strong>:</p>
 <p>Symmetrised Kullback-Leibler divergence is estimated based on frequency
 tables, using the following functions:</p>
@@ -824,7 +840,9 @@ P and Q, each representing a discrete probability distribution.</p>
 domain, the symmetrised Kullback-Leibler divergence
 <span class="math">\(D_{\mathrm{SKL}}(P \parallel Q)\)</span> is defined as:</p>
 <div class="math">
-\[D_{\mathrm{SKL}}(P \parallel Q) = D_{\mathrm{KL}}(P \parallel Q) + D_{\mathrm{KL}}(Q \parallel P)\]</div>
+\[D_{\mathrm{SKL}}(P \parallel Q) =
+D_{\mathrm{KL}}(P \parallel Q) +
+D_{\mathrm{KL}}(Q \parallel P)\]</div>
 <p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the
 Kullback-Leibler divergence.</p>
 <p><strong>Parameters</strong>:</p>
@@ -875,8 +893,8 @@ to be processed.</dd>
 realisations of a discrete random variable.</p>
 <p><strong>Mathematical definition</strong>:</p>
 <p>Denoting with <span class="math">\(P(x)\)</span> the probability of observing outcome <span class="math">\(x\)</span>
-of a discrete random variable <span class="math">\(X\)</span>, the entopy <span class="math">\(H(X)\)</span> is defined
-as:</p>
+of a discrete random variable <span class="math">\(X\)</span>, the entropy <span class="math">\(H(X)\)</span> is
+defined as:</p>
 <div class="math">
 \[H(X) = -\sum_x {P(x) \log {P(x)}}.\]</div>
 <p><strong>Estimation</strong>:</p>
@@ -1073,7 +1091,7 @@ containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
 <p>Denoting with <span class="math">\(P_X(x)\)</span>, <span class="math">\(P_Y(x)\)</span> respectively the probability
 of observing an outcome <span class="math">\(x\)</span> with discrete random variables <span class="math">\(X\)</span>,
-<span class="math">\(Y\)</span>, the cross entopy <span class="math">\(H^\times(X,Y)\)</span> is defined as:</p>
+<span class="math">\(Y\)</span>, the cross entropy <span class="math">\(H^\times(X,Y)\)</span> is defined as:</p>
 <div class="math">
 \[H^\times(X,Y) = -\sum_x {P_X(x) \log {P_Y(x)}}.\]</div>
 <p><strong>Estimation</strong>:</p>
@@ -1177,7 +1195,7 @@ representing a discrete probability distribution.</p>
 <p><strong>Mathematical definition</strong>:</p>
 <p>Denoting with <span class="math">\(P(x)\)</span>, <span class="math">\(Q(x)\)</span> respectively the probability mass
 associated with observing an outcome <span class="math">\(x\)</span> under distributions
-<span class="math">\(P\)</span>, <span class="math">\(Q\)</span>, the cross entopy <span class="math">\(H^\times(P,Q)\)</span> is defined
+<span class="math">\(P\)</span>, <span class="math">\(Q\)</span>, the cross entropy <span class="math">\(H^\times(P,Q)\)</span> is defined
 as:</p>
 <div class="math">
 \[H^\times(P,Q) = -\sum_x {P(x) \log {Q(x)}}.\]</div>
@@ -1226,9 +1244,13 @@ to be processed.</dd>
 <dd><p>Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X
 containing realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
-<p>Denoting with <span class="math">\(P(x_1, \ldots, x_n)\)</span> the probability of jointly observing outcomes <span class="math">\((x_1, \ldots, x_n)\)</span> of <span class="math">\(n\)</span> discrete random variables <span class="math">\((X_1, \ldots, X_n)\)</span>, the joint entopy <span class="math">\(H(X_1, \ldots, X_n)\)</span> is defined as:</p>
+<p>Denoting with <span class="math">\(P(x_1, \ldots, x_n)\)</span> the probability of jointly
+observing outcomes <span class="math">\((x_1, \ldots, x_n)\)</span> of <span class="math">\(n\)</span> discrete random
+variables <span class="math">\((X_1, \ldots, X_n)\)</span>, the joint entropy
+<span class="math">\(H(X_1, \ldots, X_n)\)</span> is defined as:</p>
 <div class="math">
-\[H(X_1, \ldots, X_n) = -\sum_{x_1} \ldots \sum_{x_n} {P(x_1, \ldots, x_n ) \log {P(x_1, \ldots, x_n)}}.\]</div>
+\[H(X_1, \ldots, X_n) = -\sum_{x_1} \ldots \sum_{x_n}
+{P(x_1, \ldots, x_n ) \log {P(x_1, \ldots, x_n)}}.\]</div>
 <p><strong>Estimation</strong>:</p>
 <p>Joint entropy is estimated based on frequency tables. See below for a list
 of available estimators.</p>
@@ -1311,7 +1333,7 @@ value -1.</p>
 discrete probability distribution.</p>
 <p><strong>Mathematical definition</strong>:</p>
 <p>Denoting with <span class="math">\(P(x)\)</span> the probability mass associated with observing
-an outcome <span class="math">\(x\)</span> under distribution <span class="math">\(P\)</span>, the entopy <span class="math">\(H(P)\)</span>
+an outcome <span class="math">\(x\)</span> under distribution <span class="math">\(P\)</span>, the entropy <span class="math">\(H(P)\)</span>
 is defined as:</p>
 <div class="math">
 \[H(P) = -\sum_x {P(x) \log {Q(x)}}.\]</div>
@@ -1439,8 +1461,10 @@ discrete random variables.</p>
 <p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the binding
 information <span class="math">\(B(X_1, \ldots, X_n)\)</span> is defined as:</p>
 <div class="math">
-\[B(X_1, \ldots, X_n) = H(X_1, \ldots, X_n) - \sum_{i=1}^{n} H(X_i | X_1, \ldots X_{i-1}, X_{i+1}, \ldots, X_n)\]</div>
-<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where <span class="math">\(H(\cdot | \cdot)\)</span> denotes the conditional entropy.</p>
+\[B(X_1, \ldots, X_n) = H(X_1, \ldots, X_n) -
+\sum_{i=1}^{n} H(X_i | X_1, \ldots X_{i-1}, X_{i+1}, \ldots, X_n)\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where
+<span class="math">\(H(\cdot | \cdot)\)</span> denotes the conditional entropy.</p>
 <p><strong>Estimation</strong>:</p>
 <p>Binding information is estimated based on frequency tables, using the
 following functions:</p>
@@ -1531,7 +1555,8 @@ realisations of discrete random variables.</p>
 <p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the
 co-information <span class="math">\(I(X_1, \ldots, X_n)\)</span> is defined as:</p>
 <div class="math">
-\[I(X_1, \ldots, X_n) = - \sum_{T \subseteq \{1,\ldots, n\}} (-1)^{|T|}  H(X_i : i \in T)\]</div>
+\[I(X_1, \ldots, X_n) = - \sum_{T \subseteq \{1,\ldots, n\}}
+(-1)^{|T|}  H(X_i : i \in T)\]</div>
 <p>where <span class="math">\(H(X_i : i \in T)\)</span> denotes the joint entropy of the subset of
 random variables specified by <span class="math">\(T\)</span>. Thus, co-information is an
 alternating sum of joint entropies, with the sets of random variables used
@@ -1817,7 +1842,8 @@ containing realisations of discrete random variables.</p>
 <p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the interaction
 information <span class="math">\(\mathrm{Int}(X_1, \ldots, X_n)\)</span> is defined as:</p>
 <div class="math">
-\[\mathrm{Int}(X_1, \ldots, X_n) = - \sum_{T \subseteq \{1,\ldots, n\}} (-1)^{n-|T|}  H(X_i : i \in T)\]</div>
+\[\mathrm{Int}(X_1, \ldots, X_n) = - \sum_{T \subseteq
+\{1,\ldots, n\}} (-1)^{n-|T|}  H(X_i : i \in T)\]</div>
 <p>where <span class="math">\(H(X_i : i \in T)\)</span> denotes the joint entropy of the subset of
 random variables specified by <span class="math">\(T\)</span>. Thus, interaction information is
 an alternating sum of joint entropies, with the sets of random variables
@@ -1921,7 +1947,8 @@ observing outcomes <span class="math">\(x\)</span>, <span class="math">\(y\)</sp
 <span class="math">\(Y\)</span>, the lautum information <span class="math">\(L(X;Y)\)</span> is defined as:</p>
 <div class="math">
 \[\begin{split}\begin{eqnarray}
-    L(X;Y) &amp;=&amp; -\sum_x \sum_y {P_X(x) P_Y(y) \log {\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\
+    L(X;Y) &amp;=&amp; -\sum_x \sum_y
+    {P_X(x) P_Y(y) \log {\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\
     &amp;=&amp; D_{\mathrm{KL}}(P_X P_Y \parallel P_{XY})
 \end{eqnarray}\end{split}\]</div>
 <p>where <span class="math">\(D_{\mathrm{KL}}(\cdot \parallel \cdot)\)</span> denotes the
@@ -2041,8 +2068,10 @@ random variables.</p>
 <p>Given discrete random variables <span class="math">\(X_1, \ldots, X_n\)</span>, the
 multi-information <span class="math">\(T(X_1, \ldots, X_n)\)</span> is defined as:</p>
 <div class="math">
-\[T(X_1, \ldots, X_n) = \left( \sum_{i=1}^{n} H(X_i) \right) - H(X_1, \ldots, X_n)\]</div>
-<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where <span class="math">\(H(\cdot, \ldots, \cdot)\)</span> denotes the joint entropy.</p>
+\[T(X_1, \ldots, X_n) = \left( \sum_{i=1}^{n} H(X_i) \right) -
+H(X_1, \ldots, X_n)\]</div>
+<p>where <span class="math">\(H(\cdot)\)</span> denotes the entropy and where
+<span class="math">\(H(\cdot, \ldots, \cdot)\)</span> denotes the joint entropy.</p>
 <p><strong>Estimation</strong>:</p>
 <p>Multi-information is estimated based on frequency tables, using the
 following functions:</p>
@@ -2266,7 +2295,7 @@ conditional mutual information is a non-negative quantity, depending on the
 chosen estimator the obtained estimate may be negative.</p>
 <p><strong>Parameters</strong>:</p>
 <dl class="docutils">
-<dt>X,Y,Z <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables, as     accepted by np.array())</span></dt>
+<dt>X,Y,Z <span class="classifier-delimiter">:</span> <span class="classifier">numpy array (or array-like object such as a list of immutables,     as accepted by np.array())</span></dt>
 <dd><p class="first"><em>cartesian_product==False</em>: X,Y,Z are arrays containing discrete random
 variable realisations, with X.shape==Y.shape==Z.shape. Successive
 realisations of a random variable are indexed by the last axis in the

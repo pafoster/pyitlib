@@ -522,7 +522,8 @@
 <span class="sd">    information :math:`\\mathrm{Int}(X_1, \\ldots, X_n)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)</span>
+<span class="sd">        \\mathrm{Int}(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq</span>
+<span class="sd">        \\{1,\\ldots, n\\}} (-1)^{n-|T|}  H(X_i : i \in T)</span>
 
 <span class="sd">    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of</span>
 <span class="sd">    random variables specified by :math:`T`. Thus, interaction information is</span>
@@ -683,7 +684,8 @@
 <span class="sd">    co-information :math:`I(X_1, \\ldots, X_n)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}} (-1)^{|T|}  H(X_i : i \in T)</span>
+<span class="sd">        I(X_1, \\ldots, X_n) = - \\sum_{T \\subseteq \\{1,\\ldots, n\\}}</span>
+<span class="sd">        (-1)^{|T|}  H(X_i : i \in T)</span>
 
 <span class="sd">    where :math:`H(X_i : i \in T)` denotes the joint entropy of the subset of</span>
 <span class="sd">    random variables specified by :math:`T`. Thus, co-information is an</span>
@@ -845,9 +847,11 @@
 <span class="sd">    information :math:`B(X_1, \\ldots, X_n)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) - \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)</span>
+<span class="sd">        B(X_1, \\ldots, X_n) = H(X_1, \\ldots, X_n) -</span>
+<span class="sd">        \\sum_{i=1}^{n} H(X_i | X_1, \\ldots X_{i-1}, X_{i+1}, \\ldots, X_n)</span>
 
-<span class="sd">    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.</span>
+<span class="sd">    where :math:`H(\\cdot)` denotes the entropy and where</span>
+<span class="sd">    :math:`H(\\cdot | \\cdot)` denotes the conditional entropy.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -1003,9 +1007,11 @@
 <span class="sd">    multi-information :math:`T(X_1, \\ldots, X_n)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) - H(X_1, \\ldots, X_n)</span>
+<span class="sd">        T(X_1, \\ldots, X_n) = \\left( \\sum_{i=1}^{n} H(X_i) \\right) -</span>
+<span class="sd">        H(X_1, \\ldots, X_n)</span>
 
-<span class="sd">    where :math:`H(\\cdot)` denotes the entropy and where :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.</span>
+<span class="sd">    where :math:`H(\\cdot)` denotes the entropy and where</span>
+<span class="sd">    :math:`H(\\cdot, \\ldots, \\cdot)` denotes the joint entropy.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -1137,8 +1143,8 @@
 
 <span class="sd">    **Parameters**:</span>
 
-<span class="sd">    X,Y,Z : numpy array (or array-like object such as a list of immutables, as \</span>
-<span class="sd">    accepted by np.array())</span>
+<span class="sd">    X,Y,Z : numpy array (or array-like object such as a list of immutables, \</span>
+<span class="sd">    as accepted by np.array())</span>
 <span class="sd">        *cartesian_product==False*: X,Y,Z are arrays containing discrete random</span>
 <span class="sd">        variable realisations, with X.shape==Y.shape==Z.shape. Successive</span>
 <span class="sd">        realisations of a random variable are indexed by the last axis in the</span>
@@ -1402,7 +1408,8 @@
 
 <span class="sd">    .. math::</span>
 <span class="sd">        \\begin{eqnarray}</span>
-<span class="sd">            L(X;Y) &amp;=&amp; -\\sum_x \\sum_y {P_X(x) P_Y(y) \\log {\\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\\\</span>
+<span class="sd">            L(X;Y) &amp;=&amp; -\\sum_x \\sum_y</span>
+<span class="sd">            {P_X(x) P_Y(y) \\log {\\frac{P_X(x) P_Y(y)}{P_{XY}(x,y)}}} \\\\</span>
 <span class="sd">            &amp;=&amp; D_{\\mathrm{KL}}(P_X P_Y \\parallel P_{XY})</span>
 <span class="sd">        \\end{eqnarray}</span>
 
@@ -2309,7 +2316,7 @@
 
 <span class="sd">    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability</span>
 <span class="sd">    of observing an outcome :math:`x` with discrete random variables :math:`X`,</span>
-<span class="sd">    :math:`Y`, the cross entopy :math:`H^\\times(X,Y)` is defined as:</span>
+<span class="sd">    :math:`Y`, the cross entropy :math:`H^\\times(X,Y)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">        H^\\times(X,Y) = -\\sum_x {P_X(x) \\log {P_Y(x)}}.</span>
@@ -2567,10 +2574,14 @@
 
 <span class="sd">    **Mathematical definition**:</span>
 
-<span class="sd">    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability of observing an outcome :math:`x` with discrete random variables :math:`X`, :math:`Y`, the Kullback-Leibler divergence :math:`D_{\\mathrm{KL}}(P_X \\parallel P_Y)` is defined as:</span>
+<span class="sd">    Denoting with :math:`P_X(x)`, :math:`P_Y(x)` respectively the probability</span>
+<span class="sd">    of observing an outcome :math:`x` with discrete random variables :math:`X`,</span>
+<span class="sd">    :math:`Y`, the Kullback-Leibler divergence</span>
+<span class="sd">    :math:`D_{\\mathrm{KL}}(P_X\\parallel P_Y)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{KL}}(P_X \\parallel P_Y) = -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.</span>
+<span class="sd">        D_{\\mathrm{KL}}(P_X \\parallel P_Y) =</span>
+<span class="sd">        -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -2708,7 +2719,9 @@
 <span class="sd">    :math:`D_{\\mathrm{JS}}(P_X \\parallel P_Y)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{JS}}(P_X \\parallel P_Y) = \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)</span>
+<span class="sd">        D_{\\mathrm{JS}}(P_X \\parallel P_Y) =</span>
+<span class="sd">        \\frac{1}{2} D_{\\mathrm{KL}}(P_X \\parallel M) +</span>
+<span class="sd">        \\frac{1}{2} D_{\\mathrm{KL}}(P_Y \\parallel M)</span>
 
 <span class="sd">    where :math:`M = \\frac{1}{2}(P_X + P_Y)` and where</span>
 <span class="sd">    :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the</span>
@@ -2781,7 +2794,9 @@
 <span class="sd">            Dirichlet prior (equivalent to maximum likelihood with pseudo-count</span>
 <span class="sd">            for each outcome as specified).</span>
 
-<span class="sd">            *PERKS* : Maximum a posteriori esimator using Dirichlet prior (equivalent to maximum likelihood with pseudo-count for each outcome set to 1/L, where L is the number of possible outcomes.</span>
+<span class="sd">            *PERKS* : Maximum a posteriori esimator using Dirichlet prior</span>
+<span class="sd">            (equivalent to maximum likelihood with pseudo-count for each</span>
+<span class="sd">            outcome set to 1/L, where L is the number of possible outcomes.</span>
 
 <span class="sd">            *MINIMAX* : Maximum a posteriori esimator using Dirichlet prior</span>
 <span class="sd">            (equivalent to maximum likelihood with pseudo-count for each</span>
@@ -2974,9 +2989,12 @@
 <span class="sd">    :math:`D_{\\mathrm{SKL}}(P_X \\parallel P_Y)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) = D_{\\mathrm{KL}}(P_X \\parallel P_Y) + D_{\\mathrm{KL}}(P_Y \\parallel P_X)</span>
+<span class="sd">        D_{\\mathrm{SKL}}(P_X \\parallel P_Y) =</span>
+<span class="sd">        D_{\\mathrm{KL}}(P_X \\parallel P_Y) +</span>
+<span class="sd">        D_{\\mathrm{KL}}(P_Y \\parallel P_X)</span>
 
-<span class="sd">    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the Kullback-Leibler divergence.</span>
+<span class="sd">    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the</span>
+<span class="sd">    Kullback-Leibler divergence.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -3342,10 +3360,14 @@
 
 <span class="sd">    **Mathematical definition**:</span>
 
-<span class="sd">    Denoting with :math:`P(x_1, \\ldots, x_n)` the probability of jointly observing outcomes :math:`(x_1, \\ldots, x_n)` of :math:`n` discrete random variables :math:`(X_1, \ldots, X_n)`, the joint entopy :math:`H(X_1, \\ldots, X_n)` is defined as:</span>
+<span class="sd">    Denoting with :math:`P(x_1, \\ldots, x_n)` the probability of jointly</span>
+<span class="sd">    observing outcomes :math:`(x_1, \\ldots, x_n)` of :math:`n` discrete random</span>
+<span class="sd">    variables :math:`(X_1, \ldots, X_n)`, the joint entropy</span>
+<span class="sd">    :math:`H(X_1, \\ldots, X_n)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        H(X_1, \\ldots, X_n) = -\\sum_{x_1} \\ldots \\sum_{x_n} {P(x_1, \\ldots, x_n ) \\log {P(x_1, \\ldots, x_n)}}.</span>
+<span class="sd">        H(X_1, \\ldots, X_n) = -\\sum_{x_1} \\ldots \\sum_{x_n}</span>
+<span class="sd">        {P(x_1, \\ldots, x_n ) \\log {P(x_1, \\ldots, x_n)}}.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -3510,8 +3532,8 @@
 <span class="sd">    **Mathematical definition**:</span>
 
 <span class="sd">    Denoting with :math:`P(x)` the probability of observing outcome :math:`x`</span>
-<span class="sd">    of a discrete random variable :math:`X`, the entopy :math:`H(X)` is defined</span>
-<span class="sd">    as:</span>
+<span class="sd">    of a discrete random variable :math:`X`, the entropy :math:`H(X)` is</span>
+<span class="sd">    defined as:</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">        H(X) = -\\sum_x {P(x) \\log {P(x)}}.</span>
@@ -3685,7 +3707,7 @@
 <span class="sd">    **Mathematical definition**:</span>
 
 <span class="sd">    Denoting with :math:`P(x)` the probability mass associated with observing</span>
-<span class="sd">    an outcome :math:`x` under distribution :math:`P`, the entopy :math:`H(P)`</span>
+<span class="sd">    an outcome :math:`x` under distribution :math:`P`, the entropy :math:`H(P)`</span>
 <span class="sd">    is defined as:</span>
 
 <span class="sd">    .. math::</span>
@@ -3738,7 +3760,7 @@
 
 <span class="sd">    Denoting with :math:`P(x)`, :math:`Q(x)` respectively the probability mass</span>
 <span class="sd">    associated with observing an outcome :math:`x` under distributions</span>
-<span class="sd">    :math:`P`, :math:`Q`, the cross entopy :math:`H^\\times(P,Q)` is defined</span>
+<span class="sd">    :math:`P`, :math:`Q`, the cross entropy :math:`H^\\times(P,Q)` is defined</span>
 <span class="sd">    as:</span>
 
 <span class="sd">    .. math::</span>
@@ -3841,7 +3863,8 @@
 <span class="sd">    :math:`D_{\\mathrm{KL}}(P \\parallel Q)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{KL}}(P \\parallel Q) = -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.</span>
+<span class="sd">        D_{\\mathrm{KL}}(P \\parallel Q) =</span>
+<span class="sd">        -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.</span>
 
 <span class="sd">    **Parameters**:</span>
 
@@ -3901,10 +3924,14 @@
 
 <span class="sd">    **Mathematical definition**:</span>
 
-<span class="sd">    Denoting with :math:`P`, :math:`Q` probability distributions with common domain, the Jensen-Shannon divergence :math:`D_{\\mathrm{JS}}(P \\parallel Q)` is defined as:</span>
+<span class="sd">    Denoting with :math:`P`, :math:`Q` probability distributions with common</span>
+<span class="sd">    domain, the Jensen-Shannon divergence</span>
+<span class="sd">    :math:`D_{\\mathrm{JS}}(P \\parallel Q)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{JS}}(P \\parallel Q) = \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) + \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)</span>
+<span class="sd">        D_{\\mathrm{JS}}(P \\parallel Q) =</span>
+<span class="sd">        \\frac{1}{2} D_{\\mathrm{KL}}(P \\parallel M) +</span>
+<span class="sd">        \\frac{1}{2} D_{\\mathrm{KL}}(Q \\parallel M)</span>
 
 <span class="sd">    where :math:`M = \\frac{1}{2}(P + Q)` and where</span>
 <span class="sd">    :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the</span>
@@ -4005,7 +4032,9 @@
 <span class="sd">    :math:`D_{\\mathrm{SKL}}(P \\parallel Q)` is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        D_{\\mathrm{SKL}}(P \\parallel Q) = D_{\\mathrm{KL}}(P \\parallel Q) + D_{\\mathrm{KL}}(Q \\parallel P)</span>
+<span class="sd">        D_{\\mathrm{SKL}}(P \\parallel Q) =</span>
+<span class="sd">        D_{\\mathrm{KL}}(P \\parallel Q) +</span>
+<span class="sd">        D_{\\mathrm{KL}}(Q \\parallel P)</span>
 
 <span class="sd">    where :math:`D_{\\mathrm{KL}}(\\cdot \\parallel \\cdot)` denotes the</span>
 <span class="sd">    Kullback-Leibler divergence.</span>
