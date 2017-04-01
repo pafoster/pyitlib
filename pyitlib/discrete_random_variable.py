@@ -66,22 +66,46 @@ Function                                           Generalises           Non-neg
 ================================================== ===================== ============== ======== ======== =======================
 
 .. rubric:: References
-.. [AbPl12] Abdallah, S.A.; Plumbley, M.D.: A measure of statistical complexity based on predictive information with application to finite spin systems. In: Physics Letters A, Vol. 376, No. 4, 2012, P. 275-281.
-.. [Bell03] Bell, A.J.: The co-information lattice. In: Proceedings of the International Workshop on Independent Component Analysis and Blind Signal Separation. 2003.
-.. [CoTh06] Cover, T.M.; Thomas, J.A.: Elements of information theory (2nd ed.). John Wiley & Sons, 2006.
-.. [Croo15] Crooks, G.E.: On measures of entropy and information. http://threeplusone.com/info, retrieved 2017-03-16.
-.. [GaSa95] Gale, W.A.; Sampson, G.: Good‐Turing frequency estimation without tears. In: Journal of Quantitative Linguistics, Vol. 2, No. 3, 1995, P. 217-237.
-.. [Han78] Han, T.S.: Nonnegative entropy measures of multivariate symmetric correlations. In: Information and Control, Vol. 36, 1978, P. 133-156.
-.. [HaSt09] Hausser, J.; Strimmer, K.: Entropy inference and the James-Stein estimator, with application to nonlinear gene association networks. In: Journal of Machine Learning Research, Vol. 10, 2009, P. 1469-1484.
-.. [JaBr03] Jakulin, A.; Bratko, I.: Quantifying and visualizing attribute interactions. arXiv preprint cs/0308002, 2003.
-.. [JaEC11] James, R.G.; Ellison, C.J.; Crutchfield, J.P.: Anatomy of a bit: Information in a time series observation. In: Chaos: An Interdisciplinary Journal of Nonlinear Science, Vol. 21, No. 3, 2011.
-.. [Lin91] Lin, J.: Divergence measures based on the Shannon entropy. In: IEEE Transactions on Information theory, Vol. 37, No. 1, 1991, P. 145-151.
-.. [Meil03] Meilă, M.: Comparing clusterings by the variation of information. In: Learning theory and kernel machines. Springer, 2003, P. 173-187.
-.. [Murp12] Murphy, K. P.: Machine learning: a probabilistic perspective. MIT press, 2012.
-.. [PaVe08] Palomar, D. P.; Verdú, S.: Lautum information. In: IEEE transactions on information theory, Vol. 54, No. 3, 2008, P. 964-975.
-.. [StVe98] Studený, M.; Vejnarová, J.: The multiinformation function as a tool for measuring stochastic dependence. In: Learning in graphical models. Springer Netherlands, 1998, P. 261-297.
-.. [VeWe06] Verdú, S.; Weissman, T.: Erasure entropy. In: Proc. IEEE International Symposium on Information Theory, 2006, P. 98-102.
-.. [Wata60] Watanabe, S.: Information theoretical analysis of multivariate correlation. In: IBM Journal of research and development, Vol. 4, No. 1, 1960, P. 66-82.
+.. [AbPl12] Abdallah, S.A.; Plumbley, M.D.: A measure of statistical \
+complexity based on predictive information with application to finite spin \
+systems. In: Physics Letters A, Vol. 376, No. 4, 2012, P. 275-281.
+.. [Bell03] Bell, A.J.: The co-information lattice. In: Proceedings of the \
+International Workshop on Independent Component Analysis and Blind Signal \
+Separation. 2003.
+.. [CoTh06] Cover, T.M.; Thomas, J.A.: Elements of information theory \
+(2nd ed.). John Wiley & Sons, 2006.
+.. [Croo15] Crooks, G.E.: On measures of entropy and information. \
+http://threeplusone.com/info, retrieved 2017-03-16.
+.. [GaSa95] Gale, W.A.; Sampson, G.: Good‐Turing frequency estimation \
+without tears. In: Journal of Quantitative Linguistics, \
+Vol. 2, No. 3, 1995, P. 217-237.
+.. [Han78] Han, T.S.: Nonnegative entropy measures of multivariate symmetric \
+correlations. In: Information and Control, Vol. 36, 1978, P. 133-156.
+.. [HaSt09] Hausser, J.; Strimmer, K.: Entropy inference and the James-Stein \
+estimator, with application to nonlinear gene association networks. \
+In: Journal of Machine Learning Research, Vol. 10, 2009, P. 1469-1484.
+.. [JaBr03] Jakulin, A.; Bratko, I.: Quantifying and visualizing attribute \
+interactions. arXiv preprint cs/0308002, 2003.
+.. [JaEC11] James, R.G.; Ellison, C.J.; Crutchfield, J.P.: Anatomy of a bit: \
+Information in a time series observation. In: Chaos: An Interdisciplinary \
+Journal of Nonlinear Science, Vol. 21, No. 3, 2011.
+.. [Lin91] Lin, J.: Divergence measures based on the Shannon entropy. \
+In: IEEE Transactions on Information theory, Vol. 37, No. 1, 1991, P. 145-151.
+.. [Meil03] Meilă, M.: Comparing clusterings by the variation of \
+information. In: Learning theory and kernel machines. \
+Springer, 2003, P. 173-187.
+.. [Murp12] Murphy, K. P.: Machine learning: a probabilistic perspective. \
+MIT press, 2012.
+.. [PaVe08] Palomar, D. P.; Verdú, S.: Lautum information. In: IEEE \
+transactions on information theory, Vol. 54, No. 3, 2008, P. 964-975.
+.. [StVe98] Studený, M.; Vejnarová, J.: The multiinformation function \
+as a tool for measuring stochastic dependence. In: Learning in graphical \
+models. Springer Netherlands, 1998, P. 261-297.
+.. [VeWe06] Verdú, S.; Weissman, T.: Erasure entropy. In: Proc. IEEE \
+International Symposium on Information Theory, 2006, P. 98-102.
+.. [Wata60] Watanabe, S.: Information theoretical analysis of multivariate \
+correlation. In: IBM Journal of research and development, \
+Vol. 4, No. 1, 1960, P. 66-82.
 """
 
 import numpy as np
