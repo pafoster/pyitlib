@@ -4499,8 +4499,6 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
-# TODO What happens if there are no observations due to all data missing? Write
-# some tests to ensure nan is returned?
 # TODO String processing bug observed in SherlockML -- Pokemon challenge
 # TODO should we be testing for string type directly in _sanitise_array_input?
 # -- which types do we need to test for? S a U ? See
