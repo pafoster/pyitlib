@@ -1,6 +1,6 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -24,11 +24,11 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -88,10 +88,10 @@
 <p>This module implements various information-theoretic quantities for discrete
 random variables.</p>
 <p>For ease of reference, function names follow the following convention:</p>
-<p>Function names beginning with &#8220;entropy&#8221; : Entropy measures</p>
-<p>Function names beginning with &#8220;information&#8221; : Mutual information measures</p>
-<p>Function names beginning with &#8220;divergence&#8221; : Divergence measures</p>
-<p>Function names ending with &#8220;pmf&#8221; : Functions operating on arrays of probability
+<p>Function names beginning with “entropy” : Entropy measures</p>
+<p>Function names beginning with “information” : Mutual information measures</p>
+<p>Function names beginning with “divergence” : Divergence measures</p>
+<p>Function names ending with “pmf” : Functions operating on arrays of probability
 mass assignments (as opposed realisations of random variables)</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -113,168 +113,168 @@ mass assignments (as opposed realisations of random variables)</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_jensenshannon" title="discrete_random_variable.divergence_jensenshannon"><code class="xref py py-meth docutils literal"><span class="pre">divergence_jensenshannon()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Square root is a metric</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_jensenshannon_pmf" title="discrete_random_variable.divergence_jensenshannon_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_jensenshannon_pmf()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Square root is a metric</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler" title="discrete_random_variable.divergence_kullbackleibler"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>Yes</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_pmf" title="discrete_random_variable.divergence_kullbackleibler_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_pmf()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>Yes</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised" title="discrete_random_variable.divergence_kullbackleibler_symmetrised"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_symmetrised()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf" title="discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf"><code class="xref py py-meth docutils literal"><span class="pre">divergence_kullbackleibler_symmetrised_pmf()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy" title="discrete_random_variable.entropy"><code class="xref py py-meth docutils literal"><span class="pre">entropy()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_conditional" title="discrete_random_variable.entropy_conditional"><code class="xref py py-meth docutils literal"><span class="pre">entropy_conditional()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_cross" title="discrete_random_variable.entropy_cross"><code class="xref py py-meth docutils literal"><span class="pre">entropy_cross()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_cross_pmf" title="discrete_random_variable.entropy_cross_pmf"><code class="xref py py-meth docutils literal"><span class="pre">entropy_cross_pmf()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_joint" title="discrete_random_variable.entropy_joint"><code class="xref py py-meth docutils literal"><span class="pre">entropy_joint()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.entropy_pmf" title="discrete_random_variable.entropy_pmf"><code class="xref py py-meth docutils literal"><span class="pre">entropy_pmf()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.entropy_residual" title="discrete_random_variable.entropy_residual"><code class="xref py py-meth docutils literal"><span class="pre">entropy_residual()</span></code></a></td>
 <td>information_variation</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_binding" title="discrete_random_variable.information_binding"><code class="xref py py-meth docutils literal"><span class="pre">information_binding()</span></code></a></td>
 <td>information_mutual</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_co" title="discrete_random_variable.information_co"><code class="xref py py-meth docutils literal"><span class="pre">information_co()</span></code></a></td>
 <td>information_mutual</td>
 <td>No</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_enigmatic" title="discrete_random_variable.information_enigmatic"><code class="xref py py-meth docutils literal"><span class="pre">information_enigmatic()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>No</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_exogenous_local" title="discrete_random_variable.information_exogenous_local"><code class="xref py py-meth docutils literal"><span class="pre">information_exogenous_local()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_interaction" title="discrete_random_variable.information_interaction"><code class="xref py py-meth docutils literal"><span class="pre">information_interaction()</span></code></a></td>
 <td>information_mutual</td>
 <td>No</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_lautum" title="discrete_random_variable.information_lautum"><code class="xref py py-meth docutils literal"><span class="pre">information_lautum()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_multi" title="discrete_random_variable.information_multi"><code class="xref py py-meth docutils literal"><span class="pre">information_multi()</span></code></a></td>
 <td>information_mutual</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_mutual" title="discrete_random_variable.information_mutual"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_mutual_conditional" title="discrete_random_variable.information_mutual_conditional"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual_conditional()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#discrete_random_variable.information_mutual_normalised" title="discrete_random_variable.information_mutual_normalised"><code class="xref py py-meth docutils literal"><span class="pre">information_mutual_normalised()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>See docs</td>
 <td>No</td>
 <td>See docs</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#discrete_random_variable.information_variation" title="discrete_random_variable.information_variation"><code class="xref py py-meth docutils literal"><span class="pre">information_variation()</span></code></a></td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
@@ -381,7 +381,7 @@ mass assignments (as opposed realisations of random variables)</p>
 </table>
 <dl class="function">
 <dt id="discrete_random_variable.divergence_jensenshannon">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_jensenshannon</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_jensenshannon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_jensenshannon" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_jensenshannon</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_jensenshannon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_jensenshannon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each
 containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -426,7 +426,7 @@ np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
 (floating point) NaN values. Missing data may be specified using numpy
 masked arrays, as well as using using standard numpy array/array-like
 objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to divergence_jensenshannon(X, X, ... ). Thus,
+<p class="last"><em>Y is None</em>: Equivalent to divergence_jensenshannon(X, X, … ). Thus,
 a shorthand syntax for computing Jensen-Shannon divergence (in bits)
 between all pairs of random variables in X is
 divergence_jensenshannon(X).</p>
@@ -442,10 +442,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -453,7 +453,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -527,7 +527,7 @@ are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==
 returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of
 divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]).
 Neither P nor Q may contain (floating point) NaN values.</p>
-<p class="last"><em>Q is None</em>: Equivalent to divergence_jensenshannon_pmf(P, P, ... ).
+<p class="last"><em>Q is None</em>: Equivalent to divergence_jensenshannon_pmf(P, P, … ).
 Thus, a shorthand syntax for computing Jensen-Shannon divergence (in
 bits) between all pairs of probability distributions in P is
 divergence_jensenshannon_pmf(P).</p>
@@ -548,7 +548,7 @@ to be processed.</dd>
 
 <dl class="function">
 <dt id="discrete_random_variable.divergence_kullbackleibler">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
 X and Y, each containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -596,7 +596,7 @@ np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
 (floating point) NaN values. Missing data may be specified using numpy
 masked arrays, as well as using using standard numpy array/array-like
 objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to divergence_kullbackleibler(X, X, ... ).
+<p class="last"><em>Y is None</em>: Equivalent to divergence_kullbackleibler(X, X, … ).
 Thus, a shorthand syntax for computing Kullback-Leibler divergence (in
 bits) between all pairs of random variables in X is
 divergence_kullbackleibler(X).</p>
@@ -612,10 +612,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -623,7 +623,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -694,7 +694,7 @@ are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==
 returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of
 divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]).
 Neither P nor Q may contain (floating point) NaN values.</p>
-<p class="last"><em>Q is None</em>: Equivalent to divergence_kullbackleibler_pmf(P, P, ... ).
+<p class="last"><em>Q is None</em>: Equivalent to divergence_kullbackleibler_pmf(P, P, … ).
 Thus, a shorthand syntax for computing Kullback-Leibler divergence (in
 bits) between all pairs of probability distributions in P is
 divergence_kullbackleibler_pmf(P).</p>
@@ -715,7 +715,7 @@ to be processed.</dd>
 
 <dl class="function">
 <dt id="discrete_random_variable.divergence_kullbackleibler_symmetrised">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler_symmetrised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler_symmetrised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">divergence_kullbackleibler_symmetrised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#divergence_kullbackleibler_symmetrised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.divergence_kullbackleibler_symmetrised" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
 X and Y, each containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -767,7 +767,7 @@ np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
 masked arrays, as well as using using standard numpy array/array-like
 objects; see below for details.</p>
 <p class="last"><em>Y is None</em>: Equivalent to divergence_kullbackleibler_symmetrised(X, X,
-... ). Thus, a shorthand syntax for computing symmetrised
+… ). Thus, a shorthand syntax for computing symmetrised
 Kullback-Leibler divergence (in bits) between all pairs of random
 variables in X is divergence_kullbackleibler_symmetrised(X).</p>
 </dd>
@@ -782,10 +782,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -793,7 +793,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -867,7 +867,7 @@ returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of
 divergence values with dimensions np.append(P.shape[:-1],Q.shape[:-1]).
 Neither P nor Q may contain (floating point) NaN values.</p>
 <p class="last"><em>Q is None</em>: Equivalent to
-divergence_kullbackleibler_symmetrised_pmf(P, P, ... ). Thus, a
+divergence_kullbackleibler_symmetrised_pmf(P, P, … ). Thus, a
 shorthand syntax for computing symmetrised Kullback-Leibler divergence
 (in bits) between all pairs of probability distributions in P is
 divergence_kullbackleibler_symmetrised_pmf(P).</p>
@@ -888,7 +888,7 @@ to be processed.</dd>
 
 <dl class="function">
 <dt id="discrete_random_variable.entropy">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing
 realisations of a discrete random variable.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -918,10 +918,10 @@ objects; see below for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -929,7 +929,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -967,7 +967,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.entropy_conditional">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_conditional" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_conditional" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y,
 each containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1014,7 +1014,7 @@ dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
 contain (floating point) NaN values. Missing data may be specified
 using numpy masked arrays, as well as using using standard numpy
 array/array-like objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to entropy_conditional(X, X, ... ). Thus, a
+<p class="last"><em>Y is None</em>: Equivalent to entropy_conditional(X, X, … ). Thus, a
 shorthand syntax for computing conditional entropies (in bits) between
 all pairs of random variables in X is entropy_conditional(X).</p>
 </dd>
@@ -1029,10 +1029,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1040,7 +1040,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1085,7 +1085,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.entropy_cross">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_cross</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_cross" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_cross</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_cross" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each
 containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1124,7 +1124,7 @@ np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
 (floating point) NaN values. Missing data may be specified using numpy
 masked arrays, as well as using using standard numpy array/array-like
 objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to entropy_cross(X, X, ... ). Thus, a shorthand
+<p class="last"><em>Y is None</em>: Equivalent to entropy_cross(X, X, … ). Thus, a shorthand
 syntax for computing cross entropies (in bits) between all pairs of
 random variables in X is entropy_cross(X).</p>
 </dd>
@@ -1139,10 +1139,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1150,7 +1150,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1220,7 +1220,7 @@ are paired <strong>many-to-many</strong> between P and Q). When P.ndim==Q.ndim==
 returns a scalar. When P.ndim&gt;1 and Q.ndim&gt;1, returns an array of cross
 entropies with dimensions np.append(P.shape[:-1],Q.shape[:-1]). Neither
 P nor Q may contain (floating point) NaN values.</p>
-<p class="last"><em>Q is None</em>: Equivalent to entropy_cross_pmf(P, P, ... ). Thus, a
+<p class="last"><em>Q is None</em>: Equivalent to entropy_cross_pmf(P, P, … ). Thus, a
 shorthand syntax for computing cross entropies (in bits) between all
 pairs of probability distributions in P is entropy_cross_pmf(P).</p>
 </dd>
@@ -1240,7 +1240,7 @@ to be processed.</dd>
 
 <dl class="function">
 <dt id="discrete_random_variable.entropy_joint">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_joint</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_joint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_joint" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_joint</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_joint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_joint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X
 containing realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1273,10 +1273,10 @@ for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1284,7 +1284,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1358,7 +1358,7 @@ to be processed.</dd>
 
 <dl class="function">
 <dt id="discrete_random_variable.entropy_residual">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_residual</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_residual" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">entropy_residual</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#entropy_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.entropy_residual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated residual entropy [JaEC11] (also known as erasure
 entropy [VeWe06]) for an array X containing realisations of discrete random
 variables.</p>
@@ -1398,10 +1398,10 @@ for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1409,7 +1409,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1453,7 +1453,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_binding">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_binding</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_binding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_binding" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_binding</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_binding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_binding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated binding information [AbPl12] (also known as dual
 total correlation [Han78]) for an array X containing realisations of
 discrete random variables.</p>
@@ -1493,10 +1493,10 @@ numpy array/array-like objects; see below for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1504,7 +1504,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1548,7 +1548,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_co">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_co</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_co"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_co" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_co</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_co"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_co" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated co-information [Bell03] for an array X containing
 realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1594,10 +1594,10 @@ for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1605,7 +1605,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1649,7 +1649,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_enigmatic">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_enigmatic</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_enigmatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_enigmatic" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_enigmatic</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_enigmatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_enigmatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated enigmatic information [JaEC11] for an array X
 containing realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1687,10 +1687,10 @@ numpy array/array-like objects; see below for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1698,7 +1698,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1742,7 +1742,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_exogenous_local">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_exogenous_local</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_exogenous_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_exogenous_local" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_exogenous_local</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_exogenous_local"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_exogenous_local" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated exogenous local information [JaEC11] for an array X
 containing realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1780,10 +1780,10 @@ numpy array/array-like objects; see below for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1791,7 +1791,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1835,7 +1835,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_interaction">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_interaction</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_interaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_interaction" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_interaction</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_interaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_interaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated interaction information [JaBr03] for an array X
 containing realisations of discrete random variables.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1881,10 +1881,10 @@ for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -1892,7 +1892,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -1936,7 +1936,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_lautum">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_lautum</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_lautum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_lautum" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_lautum</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_lautum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_lautum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the lautum information [PaVe08] between arrays X and Y, each
 containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -1989,7 +1989,7 @@ np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
 (floating point) NaN values. Missing data may be specified using numpy
 masked arrays, as well as using using standard numpy array/array-like
 objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to information_lautum(X, X, ... ). Thus, a
+<p class="last"><em>Y is None</em>: Equivalent to information_lautum(X, X, … ). Thus, a
 shorthand syntax for computing lautum information (in bits) between all
 pairs of random variables in X is information_lautum(X).</p>
 </dd>
@@ -2004,10 +2004,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2015,7 +2015,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2060,7 +2060,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_multi">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_multi</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_multi" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_multi</code><span class="sig-paren">(</span><em>X</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_multi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the estimated multi-information [StVe98] (also known as total
 correlation [Wata60]) for an array X containing realisations of discrete
 random variables.</p>
@@ -2100,10 +2100,10 @@ numpy array/array-like objects; see below for details.</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2111,7 +2111,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2155,7 +2155,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_mutual">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y,
 each containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -2202,7 +2202,7 @@ dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
 contain (floating point) NaN values. Missing data may be specified
 using numpy masked arrays, as well as using using standard numpy
 array/array-like objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to information_mutual(X, X, ... ). Thus, a
+<p class="last"><em>Y is None</em>: Equivalent to information_mutual(X, X, … ). Thus, a
 shorthand syntax for computing mutual information (in bits) between all
 pairs of random variables in X is information_mutual(X).</p>
 </dd>
@@ -2217,10 +2217,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2228,7 +2228,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2273,7 +2273,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_mutual_conditional">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>Z</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em>, <em>Alphabet_Z=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_conditional" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_conditional</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>Z</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em>, <em>Alphabet_Z=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_conditional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_conditional" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the conditional mutual information (see e.g. [CoTh06]) between
 arrays X and Y given array Z, each containing discrete random variable
 realisations.</p>
@@ -2333,10 +2333,10 @@ between X,Y,Z (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2344,7 +2344,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2390,7 +2390,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_mutual_normalised">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_normalised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>norm_factor='Y'</em>, <em>cartesian_product=False</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_normalised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_normalised" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_mutual_normalised</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>norm_factor=’Y’</em>, <em>cartesian_product=False</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_mutual_normalised"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_mutual_normalised" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the normalised mutual information between arrays X and Y, each
 containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -2461,13 +2461,13 @@ the supplied string is converted to upper case and spaces are
 discarded. Subsequently, the function tests for one of the following
 string values, each corresponding to an alternative normalisation
 factor as defined above:</p>
-<p><em>&#8216;X&#8217;</em></p>
-<p><em>&#8216;Y&#8217; (the default value)</em></p>
-<p><em>&#8216;X+Y&#8217; (equivalently &#8216;Y+X&#8217;)</em></p>
-<p><em>&#8216;MIN&#8217;</em></p>
-<p><em>&#8216;MAX&#8217;</em></p>
-<p><em>&#8216;XY&#8217; (equivalently YX)</em></p>
-<p class="last"><em>&#8216;SQRT&#8217;</em></p>
+<p><em>‘X’</em></p>
+<p><em>‘Y’ (the default value)</em></p>
+<p><em>‘X+Y’ (equivalently ‘Y+X’)</em></p>
+<p><em>‘MIN’</em></p>
+<p><em>‘MAX’</em></p>
+<p><em>‘XY’ (equivalently YX)</em></p>
+<p class="last"><em>‘SQRT’</em></p>
 </dd>
 <dt>cartesian_product <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
 <dd>Indicates whether random variables are paired <strong>one-to-one</strong> between X
@@ -2478,10 +2478,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2489,7 +2489,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2534,7 +2534,7 @@ value -1.</p>
 
 <dl class="function">
 <dt id="discrete_random_variable.information_variation">
-<code class="descclassname">discrete_random_variable.</code><code class="descname">information_variation</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator='ML'</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_variation" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">discrete_random_variable.</code><code class="descname">information_variation</code><span class="sig-paren">(</span><em>X</em>, <em>Y=None</em>, <em>cartesian_product=False</em>, <em>base=2</em>, <em>fill_value=-1</em>, <em>estimator=’ML’</em>, <em>Alphabet_X=None</em>, <em>Alphabet_Y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/discrete_random_variable.html#information_variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#discrete_random_variable.information_variation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the variation of information [Meil03] between arrays X and Y, each
 containing discrete random variable realisations.</p>
 <p><strong>Mathematical definition</strong>:</p>
@@ -2580,7 +2580,7 @@ dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
 contain (floating point) NaN values. Missing data may be specified
 using numpy masked arrays, as well as using using standard numpy
 array/array-like objects; see below for details.</p>
-<p class="last"><em>Y is None</em>: Equivalent to information_variation(X, X, ... ). Thus, a
+<p class="last"><em>Y is None</em>: Equivalent to information_variation(X, X, … ). Thus, a
 shorthand syntax for computing variation of information (in bits)
 between all pairs of random variables in X is information_variation(X).</p>
 </dd>
@@ -2595,10 +2595,10 @@ between X and Y (cartesian_product==True).</dd>
 well as using using standard numpy array/array-like objects with
 assigned placeholder values. When using numpy masked arrays, this
 function invokes np.ma.filled() internally, so that missing data are
-represented with the array&#8217;s object-internal placeholder value
-fill_value (this function&#8217;s fill_value parameter is ignored in such
+represented with the array’s object-internal placeholder value
+fill_value (this function’s fill_value parameter is ignored in such
 cases). When using standard numpy array/array-like objects, this
-function&#8217;s fill_value parameter is used to specify the placeholder
+function’s fill_value parameter is used to specify the placeholder
 value for missing data (defaults to -1).</p>
 <p class="last">Data equal to the placeholder value are subsequently ignored.</p>
 </dd>
@@ -2606,7 +2606,7 @@ value for missing data (defaults to -1).</p>
 <dd><p class="first">The desired estimator (see above for details on estimators). Possible
 values are:</p>
 <blockquote class="last">
-<div><p><em>&#8216;ML&#8217; (the default value)</em> : Maximum likelihood estimator.</p>
+<div><p><em>‘ML’ (the default value)</em> : Maximum likelihood estimator.</p>
 <p><em>any floating point value</em> : Maximum a posteriori esimator using
 Dirichlet prior (equivalent to maximum likelihood with pseudo-count
 for each outcome as specified).</p>
@@ -2715,7 +2715,7 @@ value -1.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, Peter Foster.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
     </div>
   </body>
 </html>
