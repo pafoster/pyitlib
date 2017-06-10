@@ -4451,9 +4451,10 @@ def _remove_counts_at_fill_value(Counts, Alphabet, fill_value):
 
 
 def _sanitise_array_input(X, fill_value=-1):
-    if isinstance(X, (pd.core.frame.DataFrame,pd.core.series.Series)):
+    if isinstance(X, (pd.core.frame.DataFrame, pd.core.series.Series)):
         # Create masked array, honouring Dataframe/Series missing entries
-        # NB: We transpose for convenience, so that quantities are computed for each column
+        # NB: We transpose for convenience, so that quantities are computed for
+        # each column
         X = np.ma.MaskedArray(X, X.isnull()).T
 
     if isinstance(X, np.ma.MaskedArray):
@@ -4523,4 +4524,5 @@ def _vstack_pad(Arrays, fill_value):
 # TODO Test _remove_counts_at_fill_value / add assertions
 # TODO Test _vstack_pad / add assertions
 # TODO Run some integration tests using a mixed-type DataFrame
-# TODO Run tests using unusual pandas arrangements, such as panels / multi-level Dataframes
+# TODO Run tests using unusual pandas arrangements, such as panels /
+# or multi-level Dataframes
