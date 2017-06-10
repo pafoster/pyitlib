@@ -111,6 +111,7 @@ Vol. 4, No. 1, 1960, P. 66-82.
 import numpy as np
 import sklearn.preprocessing
 import warnings
+import pandas as pd
 
 # Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,
 # prefer flags, convenient defaults for possible interactive use). Focus on
@@ -4450,9 +4451,16 @@ def _remove_counts_at_fill_value(Counts, Alphabet, fill_value):
 
 
 def _sanitise_array_input(X, fill_value=-1):
+    if isinstance(X, (pd.core.frame.DataFrame,pd.core.series.Series)):
+        # Create masked array, honouring Dataframe/Series missing entries
+        # NB: We transpose for convenience, so that quantities are computed for each column
+        X = np.ma.MaskedArray(X, X.isnull()).T
 
     if isinstance(X, np.ma.MaskedArray):
         fill_value = X.fill_value
+
+        if np.any(X == fill_value):
+            warnings.warn("Masked array contains data equal to fill value")
 
         if X.dtype.char == 'S':
             current_dtype_len = int(str(X.dtype).split('S')[1])
@@ -4499,13 +4507,11 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
-# TODO String processing bug observed in SherlockML -- Pokemon challenge
 # TODO should we be testing for string type directly in _sanitise_array_input?
 # -- which types do we need to test for? S a U ? See
 # https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
 # TODO Which data types may we permit explicitly using whitelist? See
 # https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-# TODO Support for pandas (missing data via .isnull()).
 
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
@@ -4516,3 +4522,4 @@ def _vstack_pad(Arrays, fill_value):
 # TODO Test _autocreate_alphabet using None fill_value / add assertions
 # TODO Test _remove_counts_at_fill_value / add assertions
 # TODO Test _vstack_pad / add assertions
+# TODO Run some integration tests using a mixed-type DataFrame

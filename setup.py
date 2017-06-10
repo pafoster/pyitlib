@@ -26,6 +26,7 @@ setup(
     packages=['pyitlib', ],
     zip_safe=False,
     install_requires=[
+        'pandas>=0.20.2'
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
     ],
