@@ -4455,7 +4455,7 @@ def _sanitise_array_input(X, fill_value=-1):
         # Create masked array, honouring Dataframe/Series missing entries
         # NB: We transpose for convenience, so that quantities are computed for
         # each column
-        X = np.ma.MaskedArray(X, X.isnull()).T
+        X = np.ma.MaskedArray(X, X.isnull())
 
     if isinstance(X, np.ma.MaskedArray):
         fill_value = X.fill_value
@@ -4526,3 +4526,4 @@ def _vstack_pad(Arrays, fill_value):
 # TODO Run some integration tests using a mixed-type DataFrame
 # TODO Run tests using unusual pandas arrangements, such as panels /
 # or multi-level Dataframes
+# TODO Document pandas support, noting need for transposition in some cases
