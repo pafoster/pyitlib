@@ -186,20 +186,22 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
         X.ndim>1, returns a scalar based on jointly considering all random
         variables indexed in the array. X may not contain (floating point) NaN
         values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -300,20 +302,22 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
         When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar
         based on jointly considering all random variables indexed in the array.
         X may not contain (floating point) NaN values. Missing data may be
-        specified using numpy masked arrays, as well as using using standard
+        specified using numpy masked arrays, as well as using standard
         numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -413,20 +417,22 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
         When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar
         based on jointly considering all random variables indexed in the array.
         X may not contain (floating point) NaN values. Missing data may be
-        specified using numpy masked arrays, as well as using using standard
+        specified using numpy masked arrays, as well as using standard
         numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -534,20 +540,22 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
         When X.ndim>1, returns a scalar based on jointly considering all random
         variables indexed in the array. X may not contain (floating point) NaN
         values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -696,20 +704,22 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         X.ndim>1, returns a scalar based on jointly considering all random
         variables indexed in the array. X may not contain (floating point) NaN
         values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -852,20 +862,22 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
         When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar
         based on jointly considering all random variables indexed in the array.
         X may not contain (floating point) NaN values. Missing data may be
-        specified using numpy masked arrays, as well as using using standard
+        specified using numpy masked arrays, as well as using standard
         numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -1012,20 +1024,22 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
         When X.ndim==1, returns the scalar 0. When X.ndim>1, returns a scalar
         based on jointly considering all random variables indexed in the array.
         X may not contain (floating point) NaN values. Missing data may be
-        specified using numpy masked arrays, as well as using using standard
+        specified using numpy masked arrays, as well as using standard
         numpy array/array-like objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -1131,7 +1145,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         array of estimated conditional mutual information values with
         dimensions X.shape[:-1]. Neither X nor Y nor Z may contain (floating
         point) NaN values. Missing data may be specified using numpy masked
-        arrays, as well as using using standard numpy array/array-like objects;
+        arrays, as well as using standard numpy array/array-like objects;
         see below for details.
 
         *cartesian_product==True*: X,Y,Z are arrays containing discrete random
@@ -1145,7 +1159,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         information values with dimensions
         np.append(X.shape[:-1],Y.shape[:-1],Z.shape[:-1]). Neither X nor Y nor
         Z may contain (floating point) NaN values. Missing data may be
-        specified using numpy masked arrays, as well as using using standard
+        specified using numpy masked arrays, as well as using standard
         numpy array/array-like objects; see below for details.
     cartesian_product : boolean
         Indicates whether random variables are paired **one-to-one** between
@@ -1154,15 +1168,17 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -1417,7 +1433,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated
         information values with dimensions X.shape[:-1]. Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -1430,7 +1446,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         an array of estimated information values with dimensions
         np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *Y is None*: Equivalent to information_lautum(X, X, ... ). Thus, a
@@ -1443,15 +1459,17 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -1719,7 +1737,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         Y.ndim>1, returns an array of estimated normalised information values
         with dimensions X.shape[:-1]. Neither X nor Y may contain (floating
         point) NaN values. Missing data may be specified using numpy masked
-        arrays, as well as using using standard numpy array/array-like objects;
+        arrays, as well as using standard numpy array/array-like objects;
         see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -1732,7 +1750,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         Y.ndim>1, returns an array of estimated normalised information values
         with dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y
         may contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *Y is None*: Equivalent to information_mutual_normalised(X, X,
@@ -1764,15 +1782,17 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         and Y (cartesian_product==False, the default value) or **many-to-many**
         between X and Y (cartesian_product==True).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -2046,7 +2066,7 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated information values with
         dimensions X.shape[:-1]. Neither X nor Y may contain (floating point)
         NaN values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -2059,7 +2079,7 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated information values with
         dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *Y is None*: Equivalent to information_variation(X, X, ... ). Thus, a
@@ -2072,15 +2092,17 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -2195,7 +2217,7 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated mutual information values with
         dimensions X.shape[:-1]. Neither X nor Y may contain (floating point)
         NaN values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -2208,7 +2230,7 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated mutual information values with
         dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *Y is None*: Equivalent to information_mutual(X, X, ... ). Thus, a
@@ -2221,15 +2243,17 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -2329,7 +2353,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated cross
         entropies with dimensions X.shape[:-1]. Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -2342,7 +2366,7 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         an array of estimated cross entropies with dimensions
         np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *Y is None*: Equivalent to entropy_cross(X, X, ... ). Thus, a shorthand
@@ -2355,15 +2379,17 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -2599,7 +2625,7 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
         scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated
         divergence values with dimensions X.shape[:-1]. Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -2612,7 +2638,7 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
         an array of estimated divergence values with dimensions
         np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *Y is None*: Equivalent to divergence_kullbackleibler(X, X, ... ).
@@ -2626,15 +2652,17 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -2735,7 +2763,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated
         divergence values with dimensions X.shape[:-1]. Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -2748,7 +2776,7 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         an array of estimated divergence values with dimensions
         np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *Y is None*: Equivalent to divergence_jensenshannon(X, X, ... ). Thus,
@@ -2762,15 +2790,17 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -3012,7 +3042,7 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
         scalar. When X.ndim>1 and Y.ndim>1, returns an array of estimated
         divergence values with dimensions X.shape[:-1]. Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -3025,7 +3055,7 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
         an array of estimated divergence values with dimensions
         np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
 
         *Y is None*: Equivalent to divergence_kullbackleibler_symmetrised(X, X,
@@ -3039,15 +3069,17 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -3157,7 +3189,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated conditional entropies with
         dimensions X.shape[:-1]. Neither X nor Y may contain (floating point)
         NaN values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
 
         *cartesian_product==True and Y is not None*: X and Y are arrays
@@ -3170,7 +3202,7 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
         Y.ndim>1, returns an array of estimated conditional entropies with
         dimensions np.append(X.shape[:-1],Y.shape[:-1]). Neither X nor Y may
         contain (floating point) NaN values. Missing data may be specified
-        using numpy masked arrays, as well as using using standard numpy
+        using numpy masked arrays, as well as using standard numpy
         array/array-like objects; see below for details.
 
         *Y is None*: Equivalent to entropy_conditional(X, X, ... ). Thus, a
@@ -3183,15 +3215,17 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -3378,20 +3412,22 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         X.ndim>1, returns a scalar based on jointly considering all random
         variables indexed in the array. X may not contain (floating point) NaN
         values. Missing data may be specified using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects; see below
+        well as using standard numpy array/array-like objects; see below
         for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -3548,20 +3584,22 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         When X.ndim==1, returns a scalar. When X.ndim>1, returns an array of
         estimated entropies with dimensions X.shape[:-1].  X may not contain
         (floating point) NaN values. Missing data may be specified using numpy
-        masked arrays, as well as using using standard numpy array/array-like
+        masked arrays, as well as using standard numpy array/array-like
         objects; see below for details.
     base : float
         The desired logarithmic base (default 2).
     fill_value : object
-        It is possible to specify missing data using numpy masked arrays, as
-        well as using using standard numpy array/array-like objects with
-        assigned placeholder values. When using numpy masked arrays, this
-        function invokes np.ma.filled() internally, so that missing data are
-        represented with the array's object-internal placeholder value
-        fill_value (this function's fill_value parameter is ignored in such
-        cases). When using standard numpy array/array-like objects, this
-        function's fill_value parameter is used to specify the placeholder
-        value for missing data (defaults to -1).
+        It is possible to specify missing data using numpy masked arrays,
+        pandas Series/DataFrames, as well as using standard numpy
+        array/array-like objects with assigned placeholder values. When using
+        numpy masked arrays, this function invokes np.ma.filled() internally,
+        so that missing data are represented with the array's object-internal
+        placeholder value fill_value (this function's fill_value parameter is
+        ignored in such cases). When using pandas Series/DataFrames, an initial
+        conversion to a numpy masked array is performed. When using standard
+        numpy array/array-like objects, this function's fill_value parameter is
+        used to specify the placeholder value for missing data (defaults to
+        -1).
 
         Data equal to the placeholder value are subsequently ignored.
     estimator : str or float
@@ -4526,4 +4564,5 @@ def _vstack_pad(Arrays, fill_value):
 # TODO Run some integration tests using a mixed-type DataFrame
 # TODO Run tests using unusual pandas arrangements, such as panels /
 # or multi-level Dataframes
-# TODO Document pandas support, noting need for transposition in some cases
+# TODO Also add pandas (incl. missing data support) note to README
+# TODO NB: pandas README examples must include transposition
