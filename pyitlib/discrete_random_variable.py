@@ -4501,8 +4501,9 @@ def _sanitise_array_input(X, fill_value=-1):
         if np.any(X == fill_value):
             warnings.warn("Masked array contains data equal to fill value")
 
-        if X.dtype.char == 'S':
-            current_dtype_len = int(str(X.dtype).split('S')[1])
+        if X.dtype.kind in ('S', 'U'):
+            kind = X.dtype.kind
+            current_dtype_len = int(X.dtype.str.split(kind)[1])
             if current_dtype_len < len(fill_value):
                 # Fix numpy's broken array string type behaviour which causes
                 # X.filled() placeholder entries to be no longer than
@@ -4510,7 +4511,7 @@ def _sanitise_array_input(X, fill_value=-1):
                 warnings.warn("Changing numpy array dtype internally to "
                               "accommodate fill_value string length")
                 M = X.mask
-                X = np.array(X.filled(), dtype='S'+str(len(fill_value)))
+                X = np.array(X.filled(), dtype=kind+str(len(fill_value)))
                 X[M] = fill_value
             else:
                 X = X.filled()
@@ -4518,6 +4519,9 @@ def _sanitise_array_input(X, fill_value=-1):
             X = X.filled()
     else:
         X = np.array(X, copy=False)
+
+    if X.dtype.kind not in 'biufcmMOSUV':
+        raise TypeError("Unsupported array dtype")
 
     if X.size == 1 and X.ndim == 0:
         X = np.array((X, ))
@@ -4546,12 +4550,6 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
-# TODO should we be testing for string type directly in _sanitise_array_input?
-# -- which types do we need to test for? S a U ? See
-# https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-# TODO Which data types may we permit explicitly using whitelist? See
-# https://docs.scipy.org/doc/numpy/reference/arrays.dtypes.html
-
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
 # TODO Test _determine_number_additional_empty_bins using None fill_value etc.
@@ -4566,3 +4564,4 @@ def _vstack_pad(Arrays, fill_value):
 # or multi-level Dataframes
 # TODO Also add pandas (incl. missing data support) note to README
 # TODO NB: pandas README examples must include transposition
+# TODO Add axis and keepdims parameters for all functions?
