@@ -145,7 +145,7 @@ import pandas as pd
 
 
 def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
-                     Alphabet_X=None):
+                     Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated residual entropy [JaEC11] (also known as erasure
     entropy [VeWe06]) for an array X containing realisations of discrete random
@@ -258,12 +258,17 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
     """
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
 
-    return H_joint - information_binding(X, base, fill_value, estimator,
-                                         Alphabet_X)
+    R = H_joint - information_binding(X, base, fill_value, estimator,
+                                      Alphabet_X)
+
+    if keep_dims:
+        R = R[..., np.newaxis]
+
+    return R
 
 
 def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
-                                Alphabet_X=None):
+                                Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated exogenous local information [JaEC11] for an array X
     containing realisations of discrete random variables.
@@ -371,12 +376,17 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
     internal conversion step, supply integer data and use the default fill
     value -1.
     """
-    return information_binding(X, base, fill_value, estimator, Alphabet_X) + \
+    W = information_binding(X, base, fill_value, estimator, Alphabet_X) + \
         information_multi(X, base, fill_value, estimator, Alphabet_X)
+
+    if keep_dims:
+        W = W[..., np.newaxis]
+
+    return W
 
 
 def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
-                          Alphabet_X=None):  # See `Anatomy of a bit'. Include?
+                          Alphabet_X=None, keep_dims=False):
     # Note: can be negative
     # Note: equals multivariate mutual information when N=3, can test for this
     """
@@ -486,12 +496,17 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
     internal conversion step, supply integer data and use the default fill
     value -1.
     """
-    return information_multi(X, base, fill_value, estimator, Alphabet_X) - \
+    Q = information_multi(X, base, fill_value, estimator, Alphabet_X) - \
         information_binding(X, base, fill_value, estimator, Alphabet_X)
+
+    if keep_dims:
+        Q = Q[..., np.newaxis]
+
+    return Q
 
 
 def information_interaction(X, base=2, fill_value=-1, estimator='ML',
-                            Alphabet_X=None):
+                            Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated interaction information [JaBr03] for an array X
     containing realisations of discrete random variables.
@@ -652,10 +667,14 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
             entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
         M = _increment_binary_vector(M)
 
+    if keep_dims:
+        I = I[..., np.newaxis]
+
     return I
 
 
-def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
+                   keep_dims=False):
     """
     Returns the estimated co-information [Bell03] for an array X containing
     realisations of discrete random variables.
@@ -817,11 +836,14 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
             entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
         M = _increment_binary_vector(M)
 
+    if keep_dims:
+        I = I[..., np.newaxis]
+
     return I
 
 
 def information_binding(X, base=2, fill_value=-1, estimator='ML',
-                        Alphabet_X=None):
+                        Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated binding information [AbPl12] (also known as dual
     total correlation [Han78]) for an array X containing realisations of
@@ -979,11 +1001,14 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
             B += entropy_joint(X[M != i], base, fill_value, estimator,
                                Alphabet_X[M != i])
 
+    if keep_dims:
+        B = B[..., np.newaxis]
+
     return B
 
 
 def information_multi(X, base=2, fill_value=-1, estimator='ML',
-                      Alphabet_X=None):
+                      Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated multi-information [StVe98] (also known as total
     correlation [Wata60]) for an array X containing realisations of discrete
@@ -1096,13 +1121,18 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
 
-    return np.sum(H) - H_joint
+    T = np.sum(H) - H_joint
+
+    if keep_dims:
+        T = T[..., np.newaxis]
+
+    return T
 
 
 def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
                                    fill_value=-1, estimator='ML',
                                    Alphabet_X=None, Alphabet_Y=None,
-                                   Alphabet_Z=None):
+                                   Alphabet_Z=None, keep_dims=False):
     """
     Returns the conditional mutual information (see e.g. [CoTh06]) between
     arrays X and Y given array Z, each containing discrete random variable
@@ -1377,14 +1407,15 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     # Reverse re-shaping
     I = np.reshape(I, orig_shape_I)
 
-    return I
+    if keep_dims and not cartesian_product:
+        I = I[..., np.newaxis]
 
-    pass
+    return I
 
 
 def information_lautum(X, Y=None, cartesian_product=False, base=2,
                        fill_value=-1, estimator='ML', Alphabet_X=None,
-                       Alphabet_Y=None):
+                       Alphabet_Y=None, keep_dims=False):
     """
     Returns the lautum information [PaVe08] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -1671,13 +1702,16 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
 
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
     return H
 
 
 def information_mutual_normalised(X, Y=None, norm_factor='Y',
                                   cartesian_product=False, fill_value=-1,
                                   estimator='ML', Alphabet_X=None,
-                                  Alphabet_Y=None):
+                                  Alphabet_Y=None, keep_dims=False):
     # TODO Documentation should include properties for each of the
     # normalisation factors
     """
@@ -2019,12 +2053,17 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     else:
         raise ValueError("arg norm_factor has invalid value")
 
-    return I / C
+    I = I / C
+
+    if keep_dims and not cartesian_product:
+        I = I[..., np.newaxis]
+
+    return I
 
 
 def information_variation(X, Y=None, cartesian_product=False, base=2,
                           fill_value=-1, estimator='ML', Alphabet_X=None,
-                          Alphabet_Y=None):
+                          Alphabet_Y=None, keep_dims=False):
     """
     Returns the variation of information [Meil03] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2169,12 +2208,18 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
 
     if cartesian_product:
         H2 = H2.T
-    return H1 + H2
+
+    H = H1 + H2
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def information_mutual(X, Y=None, cartesian_product=False, base=2,
                        fill_value=-1, estimator='ML', Alphabet_X=None,
-                       Alphabet_Y=None):
+                       Alphabet_Y=None, keep_dims=False):
     """
     Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y,
     each containing discrete random variable realisations.
@@ -2316,11 +2361,18 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
     H = np.reshape(H, np.append(H.shape,
                                 np.ones(H_conditional.ndim -
                                         H.ndim)).astype('int'))
-    return H - H_conditional
+
+    H = H - H_conditional
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
-                  estimator='ML', Alphabet_X=None, Alphabet_Y=None):
+                  estimator='ML', Alphabet_X=None, Alphabet_Y=None,
+                  keep_dims=False):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2577,12 +2629,15 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
 
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
     return H
 
 
 def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
                                fill_value=-1, estimator='ML', Alphabet_X=None,
-                               Alphabet_Y=None):
+                               Alphabet_Y=None, keep_dims=False):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
     X and Y, each containing discrete random variable realisations.
@@ -2718,12 +2773,18 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
 
     H = np.reshape(H, np.append(H.shape,
                                 np.ones(H_cross.ndim-H.ndim)).astype('int'))
-    return H_cross - H
+
+    H = H_cross - H
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
                              fill_value=-1, estimator='ML', Alphabet_X=None,
-                             Alphabet_Y=None):
+                             Alphabet_Y=None, keep_dims=False):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2989,13 +3050,16 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
 
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
     return H
 
 
 def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
                                            base=2, fill_value=-1,
                                            estimator='ML', Alphabet_X=None,
-                                           Alphabet_Y=None):
+                                           Alphabet_Y=None, keep_dims=False):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
     X and Y, each containing discrete random variable realisations.
@@ -3141,12 +3205,18 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
 
     if cartesian_product:
         H2 = H2.T
-    return H1 + H2
+
+    H = H1 + H2
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
                         fill_value=-1, estimator='ML', Alphabet_X=None,
-                        Alphabet_Y=None):
+                        Alphabet_Y=None, keep_dims=False):
     """
     Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y,
     each containing discrete random variable realisations.
@@ -3377,10 +3447,14 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
 
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
     return H
 
 
-def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
+                  keep_dims=False):
     """
     Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X
     containing realisations of discrete random variables.
@@ -3552,10 +3626,14 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
         -np.log2(P_0 + np.spacing(0)) / np.log2(base)
     H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
 
+    if keep_dims:
+        H = H[..., np.newaxis]
+
     return H
 
 
-def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
+def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
+            keep_dims=False):
     """
     Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing
     realisations of a discrete random variable.
@@ -3729,10 +3807,13 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None):
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
 
+    if keep_dims:
+        H = H[..., np.newaxis]
+
     return H
 
 
-def entropy_pmf(P, base=2, require_valid_pmf=True):
+def entropy_pmf(P, base=2, require_valid_pmf=True, keep_dims=False):
     """
     Returns the entropy (see e.g. [CoTh06]) of an array P representing a
     discrete probability distribution.
@@ -3780,11 +3861,14 @@ def entropy_pmf(P, base=2, require_valid_pmf=True):
     H = -np.sum(P * np.log2(P + np.spacing(0)), axis=-1)
     H = H / np.log2(base)
 
+    if keep_dims:
+        H = H[..., np.newaxis]
+
     return H
 
 
 def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
-                      require_valid_pmf=True):
+                      require_valid_pmf=True, keep_dims=False):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each
     representing a discrete probability distribution.
@@ -3879,11 +3963,14 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
     H = -np.sum(H, axis=-1)
     H = H / np.log2(base)
 
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
     return H
 
 
 def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
-                                   require_valid_pmf=True):
+                                   require_valid_pmf=True, keep_dims=False):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
     P and Q, each representing a discrete probability distribution.
@@ -3946,11 +4033,16 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
     H = np.reshape(H, np.append(H.shape,
                                 np.ones(H_cross.ndim-H.ndim)).astype('int'))
 
-    return H_cross - H
+    H = H_cross - H
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
-                                 require_valid_pmf=True):
+                                 require_valid_pmf=True, keep_dims=False):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each
     representing a discrete probability distribution.
@@ -4047,13 +4139,19 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
         return _cartesian_product_apply(P, Q, f)
 
     H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
-    return H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - \
+    H = H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - \
         0.5*entropy_pmf(Q, base, require_valid_pmf)
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
                                                cartesian_product=False, base=2,
-                                               require_valid_pmf=True):
+                                               require_valid_pmf=True,
+                                               keep_dims=False):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
     P and Q, each representing a discrete probability distribution.
@@ -4124,7 +4222,13 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
 
     if cartesian_product:
         H2 = H2.T
-    return H1 + H2
+
+    H = H1 + H2
+
+    if keep_dims and not cartesian_product:
+        H = H[..., np.newaxis]
+
+    return H
 
 
 def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet,
@@ -4564,4 +4668,4 @@ def _vstack_pad(Arrays, fill_value):
 # or multi-level Dataframes
 # TODO Also add pandas (incl. missing data support) note to README
 # TODO NB: pandas README examples must include transposition
-# TODO Add axis and keepdims parameters for all functions?
+# TODO Add axis and keep_dims parameters for all functions?
