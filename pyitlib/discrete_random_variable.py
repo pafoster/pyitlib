@@ -247,6 +247,9 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -368,6 +371,9 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -488,6 +494,9 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -616,6 +625,9 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -784,6 +796,9 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -945,6 +960,9 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -1110,6 +1128,9 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -1256,6 +1277,10 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         Alphabet_X=Alphabet_Y=Alphabet_Z=np.array(((1,2)) implies an alphabet
         of possible joint outcomes
         np.array((1,1,1,1,2,2,2,2),((1,1,2,2,1,1,2,2),(1,2,1,2,1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -1547,6 +1572,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         in Alphabet_X, Alphabet_Y. For example, specifying
         Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -1873,6 +1902,10 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         in Alphabet_X, Alphabet_Y. For example, specifying
         Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -2188,6 +2221,10 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
         in Alphabet_X, Alphabet_Y. For example, specifying
         Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -2345,6 +2382,10 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
         in Alphabet_X, Alphabet_Y. For example, specifying
         Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -2482,6 +2523,10 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
         different sizes may be specified either using numpy masked arrays, or
         by padding with the chosen placeholder fill_value.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -2758,6 +2803,10 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
         X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
         different sizes may be specified either using numpy masked arrays, or
         by padding with the chosen placeholder fill_value.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -2902,6 +2951,10 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
         different sizes may be specified either using numpy masked arrays, or
         by padding with the chosen placeholder fill_value.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -3184,6 +3237,10 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
         X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
         different sizes may be specified either using numpy masked arrays, or
         by padding with the chosen placeholder fill_value.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -3342,6 +3399,10 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
         in Alphabet_X, Alphabet_Y. For example, specifying
         Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
 
     **Implementation notes**:
 
@@ -3547,6 +3608,9 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
         outcomes in Alphabet_X. For example, specifying
         Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
         joint outcomes np.array(((1,1,2,2),(1,2,1,2))).
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -3717,6 +3781,9 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
         X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may
         be specified either using numpy masked arrays, or by padding with the
         chosen placeholder fill_value.
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
 
     **Implementation notes**:
 
@@ -3841,9 +3908,12 @@ def entropy_pmf(P, base=2, require_valid_pmf=True, keep_dims=False):
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass
-        assignments in each distribution sum to 1. When set to false, no such
+        assignments in each distribution sum to 1. When set to False, no such
         test is performed, thus allowing incomplete probability distributions
         to be processed.
+    keep_dims : When set to True, an additional dimension of length one is
+        appended to the returned array, facilitating any broadcast operations
+        required by the user (defaults to False).
     """
     P, _ = _sanitise_array_input(P)
 
@@ -3918,9 +3988,13 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass
-        assignments in each distribution sum to 1. When set to false, no such
+        assignments in each distribution sum to 1. When set to False, no such
         test is performed, thus allowing incomplete probability distributions
         to be processed.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
     """
     if Q is None:
         Q = P
@@ -4022,9 +4096,13 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass
-        assignments in each distribution sum to 1. When set to false, no such
+        assignments in each distribution sum to 1. When set to False, no such
         test is performed, thus allowing incomplete probability distributions
         to be processed.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
     """
     H_cross = entropy_cross_pmf(P, Q, cartesian_product, base,
                                 require_valid_pmf)
@@ -4098,9 +4176,13 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass
-        assignments in each distribution sum to 1. When set to false, no such
+        assignments in each distribution sum to 1. When set to False, no such
         test is performed, thus allowing incomplete probability distributions
         to be processed.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
     """
     if Q is None:
         Q = P
@@ -4207,9 +4289,13 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
         The desired logarithmic base (default 2).
     require_valid_pmf : boolean
         When set to True (the default value), verifies that probability mass
-        assignments in each distribution sum to 1. When set to false, no such
+        assignments in each distribution sum to 1. When set to False, no such
         test is performed, thus allowing incomplete probability distributions
         to be processed.
+    keep_dims : When set to True and cartesian_product==False
+        an additional dimension of length one is appended to the returned
+        array, facilitating any broadcast operations required by the user
+        (defaults to False). Has no effect when cartesian_product==True.
     """
     if Q is None:
         Q = P
@@ -4654,8 +4740,7 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
-#TODO Document keep_dims
-#TODO Add tests for keep_dims
+# TODO Add tests for keep_dims
 
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
