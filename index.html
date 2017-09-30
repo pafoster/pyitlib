@@ -484,10 +484,11 @@ may be specified using preceding axes, with the requirement
 X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
 different sizes may be specified either using numpy masked arrays, or
 by padding with the chosen placeholder fill_value.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -549,10 +550,11 @@ between P and Q (cartesian_product==False, the default value) or
 assignments in each distribution sum to 1. When set to False, no such
 test is performed, thus allowing incomplete probability distributions
 to be processed.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 </dd></dl>
 
@@ -664,10 +666,11 @@ may be specified using preceding axes, with the requirement
 X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
 different sizes may be specified either using numpy masked arrays, or
 by padding with the chosen placeholder fill_value.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -726,10 +729,11 @@ between P and Q (cartesian_product==False, the default value) or
 assignments in each distribution sum to 1. When set to False, no such
 test is performed, thus allowing incomplete probability distributions
 to be processed.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 </dd></dl>
 
@@ -844,10 +848,11 @@ may be specified using preceding axes, with the requirement
 X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
 different sizes may be specified either using numpy masked arrays, or
 by padding with the chosen placeholder fill_value.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -909,10 +914,11 @@ between P and Q (cartesian_product==False, the default value) or
 assignments in each distribution sum to 1. When set to False, no such
 test is performed, thus allowing incomplete probability distributions
 to be processed.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 </dd></dl>
 
@@ -989,9 +995,10 @@ alphabets may be specified using preceding axes, with the requirement
 X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may
 be specified either using numpy masked arrays, or by padding with the
 chosen placeholder fill_value.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1112,10 +1119,11 @@ in Alphabet_X, Alphabet_Y. For example, specifying
 Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1222,10 +1230,11 @@ may be specified using preceding axes, with the requirement
 X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of
 different sizes may be specified either using numpy masked arrays, or
 by padding with the chosen placeholder fill_value.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1282,10 +1291,11 @@ between P and Q (cartesian_product==False, the default value) or
 assignments in each distribution sum to 1. When set to False, no such
 test is performed, thus allowing incomplete probability distributions
 to be processed.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 </dd></dl>
 
@@ -1371,9 +1381,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1409,9 +1420,10 @@ point) NaN values.</dd>
 assignments in each distribution sum to 1. When set to False, no such
 test is performed, thus allowing incomplete probability distributions
 to be processed.</dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 </dd></dl>
 
@@ -1504,9 +1516,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1604,9 +1617,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1710,9 +1724,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1808,9 +1823,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -1906,9 +1922,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2012,9 +2029,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2141,10 +2159,11 @@ in Alphabet_X, Alphabet_Y. For example, specifying
 Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2242,9 +2261,10 @@ outcomes in Alphabet_X. For example, specifying
 Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True, an additional dimension of length one is</span></dt>
-<dd>appended to the returned array, facilitating any broadcast operations
-required by the user (defaults to False).</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True, an additional dimension of length one is appended to
+the returned array, facilitating any broadcast operations required by
+the user (defaults to False).</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2365,10 +2385,11 @@ in Alphabet_X, Alphabet_Y. For example, specifying
 Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2488,10 +2509,11 @@ Alphabet_X=Alphabet_Y=Alphabet_Z=np.array(((1,2)) implies an alphabet
 of possible joint outcomes
 np.array((1,1,1,1,2,2,2,2),((1,1,2,2,1,1,2,2),(1,2,1,2,1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2638,10 +2660,11 @@ in Alphabet_X, Alphabet_Y. For example, specifying
 Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
@@ -2761,10 +2784,11 @@ in Alphabet_X, Alphabet_Y. For example, specifying
 Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible
 joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</p>
 </dd>
-<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">When set to True and cartesian_product==False</span></dt>
-<dd>an additional dimension of length one is appended to the returned
-array, facilitating any broadcast operations required by the user
-(defaults to False). Has no effect when cartesian_product==True.</dd>
+<dt>keep_dims <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
+<dd>When set to True and cartesian_product==False an additional dimension
+of length one is appended to the returned array, facilitating any
+broadcast operations required by the user (defaults to False). Has no
+effect when cartesian_product==True.</dd>
 </dl>
 <p><strong>Implementation notes</strong>:</p>
 <p>Before estimation, outcomes are mapped to the set of non-negative integers
