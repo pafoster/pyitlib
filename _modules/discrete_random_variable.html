@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="entropy_residual"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_residual">[docs]</a><span class="k">def</span> <span class="nf">entropy_residual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                     <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                     <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated residual entropy [JaEC11] (also known as erasure</span>
 <span class="sd">    entropy [VeWe06]) for an array X containing realisations of discrete random</span>
@@ -298,6 +298,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -309,12 +312,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">H_joint</span> <span class="o">=</span> <span class="n">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">H_joint</span> <span class="o">-</span> <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span>
-                                         <span class="n">Alphabet_X</span><span class="p">)</span></div>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">H_joint</span> <span class="o">-</span> <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span>
+                                      <span class="n">Alphabet_X</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">R</span></div>
 
 
 <div class="viewcode-block" id="information_exogenous_local"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_exogenous_local">[docs]</a><span class="k">def</span> <span class="nf">information_exogenous_local</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                                <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated exogenous local information [JaEC11] for an array X</span>
 <span class="sd">    containing realisations of discrete random variables.</span>
@@ -414,6 +422,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -422,12 +433,17 @@
 <span class="sd">    internal conversion step, supply integer data and use the default fill</span>
 <span class="sd">    value -1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span> <span class="o">+</span> \
-        <span class="n">information_multi</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span></div>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span> <span class="o">+</span> \
+        <span class="n">information_multi</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">W</span></div>
 
 
 <div class="viewcode-block" id="information_enigmatic"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_enigmatic">[docs]</a><span class="k">def</span> <span class="nf">information_enigmatic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                          <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># See `Anatomy of a bit&#39;. Include?</span>
+                          <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="c1"># Note: can be negative</span>
     <span class="c1"># Note: equals multivariate mutual information when N=3, can test for this</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -529,6 +545,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -537,12 +556,17 @@
 <span class="sd">    internal conversion step, supply integer data and use the default fill</span>
 <span class="sd">    value -1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">information_multi</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span> <span class="o">-</span> \
-        <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span></div>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">information_multi</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span> <span class="o">-</span> \
+        <span class="n">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">Q</span></div>
 
 
 <div class="viewcode-block" id="information_interaction"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_interaction">[docs]</a><span class="k">def</span> <span class="nf">information_interaction</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                            <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                            <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated interaction information [JaBr03] for an array X</span>
 <span class="sd">    containing realisations of discrete random variables.</span>
@@ -652,6 +676,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -703,10 +730,14 @@
             <span class="n">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">M</span><span class="p">],</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">[</span><span class="n">M</span><span class="p">])</span>
         <span class="n">M</span> <span class="o">=</span> <span class="n">_increment_binary_vector</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">I</span></div>
 
 
-<div class="viewcode-block" id="information_co"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_co">[docs]</a><span class="k">def</span> <span class="nf">information_co</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="information_co"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_co">[docs]</a><span class="k">def</span> <span class="nf">information_co</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated co-information [Bell03] for an array X containing</span>
 <span class="sd">    realisations of discrete random variables.</span>
@@ -816,6 +847,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -868,11 +902,14 @@
             <span class="n">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">M</span><span class="p">],</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">[</span><span class="n">M</span><span class="p">])</span>
         <span class="n">M</span> <span class="o">=</span> <span class="n">_increment_binary_vector</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">I</span></div>
 
 
 <div class="viewcode-block" id="information_binding"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_binding">[docs]</a><span class="k">def</span> <span class="nf">information_binding</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                        <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                        <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated binding information [AbPl12] (also known as dual</span>
 <span class="sd">    total correlation [Han78]) for an array X containing realisations of</span>
@@ -974,6 +1011,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -1030,11 +1070,14 @@
             <span class="n">B</span> <span class="o">+=</span> <span class="n">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">M</span> <span class="o">!=</span> <span class="n">i</span><span class="p">],</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span>
                                <span class="n">Alphabet_X</span><span class="p">[</span><span class="n">M</span> <span class="o">!=</span> <span class="n">i</span><span class="p">])</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">B</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">B</span></div>
 
 
 <div class="viewcode-block" id="information_multi"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_multi">[docs]</a><span class="k">def</span> <span class="nf">information_multi</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
-                      <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                      <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated multi-information [StVe98] (also known as total</span>
 <span class="sd">    correlation [Wata60]) for an array X containing realisations of discrete</span>
@@ -1136,6 +1179,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -1147,13 +1193,18 @@
     <span class="n">H</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span>
     <span class="n">H_joint</span> <span class="o">=</span> <span class="n">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_joint</span></div>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">H</span><span class="p">)</span> <span class="o">-</span> <span class="n">H_joint</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">T</span></div>
 
 
 <div class="viewcode-block" id="information_mutual_conditional"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_mutual_conditional">[docs]</a><span class="k">def</span> <span class="nf">information_mutual_conditional</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                    <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span>
                                    <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                   <span class="n">Alphabet_Z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                   <span class="n">Alphabet_Z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the conditional mutual information (see e.g. [CoTh06]) between</span>
 <span class="sd">    arrays X and Y given array Z, each containing discrete random variable</span>
@@ -1277,6 +1328,10 @@
 <span class="sd">        Alphabet_X=Alphabet_Y=Alphabet_Z=np.array(((1,2)) implies an alphabet</span>
 <span class="sd">        of possible joint outcomes</span>
 <span class="sd">        np.array((1,1,1,1,2,2,2,2),((1,1,2,2,1,1,2,2),(1,2,1,2,1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -1350,10 +1405,10 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leading dimensions of args Z and Alphabet_Z do not &quot;</span>
                          <span class="s2">&quot;match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1, 2, 3 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X, Y, Z do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span>
                               <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1, 2, 3 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args X, Y, Z do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">base</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg base not a positive real-valued scalar&quot;</span><span class="p">)</span>
 
@@ -1428,14 +1483,15 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">orig_shape_I</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">I</span>
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
-    <span class="k">pass</span></div>
+    <span class="k">return</span> <span class="n">I</span></div>
 
 
 <div class="viewcode-block" id="information_lautum"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_lautum">[docs]</a><span class="k">def</span> <span class="nf">information_lautum</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                        <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                       <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the lautum information [PaVe08] between arrays X and Y, each</span>
 <span class="sd">    containing discrete random variable realisations.</span>
@@ -1567,6 +1623,10 @@
 <span class="sd">        in Alphabet_X, Alphabet_Y. For example, specifying</span>
 <span class="sd">        Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -1624,9 +1684,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leading dimensions of args Y and Alphabet_Y do not &quot;</span>
                          <span class="s2">&quot;match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">base</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg base not a positive real-valued scalar&quot;</span><span class="p">)</span>
 
@@ -1722,13 +1782,16 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">orig_shape_H</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="information_mutual_normalised"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_mutual_normalised">[docs]</a><span class="k">def</span> <span class="nf">information_mutual_normalised</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">norm_factor</span><span class="o">=</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span>
                                   <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
                                   <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                  <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                  <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="c1"># TODO Documentation should include properties for each of the</span>
     <span class="c1"># normalisation factors</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1890,6 +1953,10 @@
 <span class="sd">        in Alphabet_X, Alphabet_Y. For example, specifying</span>
 <span class="sd">        Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -1949,9 +2016,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">norm_factor</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg norm_factor not a string&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="c1"># NB: No base parameter needed here, therefore no test!</span>
 
     <span class="n">S</span><span class="p">,</span> <span class="n">fill_value</span> <span class="o">=</span> <span class="n">_map_observations_to_integers</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="p">,</span>
@@ -2070,12 +2137,17 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg norm_factor has invalid value&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">I</span> <span class="o">/</span> <span class="n">C</span></div>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">I</span> <span class="o">/</span> <span class="n">C</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">I</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">I</span></div>
 
 
 <div class="viewcode-block" id="information_variation"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_variation">[docs]</a><span class="k">def</span> <span class="nf">information_variation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                           <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                          <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                          <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the variation of information [Meil03] between arrays X and Y, each</span>
 <span class="sd">    containing discrete random variable realisations.</span>
@@ -2200,6 +2272,10 @@
 <span class="sd">        in Alphabet_X, Alphabet_Y. For example, specifying</span>
 <span class="sd">        Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -2220,12 +2296,18 @@
 
     <span class="k">if</span> <span class="n">cartesian_product</span><span class="p">:</span>
         <span class="n">H2</span> <span class="o">=</span> <span class="n">H2</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">return</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span></div>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="information_mutual"><a class="viewcode-back" href="../index.html#discrete_random_variable.information_mutual">[docs]</a><span class="k">def</span> <span class="nf">information_mutual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                        <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                       <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y,</span>
 <span class="sd">    each containing discrete random variable realisations.</span>
@@ -2351,6 +2433,10 @@
 <span class="sd">        in Alphabet_X, Alphabet_Y. For example, specifying</span>
 <span class="sd">        Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -2367,11 +2453,18 @@
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
                                 <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">H_conditional</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span>
                                         <span class="n">H</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">H</span> <span class="o">-</span> <span class="n">H_conditional</span></div>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H</span> <span class="o">-</span> <span class="n">H_conditional</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="entropy_cross"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_cross">[docs]</a><span class="k">def</span> <span class="nf">entropy_cross</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                  <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each</span>
 <span class="sd">    containing discrete random variable realisations.</span>
@@ -2481,6 +2574,10 @@
 <span class="sd">        X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of</span>
 <span class="sd">        different sizes may be specified either using numpy masked arrays, or</span>
 <span class="sd">        by padding with the chosen placeholder fill_value.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -2539,7 +2636,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leading dimensions of args Y and Alphabet_Y do not &quot;</span>
                          <span class="s2">&quot;match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">base</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg base not a positive real-valued scalar&quot;</span><span class="p">)</span>
 
@@ -2628,12 +2725,15 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">orig_shape_H</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_kullbackleibler"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_kullbackleibler">[docs]</a><span class="k">def</span> <span class="nf">divergence_kullbackleibler</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                               <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                               <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays</span>
 <span class="sd">    X and Y, each containing discrete random variable realisations.</span>
@@ -2754,6 +2854,10 @@
 <span class="sd">        X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of</span>
 <span class="sd">        different sizes may be specified either using numpy masked arrays, or</span>
 <span class="sd">        by padding with the chosen placeholder fill_value.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -2769,12 +2873,18 @@
 
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
                                 <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">H_cross</span><span class="o">.</span><span class="n">ndim</span><span class="o">-</span><span class="n">H</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">H_cross</span> <span class="o">-</span> <span class="n">H</span></div>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H_cross</span> <span class="o">-</span> <span class="n">H</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_jensenshannon"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_jensenshannon">[docs]</a><span class="k">def</span> <span class="nf">divergence_jensenshannon</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                              <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                             <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                             <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each</span>
 <span class="sd">    containing discrete random variable realisations.</span>
@@ -2892,6 +3002,10 @@
 <span class="sd">        X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of</span>
 <span class="sd">        different sizes may be specified either using numpy masked arrays, or</span>
 <span class="sd">        by padding with the chosen placeholder fill_value.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -2950,7 +3064,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leading dimensions of args Y and Alphabet_Y do not &quot;</span>
                          <span class="s2">&quot;match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">base</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg base not a positive real-valued scalar&quot;</span><span class="p">)</span>
 
@@ -3040,13 +3154,16 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">orig_shape_H</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_kullbackleibler_symmetrised"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_kullbackleibler_symmetrised">[docs]</a><span class="k">def</span> <span class="nf">divergence_kullbackleibler_symmetrised</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                            <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
                                            <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                           <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                           <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays</span>
 <span class="sd">    X and Y, each containing discrete random variable realisations.</span>
@@ -3171,6 +3288,10 @@
 <span class="sd">        X.shape[:-1]==Alphabet_X.shape[:-1] (analogously for Y). Alphabets of</span>
 <span class="sd">        different sizes may be specified either using numpy masked arrays, or</span>
 <span class="sd">        by padding with the chosen placeholder fill_value.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -3192,12 +3313,18 @@
 
     <span class="k">if</span> <span class="n">cartesian_product</span><span class="p">:</span>
         <span class="n">H2</span> <span class="o">=</span> <span class="n">H2</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">return</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span></div>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="entropy_conditional"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_conditional">[docs]</a><span class="k">def</span> <span class="nf">entropy_conditional</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                         <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                        <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                        <span class="n">Alphabet_Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y,</span>
 <span class="sd">    each containing discrete random variable realisations.</span>
@@ -3323,6 +3450,10 @@
 <span class="sd">        in Alphabet_X, Alphabet_Y. For example, specifying</span>
 <span class="sd">        Alphabet_X=Alphabet_Y=np.array(((1,2)) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -3383,9 +3514,9 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;leading dimensions of args Y and Alphabet_Y do not &quot;</span>
                          <span class="s2">&quot;match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args X and Y do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="ow">and</span> <span class="n">base</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg base not a positive real-valued scalar&quot;</span><span class="p">)</span>
 
@@ -3428,10 +3559,14 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">orig_shape_H</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
-<div class="viewcode-block" id="entropy_joint"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_joint">[docs]</a><span class="k">def</span> <span class="nf">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="entropy_joint"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_joint">[docs]</a><span class="k">def</span> <span class="nf">entropy_joint</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X</span>
 <span class="sd">    containing realisations of discrete random variables.</span>
@@ -3524,6 +3659,9 @@
 <span class="sd">        outcomes in Alphabet_X. For example, specifying</span>
 <span class="sd">        Alphabet_X=np.array(((1,2),(1,2))) implies an alphabet of possible</span>
 <span class="sd">        joint outcomes np.array(((1,1,2,2),(1,2,1,2))).</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -3603,10 +3741,14 @@
         <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">P_0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">spacing</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">entropy_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">+</span> <span class="n">H_0</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
-<div class="viewcode-block" id="entropy"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy">[docs]</a><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="entropy"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy">[docs]</a><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;ML&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing</span>
 <span class="sd">    realisations of a discrete random variable.</span>
@@ -3690,6 +3832,9 @@
 <span class="sd">        X.shape[:-1]==Alphabet_X.shape[:-1]. Alphabets of different sizes may</span>
 <span class="sd">        be specified either using numpy masked arrays, or by padding with the</span>
 <span class="sd">        chosen placeholder fill_value.</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 
 <span class="sd">    **Implementation notes**:</span>
 
@@ -3780,10 +3925,13 @@
     <span class="c1"># Reverse re-shaping</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">orig_shape_H</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
-<div class="viewcode-block" id="entropy_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_pmf">[docs]</a><span class="k">def</span> <span class="nf">entropy_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="entropy_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_pmf">[docs]</a><span class="k">def</span> <span class="nf">entropy_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the entropy (see e.g. [CoTh06]) of an array P representing a</span>
 <span class="sd">    discrete probability distribution.</span>
@@ -3811,9 +3959,12 @@
 <span class="sd">        The desired logarithmic base (default 2).</span>
 <span class="sd">    require_valid_pmf : boolean</span>
 <span class="sd">        When set to True (the default value), verifies that probability mass</span>
-<span class="sd">        assignments in each distribution sum to 1. When set to false, no such</span>
+<span class="sd">        assignments in each distribution sum to 1. When set to False, no such</span>
 <span class="sd">        test is performed, thus allowing incomplete probability distributions</span>
 <span class="sd">        to be processed.</span>
+<span class="sd">    keep_dims : When set to True, an additional dimension of length one is</span>
+<span class="sd">        appended to the returned array, facilitating any broadcast operations</span>
+<span class="sd">        required by the user (defaults to False).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_sanitise_array_input</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
@@ -3831,11 +3982,14 @@
     <span class="n">H</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">P</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">spacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="entropy_cross_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.entropy_cross_pmf">[docs]</a><span class="k">def</span> <span class="nf">entropy_cross_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                      <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                      <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each</span>
 <span class="sd">    representing a discrete probability distribution.</span>
@@ -3885,9 +4039,13 @@
 <span class="sd">        The desired logarithmic base (default 2).</span>
 <span class="sd">    require_valid_pmf : boolean</span>
 <span class="sd">        When set to True (the default value), verifies that probability mass</span>
-<span class="sd">        assignments in each distribution sum to 1. When set to false, no such</span>
+<span class="sd">        assignments in each distribution sum to 1. When set to False, no such</span>
 <span class="sd">        test is performed, thus allowing incomplete probability distributions</span>
 <span class="sd">        to be processed.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">Q</span> <span class="o">=</span> <span class="n">P</span>
@@ -3905,9 +4063,9 @@
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_isnan</span><span class="p">(</span><span class="n">Q</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg Q contains NaN values&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args P and Q do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args P and Q do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">P</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">P</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg P contains values outside unit interval&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">Q</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Q</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
@@ -3930,11 +4088,14 @@
     <span class="n">H</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">H</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
     <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_kullbackleibler_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_kullbackleibler_pmf">[docs]</a><span class="k">def</span> <span class="nf">divergence_kullbackleibler_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                   <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                                   <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays</span>
 <span class="sd">    P and Q, each representing a discrete probability distribution.</span>
@@ -3986,9 +4147,13 @@
 <span class="sd">        The desired logarithmic base (default 2).</span>
 <span class="sd">    require_valid_pmf : boolean</span>
 <span class="sd">        When set to True (the default value), verifies that probability mass</span>
-<span class="sd">        assignments in each distribution sum to 1. When set to false, no such</span>
+<span class="sd">        assignments in each distribution sum to 1. When set to False, no such</span>
 <span class="sd">        test is performed, thus allowing incomplete probability distributions</span>
 <span class="sd">        to be processed.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">H_cross</span> <span class="o">=</span> <span class="n">entropy_cross_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span>
                                 <span class="n">require_valid_pmf</span><span class="p">)</span>
@@ -3997,11 +4162,16 @@
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
                                 <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">H_cross</span><span class="o">.</span><span class="n">ndim</span><span class="o">-</span><span class="n">H</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">H_cross</span> <span class="o">-</span> <span class="n">H</span></div>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H_cross</span> <span class="o">-</span> <span class="n">H</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_jensenshannon_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_jensenshannon_pmf">[docs]</a><span class="k">def</span> <span class="nf">divergence_jensenshannon_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                 <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                                 <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each</span>
 <span class="sd">    representing a discrete probability distribution.</span>
@@ -4057,9 +4227,13 @@
 <span class="sd">        The desired logarithmic base (default 2).</span>
 <span class="sd">    require_valid_pmf : boolean</span>
 <span class="sd">        When set to True (the default value), verifies that probability mass</span>
-<span class="sd">        assignments in each distribution sum to 1. When set to false, no such</span>
+<span class="sd">        assignments in each distribution sum to 1. When set to False, no such</span>
 <span class="sd">        test is performed, thus allowing incomplete probability distributions</span>
 <span class="sd">        to be processed.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">Q</span> <span class="o">=</span> <span class="n">P</span>
@@ -4077,9 +4251,9 @@
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">_isnan</span><span class="p">(</span><span class="n">Q</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg Q contains NaN values&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dimensions of args P and Q do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cartesian_product</span> <span class="ow">and</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args 1 and 2 do not match&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;trailing dimensions of args P and Q do not match&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">P</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">P</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;arg P contains values outside unit interval&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">Q</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Q</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)):</span>
@@ -4098,13 +4272,19 @@
         <span class="k">return</span> <span class="n">_cartesian_product_apply</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
     <span class="n">H1</span> <span class="o">=</span> <span class="n">entropy_pmf</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">P</span> <span class="o">+</span> <span class="n">Q</span><span class="p">),</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">H1</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">entropy_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="p">)</span> <span class="o">-</span> \
-        <span class="mf">0.5</span><span class="o">*</span><span class="n">entropy_pmf</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="p">)</span></div>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H1</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">entropy_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="p">)</span> <span class="o">-</span> \
+        <span class="mf">0.5</span><span class="o">*</span><span class="n">entropy_pmf</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">require_valid_pmf</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <div class="viewcode-block" id="divergence_kullbackleibler_symmetrised_pmf"><a class="viewcode-back" href="../index.html#discrete_random_variable.divergence_kullbackleibler_symmetrised_pmf">[docs]</a><span class="k">def</span> <span class="nf">divergence_kullbackleibler_symmetrised_pmf</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                                <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                               <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                                               <span class="n">require_valid_pmf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                               <span class="n">keep_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays</span>
 <span class="sd">    P and Q, each representing a discrete probability distribution.</span>
@@ -4160,9 +4340,13 @@
 <span class="sd">        The desired logarithmic base (default 2).</span>
 <span class="sd">    require_valid_pmf : boolean</span>
 <span class="sd">        When set to True (the default value), verifies that probability mass</span>
-<span class="sd">        assignments in each distribution sum to 1. When set to false, no such</span>
+<span class="sd">        assignments in each distribution sum to 1. When set to False, no such</span>
 <span class="sd">        test is performed, thus allowing incomplete probability distributions</span>
 <span class="sd">        to be processed.</span>
+<span class="sd">    keep_dims : When set to True and cartesian_product==False</span>
+<span class="sd">        an additional dimension of length one is appended to the returned</span>
+<span class="sd">        array, facilitating any broadcast operations required by the user</span>
+<span class="sd">        (defaults to False). Has no effect when cartesian_product==True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">Q</span> <span class="o">=</span> <span class="n">P</span>
@@ -4175,7 +4359,13 @@
 
     <span class="k">if</span> <span class="n">cartesian_product</span><span class="p">:</span>
         <span class="n">H2</span> <span class="o">=</span> <span class="n">H2</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">return</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span></div>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="n">H1</span> <span class="o">+</span> <span class="n">H2</span>
+
+    <span class="k">if</span> <span class="n">keep_dims</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">cartesian_product</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H</span></div>
 
 
 <span class="k">def</span> <span class="nf">_append_empty_bins_using_alphabet</span><span class="p">(</span><span class="n">Counts</span><span class="p">,</span> <span class="n">Alphabet</span><span class="p">,</span> <span class="n">Full_Alphabet</span><span class="p">,</span>
@@ -4601,6 +4791,8 @@
               <span class="k">for</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">Arrays</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Arrays</span><span class="p">))</span>
 
+<span class="c1"># TODO Add tests for keep_dims</span>
+
 <span class="c1"># NB: The following tests should also determine what happens when data contain</span>
 <span class="c1"># None, but fill value is not None</span>
 <span class="c1"># TODO Test _determine_number_additional_empty_bins using None fill_value etc.</span>
@@ -4615,7 +4807,7 @@
 <span class="c1"># or multi-level Dataframes</span>
 <span class="c1"># TODO Also add pandas (incl. missing data support) note to README</span>
 <span class="c1"># TODO NB: pandas README examples must include transposition</span>
-<span class="c1"># TODO Add axis and keepdims parameters for all functions?</span>
+<span class="c1"># TODO Add axis parameter for all functions?</span>
 </pre></div>
 
           </div>
