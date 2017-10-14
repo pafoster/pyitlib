@@ -4764,8 +4764,6 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
-# TODO Add tests for keep_dims
-
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
 # TODO Test _determine_number_additional_empty_bins using None fill_value etc.
@@ -4780,4 +4778,3 @@ def _vstack_pad(Arrays, fill_value):
 # or multi-level Dataframes
 # TODO Also add pandas (incl. missing data support) note to README
 # TODO NB: pandas README examples must include transposition
-# TODO Add axis parameter for all functions?
