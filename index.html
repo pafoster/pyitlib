@@ -83,6 +83,100 @@
 <li>Good-Turing</li>
 </ul>
 <p>Missing data are supported, either using fill values or NumPy masked arrays.</p>
+<div class="section" id="notes-for-getting-started">
+<h2>Notes for getting started<a class="headerlink" href="#notes-for-getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Import the module <code class="docutils literal"><span class="pre">discrete_random_variable</span></code>, as well as NumPy:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pyitlib</span> <span class="k">import</span> <span class="n">discrete_random_variable</span> <span class="k">as</span> <span class="n">drv</span>
+</pre></div>
+</div>
+<p>The respective methods implemented in <code class="docutils literal"><span class="pre">discrete_random_variable</span></code> accept NumPy arrays as input. Let’s compute the entropy for an array containing discrete random variable realisations, based on maximum likelihood estimation and quantifying entropy in bits:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array(1.0)</span>
+</pre></div>
+</div>
+<p>NumPy arrays are created automatically for any input which isn’t of the required type, by passing the input to np.array(). Let’s compute entropy, again based on maximum likelihood estimation, but this time using list input and quantifying entropy in nats:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">array(0.6931471805599453)</span>
+</pre></div>
+</div>
+<p>Those methods with the suffix <code class="docutils literal"><span class="pre">_pmf</span></code> operate on arrays specifying probability mass assignments. For example, the analogous method call for computing the entropy of the preceding random variable realisations (with estimated equi-probable outcomes) is:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy_pmf</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">base</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">0.69314718055994529</span>
+</pre></div>
+</div>
+<p>It’s possible to specify missing data using placeholder values (the default placeholder value is <code class="docutils literal"><span class="pre">-1</span></code>). Elements equal to the placeholder value are subsequently ignored:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">array(1.0)</span>
+</pre></div>
+</div>
+<p>In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable <code class="docutils literal"><span class="pre">X</span></code> results in the corresponding realisations for random variable <code class="docutils literal"><span class="pre">Y</span></code> being ignored, and vice versa. Thus, the following method calls yield equivalent results:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy_conditional</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">array(0.5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy_conditional</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="go">array(0.5)</span>
+</pre></div>
+</div>
+<p>It’s alternatively possible to specify missing data using NumPy masked arrays:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+<span class="go">array(1.0)</span>
+</pre></div>
+</div>
+<p>In combination with any estimator other than maximum likelihood, it may be useful to specify alphabets containing unobserved outcomes. For example, we might seek to estimate the entropy in bits for the sequence of realisations <code class="docutils literal"><span class="pre">[1,1,1,1]</span></code>. Using maximum a posteriori estimation combined with the Perks prior (i.e. pseudo-counts of 1/L for each of L possible outcomes) and based on an alphabet specifying L=100 possible outcomes, we may use:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;PERKS&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+<span class="go">array(2.030522626645241)</span>
+</pre></div>
+</div>
+<p>Multi-dimensional array input is supported based on the convention that <em>leading dimensions index random variables, with the trailing dimension indexing random variable realisations</em>. Thus, the following array specifies realisations for 3 random variables:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 4)</span>
+</pre></div>
+</div>
+<p>When using multi-dimensional arrays, any alphabets must be specified separately for each random variable represented in the multi-dimensional array, using fill values (or NumPy masked arrays) to pad out any unequally sized alphabets:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;PERKS&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span> <span class="c1"># 3 alphabets required</span>
+<span class="go">array([ 2.03052263,  2.81433872,  2.81433872])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span> <span class="c1"># padding required</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;PERKS&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span> <span class="o">=</span> <span class="n">A</span><span class="p">)</span>
+<span class="go">array([ 0.46899559,  1.        ,  1.28669267])</span>
+</pre></div>
+</div>
+<p>For ease of use, those methods operating on two random variable array arguments (such as <code class="docutils literal"><span class="pre">entropy_conditional</span></code>, <code class="docutils literal"><span class="pre">information_mutual</span></code> etc.) may be invoked with a single multi-dimensional array. In this way, we may compute mutual information for all pairs of random variables represented in the array as follows:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">information_mutual</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="go">array([[ 0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  1.,  1.],</span>
+<span class="go">       [ 0.,  1.,  1.]])</span>
+</pre></div>
+</div>
+<p>The above is equivalent to setting the <code class="docutils literal"><span class="pre">cartesian_product</span></code> parameter to <code class="docutils literal"><span class="pre">True</span></code> and specifying two random variable array arguments explicitly:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">information_mutual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">cartesian_product</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">array([[ 0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  1.,  1.],</span>
+<span class="go">       [ 0.,  1.,  1.]])</span>
+</pre></div>
+</div>
+<p>By default, those methods operating on several random variable array arguments don’t determine all combinations of random variables exhaustively. Instead a one-to-one mapping is performed:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">information_mutual</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="go">array([ 0.,  1.,  1.]) # Mutual information between 3 pairs of random variables</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># Mutual information equivalent to entropy in above case</span>
+<span class="go">array([ 0.,  1.,  1.])</span>
+</pre></div>
+</div>
+<p>pyitlib provides basic support for pandas DataFrames/Series. Both these types are converted to NumPy masked arrays internally, while masking those data recorded as missing (based on .isnull()). Note that due to indexing random variable realisations using the trailing dimension of multi-dimensional arrays, we typically need to transpose DataFrames when estimating information-theoretic quantities:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/pokemon.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;base_experience&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">information_mutual_normalised</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="c1"># Transposition required for comparing columns</span>
+<span class="go">array([[ 1.        ,  0.32472696,  0.17745753],</span>
+<span class="go">       [ 0.32729034,  1.        ,  0.13343504],</span>
+<span class="go">       [ 0.17848175,  0.13315407,  1.        ]])</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="module-discrete_random_variable">
 <span id="discrete-random-variable"></span><h2>discrete_random_variable<a class="headerlink" href="#module-discrete_random_variable" title="Permalink to this headline">¶</a></h2>
 <p>This module implements various information-theoretic quantities for discrete
@@ -2821,6 +2915,7 @@ value -1.</p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pyitlib</a><ul>
+<li><a class="reference internal" href="#notes-for-getting-started">Notes for getting started</a></li>
 <li><a class="reference internal" href="#module-discrete_random_variable">discrete_random_variable</a></li>
 <li><a class="reference internal" href="#module-dimensionality_reduction">dimensionality_reduction</a></li>
 </ul>

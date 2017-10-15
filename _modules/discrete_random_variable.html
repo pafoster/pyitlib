@@ -4644,9 +4644,9 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">Counts</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">n_additional_empty_bins</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">Theta</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">Theta</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No unobserved symbols specified. Disregarding the &quot;</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No unobserved outcomes specified. Disregarding the &quot;</span>
                           <span class="s2">&quot;probability mass allocated to any unobserved &quot;</span>
-                          <span class="s2">&quot;symbols.&quot;</span><span class="p">)</span>
+                          <span class="s2">&quot;outcomes.&quot;</span><span class="p">)</span>
             <span class="n">Theta</span> <span class="o">=</span> <span class="n">Theta</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta</span><span class="p">)</span>
 
         <span class="c1"># Divide p_0 among unobserved symbols</span>
@@ -4804,7 +4804,7 @@
         <span class="c1"># always called after observations have all been mapped to integers.</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">I</span><span class="p">],</span> <span class="n">Alphabet</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">J</span><span class="p">])</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;provided alphabet does not contain all observed &quot;</span>
-                             <span class="s2">&quot;symbols&quot;</span><span class="p">)</span>
+                             <span class="s2">&quot;outcomes&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_vstack_pad</span><span class="p">(</span><span class="n">Arrays</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">):</span>
@@ -4815,7 +4815,7 @@
               <span class="k">for</span> <span class="n">A</span> <span class="ow">in</span> <span class="n">Arrays</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Arrays</span><span class="p">))</span>
 
-<span class="c1"># TODO Add tests for keep_dims</span>
+<span class="c1"># TODO Tests for keep_dims</span>
 
 <span class="c1"># NB: The following tests should also determine what happens when data contain</span>
 <span class="c1"># None, but fill value is not None</span>
@@ -4831,7 +4831,6 @@
 <span class="c1"># or multi-level Dataframes</span>
 <span class="c1"># TODO Also add pandas (incl. missing data support) note to README</span>
 <span class="c1"># TODO NB: pandas README examples must include transposition</span>
-<span class="c1"># TODO Add axis parameter for all functions?</span>
 </pre></div>
 
           </div>
