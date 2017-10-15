@@ -149,7 +149,7 @@ pyitlib provides basic support for pandas DataFrames/Series. Both these types ar
 
     >>> import pandas
     >>> df = pandas.read_csv('https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/pokemon.csv')
-    >>> df = df[['height', 'weight', 'base_experience']].apply(lambda s: pandas.qcut(s, 10, labels=False))
+    >>> df = df[['height', 'weight', 'base_experience']].apply(lambda s: pandas.qcut(s, 10, labels=False)) # Bin the data
     >>> drv.information_mutual_normalised(df.T) # Transposition required for comparing columns
     array([[ 1.        ,  0.32472696,  0.17745753],
            [ 0.32729034,  1.        ,  0.13343504],
