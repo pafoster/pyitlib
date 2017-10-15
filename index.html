@@ -82,7 +82,7 @@
 <li>James-Stein</li>
 <li>Good-Turing</li>
 </ul>
-<p>Missing data are supported, either using fill values or NumPy masked arrays.</p>
+<p>Missing data are supported, either using placeholder values or NumPy masked arrays.</p>
 <div class="section" id="notes-for-getting-started">
 <h2>Notes for getting started<a class="headerlink" href="#notes-for-getting-started" title="Permalink to this headline">¶</a></h2>
 <p>Import the module <code class="docutils literal"><span class="pre">discrete_random_variable</span></code>, as well as NumPy:</p>
@@ -111,7 +111,7 @@
 <span class="go">array(1.0)</span>
 </pre></div>
 </div>
-<p>In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable <code class="docutils literal"><span class="pre">X</span></code> results in the corresponding realisations for random variable <code class="docutils literal"><span class="pre">Y</span></code> being ignored, and vice versa. Thus, the following method calls yield equivalent results:</p>
+<p>In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable <code class="docutils literal"><span class="pre">X</span></code> results in the corresponding realisations for random variable <code class="docutils literal"><span class="pre">Y</span></code> being ignored, and vice versa. Thus, the following method calls yield equivalent results (note use of alternative placeholder value <code class="docutils literal"><span class="pre">None</span></code>):</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy_conditional</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="go">array(0.5)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy_conditional</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -135,7 +135,7 @@
 <span class="go">(3, 4)</span>
 </pre></div>
 </div>
-<p>When using multi-dimensional arrays, any alphabets must be specified separately for each random variable represented in the multi-dimensional array, using fill values (or NumPy masked arrays) to pad out any unequally sized alphabets:</p>
+<p>When using multi-dimensional arrays, any alphabets must be specified separately for each random variable represented in the multi-dimensional array, using placeholder values (or NumPy masked arrays) to pad out any unequally sized alphabets:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drv</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s1">&#39;PERKS&#39;</span><span class="p">,</span> <span class="n">Alphabet_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)))</span> <span class="c1"># 3 alphabets required</span>
 <span class="go">array([ 2.03052263,  2.81433872,  2.81433872])</span>
 
