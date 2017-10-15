@@ -33,8 +33,8 @@ The following estimators are available for each of the measures:
 
 Missing data are supported, either using fill values or NumPy masked arrays.
 
-Notes and code for getting started
-----------------------------------
+Notes for getting started
+-------------------------
 
 Import the module ``discrete_random_variable``, as well as NumPy:
 
