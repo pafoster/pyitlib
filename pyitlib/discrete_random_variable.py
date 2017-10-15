@@ -4593,9 +4593,9 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         if np.any(Counts == 0) or n_additional_empty_bins > 0:
             Theta = (1-p_r[0]) * Theta / np.sum(Theta)
         else:
-            warnings.warn("No unobserved symbols specified. Disregarding the "
+            warnings.warn("No unobserved outcomes specified. Disregarding the "
                           "probability mass allocated to any unobserved "
-                          "symbols.")
+                          "outcomes.")
             Theta = Theta / np.sum(Theta)
 
         # Divide p_0 among unobserved symbols
@@ -4753,7 +4753,7 @@ def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
         # always called after observations have all been mapped to integers.
         if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:
             raise ValueError("provided alphabet does not contain all observed "
-                             "symbols")
+                             "outcomes")
 
 
 def _vstack_pad(Arrays, fill_value):
@@ -4763,6 +4763,8 @@ def _vstack_pad(Arrays, fill_value):
                                              max_length-A.shape[-1])))
               for A in Arrays]
     return np.vstack((Arrays))
+
+# TODO Tests for keep_dims
 
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
