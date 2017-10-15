@@ -51,7 +51,7 @@ The respective methods implemented in ``discrete_random_variable`` accept NumPy 
     >>> drv.entropy(X)
     array(1.0)
 
-NumPy arrays are created automatically for any input which is not of the required type, by passing the input to np.array(). Let's compute entropy, again based on maximum likelihood estimation, but this time using list input and quantifying entropy in nats:
+NumPy arrays are created automatically for any input which isn't of the required type, by passing the input to np.array(). Let's compute entropy, again based on maximum likelihood estimation, but this time using list input and quantifying entropy in nats:
 
 .. code:: python
 
@@ -65,7 +65,7 @@ Those methods with the suffix ``_pmf`` operate on arrays specifying probability 
     >>> drv.entropy_pmf([0.5, 0.5], base=np.exp(1))
     0.69314718055994529
 
-It is possible to specify missing data using placeholder values (the default placeholder value is ``-1``). Elements equal to the placeholder value are subsequently ignored:
+It's possible to specify missing data using placeholder values (the default placeholder value is ``-1``). Elements equal to the placeholder value are subsequently ignored:
 
 .. code:: python
 
@@ -81,7 +81,7 @@ In measures expressible in terms of joint entropy (such as conditional entropy, 
     >>> drv.entropy_conditional([1,2,2,2,1], [1,1,2,2,None], fill_value=None)
     array(0.5)
 
-It is alternatively possible to specify missing data using NumPy masked arrays:
+It's alternatively possible to specify missing data using NumPy masked arrays:
 
 .. code:: python
 
@@ -133,7 +133,7 @@ The above is equivalent to setting the ``cartesian_product`` parameter to ``True
            [ 0.,  1.,  1.],
            [ 0.,  1.,  1.]])
 
-By default, those methods operating on several random variable array arguments do not determine all combinations of random variables exhaustively. Instead a one-to-one mapping is performed:
+By default, those methods operating on several random variable array arguments don't determine all combinations of random variables exhaustively. Instead a one-to-one mapping is performed:
 
 .. code:: python
 
