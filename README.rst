@@ -128,7 +128,7 @@ The above is equivalent to setting the ``cartesian_product`` parameter to ``True
 
 .. code:: python
 
-	>>> drv.information_mutual(X, X, cartesian_product=True)
+    >>> drv.information_mutual(X, X, cartesian_product=True)
     array([[ 0.,  0.,  0.],
            [ 0.,  1.,  1.],
            [ 0.,  1.,  1.]])
