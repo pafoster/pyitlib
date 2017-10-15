@@ -137,8 +137,8 @@ By default, those methods operating on several random variable array arguments d
 
 .. code:: python
 
-    >>> drv.information_mutual(X, X)
-    array([ 0.,  1.,  1.]) # Mutual information between 3 pairs of random variables
+    >>> drv.information_mutual(X, X) # Mutual information between 3 pairs of random variables
+    array([ 0.,  1.,  1.])
 
     >>> drv.entropy(X) # Mutual information equivalent to entropy in above case
     array([ 0.,  1.,  1.])
