@@ -31,7 +31,7 @@ The following estimators are available for each of the measures:
 * James-Stein
 * Good-Turing
 
-Missing data are supported, either using fill values or NumPy masked arrays.
+Missing data are supported, either using placeholder values or NumPy masked arrays.
 
 Notes for getting started
 -------------------------
@@ -72,7 +72,7 @@ It's possible to specify missing data using placeholder values (the default plac
     >>> drv.entropy([1, 2, 1, 2, -1])
     array(1.0)
 
-In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable ``X`` results in the corresponding realisations for random variable ``Y`` being ignored, and vice versa. Thus, the following method calls yield equivalent results:
+In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable ``X`` results in the corresponding realisations for random variable ``Y`` being ignored, and vice versa. Thus, the following method calls yield equivalent results (note use of alternative placeholder value):
 
 .. code:: python
 
@@ -104,7 +104,7 @@ Multi-dimensional array input is supported based on the convention that *leading
     >>> X.shape
     (3, 4)
 
-When using multi-dimensional arrays, any alphabets must be specified separately for each random variable represented in the multi-dimensional array, using fill values (or NumPy masked arrays) to pad out any unequally sized alphabets:
+When using multi-dimensional arrays, any alphabets must be specified separately for each random variable represented in the multi-dimensional array, using placeholder values (or NumPy masked arrays) to pad out any unequally sized alphabets:
 
 .. code:: python
 
