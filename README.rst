@@ -72,7 +72,7 @@ It's possible to specify missing data using placeholder values (the default plac
     >>> drv.entropy([1, 2, 1, 2, -1])
     array(1.0)
 
-In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable ``X`` results in the corresponding realisations for random variable ``Y`` being ignored, and vice versa. Thus, the following method calls yield equivalent results (note use of alternative placeholder value):
+In measures expressible in terms of joint entropy (such as conditional entropy, mutual information etc.), equally many realisations of respective random variables are required (with realisations coupled using a common index). Any missing data for random variable ``X`` results in the corresponding realisations for random variable ``Y`` being ignored, and vice versa. Thus, the following method calls yield equivalent results (note use of alternative placeholder value ``None``):
 
 .. code:: python
 
