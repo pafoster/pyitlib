@@ -31,7 +31,7 @@ setup(
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
     ],
-    keywords=['entropy', 'Shannon information', 'uncertainty', 'statistics', 'machine learning', 'data analysis', 'data science'],
+    keywords=['entropy', 'information theory', 'Shannon information', 'uncertainty', 'statistics', 'machine learning', 'data analysis', 'data science'],
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
