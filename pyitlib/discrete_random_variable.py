@@ -108,9 +108,9 @@ correlation. In: IBM Journal of research and development, \
 Vol. 4, No. 1, 1960, P. 66-82.
 """
 
+import warnings
 import numpy as np
 import sklearn.preprocessing
-import warnings
 import pandas as pd
 
 # Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,
@@ -135,11 +135,6 @@ import pandas as pd
 # un-used input features (feture selection).
 # TODO Re-arrange functions based on dependencies
 # TODO Set up project email address pyitlib@gmx.us
-# TODO Add note in README on how functions accept numpy arrays, (or more
-# generally array-like input). Thus, a straightforward approach is
-# entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions
-# support higher-dimensional input for convenience, allowing quantities to be
-# computed for multiple random variables using one function call.
 # TODO Add information in documentation on when quantities are maximised or
 # minimised
 
@@ -4765,6 +4760,8 @@ def _vstack_pad(Arrays, fill_value):
     return np.vstack((Arrays))
 
 # TODO Tests for keep_dims
+# TODO Should this really be NaN? Is it consistently NaN for all measures?
+# drv.entropy([-1,], estimator='PERKS', Alphabet_X = np.arange(100))
 
 # NB: The following tests should also determine what happens when data contain
 # None, but fill value is not None
@@ -4778,5 +4775,3 @@ def _vstack_pad(Arrays, fill_value):
 # TODO Run some integration tests using a mixed-type DataFrame
 # TODO Run tests using unusual pandas arrangements, such as panels /
 # or multi-level Dataframes
-# TODO Also add pandas (incl. missing data support) note to README
-# TODO NB: pandas README examples must include transposition
