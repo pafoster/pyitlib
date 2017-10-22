@@ -4,6 +4,9 @@ test:
 sdist:
 	python setup.py sdist
 
+upload:
+	python setup.py sdist upload -r pypi
+
 docs:
 	$(MAKE) html -C docs
 

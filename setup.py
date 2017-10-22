@@ -19,8 +19,9 @@ def read_version():
 setup(
     name='pyitlib',
     version=read_version(),
-    description='Library of information-theoretic methods',
+    description='A library of information-theoretic methods',
     url='https://github.com/pafoster',
+    download_url = 'https://github.com/pafoster/pyitlib/archive/0.1.10.tar.gz',
     author='Peter Foster',
     author_email='pyitlib@gmx.us',
     packages=['pyitlib', ],
@@ -30,4 +31,5 @@ setup(
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
     ],
+    keywords = ['entropy', 'information', 'uncertainty'],
 )
