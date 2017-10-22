@@ -1,6 +1,5 @@
-from setuptools import setup
 import os
-
+from setuptools import setup
 
 def source_root_dir():
     """Return the path to the root of the source distribution"""
@@ -21,9 +20,10 @@ setup(
     version=read_version(),
     description='A library of information-theoretic methods',
     url='https://github.com/pafoster',
-    download_url = 'https://github.com/pafoster/pyitlib/archive/0.1.10.tar.gz',
+    download_url='https://github.com/pafoster/pyitlib/archive/0.1.10.tar.gz',
     author='Peter Foster',
     author_email='pyitlib@gmx.us',
+    license='MIT',
     packages=['pyitlib', ],
     zip_safe=False,
     install_requires=[
@@ -31,5 +31,20 @@ setup(
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
     ],
-    keywords = ['entropy', 'information', 'uncertainty'],
+    keywords=['entropy', 'information', 'uncertainty', 'statistics'],
+    classifiers=[
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        'Development Status :: 5 - Production/Stable'
+        'Intended Audience :: Science/Research',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Scientific/Engineering :: Information Analysis',
+    ],
 )
