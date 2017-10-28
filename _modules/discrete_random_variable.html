@@ -5,12 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>discrete_random_variable &#8212; pyitlib 0.1.10 documentation</title>
-    
     <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -24,7 +21,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
   </head>
@@ -159,9 +156,9 @@
 <span class="sd">Vol. 4, No. 1, 1960, P. 66-82.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sklearn.preprocessing</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,</span>
@@ -183,14 +180,8 @@
 <span class="c1"># aggolerative clustering approach as well?. The approaches should also</span>
 <span class="c1"># incorporate `de-noising&#39; capability: With probability p, corrupt observations</span>
 <span class="c1"># with a random symbol. The learnt model should also have a way of discarding</span>
-<span class="c1"># un-used input features (feture selection).</span>
+<span class="c1"># un-used input features (feature selection).</span>
 <span class="c1"># TODO Re-arrange functions based on dependencies</span>
-<span class="c1"># TODO Set up project email address pyitlib@gmx.us</span>
-<span class="c1"># TODO Add note in README on how functions accept numpy arrays, (or more</span>
-<span class="c1"># generally array-like input). Thus, a straightforward approach is</span>
-<span class="c1"># entropy([1,1,2,1]), as well as entropy(np.array((1,1,2,2))). All functions</span>
-<span class="c1"># support higher-dimensional input for convenience, allowing quantities to be</span>
-<span class="c1"># computed for multiple random variables using one function call.</span>
 <span class="c1"># TODO Add information in documentation on when quantities are maximised or</span>
 <span class="c1"># minimised</span>
 
@@ -4816,6 +4807,8 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Arrays</span><span class="p">))</span>
 
 <span class="c1"># TODO Tests for keep_dims</span>
+<span class="c1"># TODO Should this really be NaN? Is it consistently NaN for all measures?</span>
+<span class="c1"># drv.entropy([-1,], estimator=&#39;PERKS&#39;, Alphabet_X = np.arange(100))</span>
 
 <span class="c1"># NB: The following tests should also determine what happens when data contain</span>
 <span class="c1"># None, but fill value is not None</span>
@@ -4829,8 +4822,6 @@
 <span class="c1"># TODO Run some integration tests using a mixed-type DataFrame</span>
 <span class="c1"># TODO Run tests using unusual pandas arrangements, such as panels /</span>
 <span class="c1"># or multi-level Dataframes</span>
-<span class="c1"># TODO Also add pandas (incl. missing data support) note to README</span>
-<span class="c1"># TODO NB: pandas README examples must include transposition</span>
 </pre></div>
 
           </div>
@@ -4867,7 +4858,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016, Peter Foster.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5.
     </div>
   </body>
 </html>
