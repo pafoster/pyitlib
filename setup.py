@@ -20,7 +20,7 @@ setup(
     name='pyitlib',
     version=read_version(),
     description='A library of information-theoretic methods',
-    url='https://github.com/pafoster',
+    url='https://github.com/pafoster/pyitlib',
     download_url='https://github.com/pafoster/pyitlib/archive/0.1.10.tar.gz',
     author='Peter Foster',
     author_email='pyitlib@gmx.us',
