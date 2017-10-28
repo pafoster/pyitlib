@@ -41,7 +41,6 @@ setup(
         #   5 - Production/Stable
         'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
-        'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 2',
