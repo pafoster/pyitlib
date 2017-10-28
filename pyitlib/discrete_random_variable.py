@@ -132,9 +132,8 @@ import pandas as pd
 # aggolerative clustering approach as well?. The approaches should also
 # incorporate `de-noising' capability: With probability p, corrupt observations
 # with a random symbol. The learnt model should also have a way of discarding
-# un-used input features (feture selection).
+# un-used input features (feature selection).
 # TODO Re-arrange functions based on dependencies
-# TODO Set up project email address pyitlib@gmx.us
 # TODO Add information in documentation on when quantities are maximised or
 # minimised
 

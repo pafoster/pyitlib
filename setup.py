@@ -1,6 +1,7 @@
 import os
 from setuptools import setup
 
+
 def source_root_dir():
     """Return the path to the root of the source distribution"""
     return os.path.abspath(os.path.dirname(__file__))
@@ -30,14 +31,15 @@ setup(
         'pandas>=0.20.2'
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
-    ],
-    keywords=['entropy', 'information theory', 'Shannon information', 'uncertainty', 'statistics', 'machine learning', 'data analysis', 'data science'],
+    ], keywords=['entropy', 'information theory', 'Shannon information',
+                 'uncertainty', 'correlation', 'statistics',
+                 'machine learning', 'data analysis', 'data science'],
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 5 - Production/Stable'
+        'Development Status :: 4 - Beta'
         'Intended Audience :: Science/Research',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
