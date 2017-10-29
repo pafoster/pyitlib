@@ -5,7 +5,7 @@ sdist:
 	python setup.py sdist
 
 upload:
-	python setup.py sdist upload -r pypi
+	twine upload dist/*
 
 docs:
 	$(MAKE) html -C docs
