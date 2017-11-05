@@ -33,6 +33,17 @@ The following estimators are available for each of the measures:
 
 Missing data are supported, either using placeholder values or NumPy masked arrays.
 
+Installation and codebase
+-------------------------
+pyitlib is listed on the Python Package Index at https://pypi.python.org/pypi/pyitlib/ and may be installed using ``pip`` as follows:
+
+.. code:: python
+
+    pip install pyitlib
+
+The codebase for pyitlib is available at https://github.com/pafoster/pyitlib.
+
+
 Notes for getting started
 -------------------------
 
