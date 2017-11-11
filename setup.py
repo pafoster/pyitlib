@@ -32,7 +32,6 @@ setup(
         'pandas>=0.20.2'
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
-        'Keras>=2.0.9',
     ], keywords=['entropy', 'information theory', 'Shannon information',
                  'uncertainty', 'correlation', 'statistics',
                  'machine learning', 'data analysis', 'data science'],
