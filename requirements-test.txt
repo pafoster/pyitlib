@@ -2,4 +2,3 @@ numpy
 pandas
 scikit-learn
 scipy
-Keras
