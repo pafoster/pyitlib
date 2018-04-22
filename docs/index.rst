@@ -18,12 +18,6 @@ discrete_random_variable
    :members:
    :undoc-members:
 
-dimensionality_reduction
-------------------------
-.. automodule:: dimensionality_reduction
-   :members:
-   :undoc-members:
-
 Indices and tables
 ==================
 
