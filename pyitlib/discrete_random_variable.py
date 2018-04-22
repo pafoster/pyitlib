@@ -4536,7 +4536,8 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             y = np.log10(Z_r[1:])
         x = x[np.isfinite(y)]
         y = y[np.isfinite(y)]
-        m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y)[0]
+        m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y,
+                               rcond=None)[0]
         if m >= -1:
             warnings.warn("Regression slope < -1 requirement in linear "
                           "Good-Turing estimate not satisfied")
