@@ -22,7 +22,7 @@ setup(
     description='A library of information-theoretic methods',
     long_description=open('README.rst').read(),
     url='https://github.com/pafoster/pyitlib',
-    download_url='https://github.com/pafoster/pyitlib/archive/0.1.12.tar.gz',
+    download_url='https://github.com/pafoster/pyitlib/archive/0.1.13.tar.gz',
     author='Peter Foster',
     author_email='pyitlib@gmx.us',
     license='MIT',
