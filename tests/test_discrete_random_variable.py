@@ -49,8 +49,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(isinstance(discrete.entropy_pmf(X), np.ndarray))
         self.assertTrue(discrete.entropy_pmf(X).shape == (3,4))                
         
-        P1 = 1.0 * np.ones(1E06)
-        P2 = 1.0 * np.ones(2E06)
+        P1 = 1.0 * np.ones(int(1E06))
+        P2 = 1.0 * np.ones(int(2E06))
         H1 = discrete.entropy_pmf(P1 / np.sum(P1), base=2)
         H2 = discrete.entropy_pmf(P2 / np.sum(P2), base=2)
         self.assertTrue(np.allclose(H1+1, H2))
@@ -197,7 +197,7 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,1)),np.ones((1,)),True).shape == (1,))
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))
         
-        P1 = 1.0 * np.ones(1E06)
+        P1 = 1.0 * np.ones(int(1E06))
         H1 = discrete.divergence_kullbackleibler_pmf(P1 / np.sum(P1), P1 / np.sum(P1), base=2)
         self.assertTrue(H1 == 0)
 
@@ -1697,8 +1697,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y') == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2)/discrete.entropy(np.array((2,1,2)), base=2))        
         self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X') == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2)/discrete.entropy(np.array((1,2,2)), base=2))        
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y '), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=np.exp(1))/(discrete.entropy(np.array((1,2,2)), base=np.exp(1))+discrete.entropy(np.array((2,1,2)), base=np.exp(1)))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min(discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min(discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))      
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2)))))))
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2))))))        
         #Tests using cartesian_product=True
@@ -1706,8 +1706,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y', cartesian_product=True) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2)/discrete.entropy(np.array((2,1,2)),base=2))        
         self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X', cartesian_product=True) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2)/discrete.entropy(np.array((1,2,2)),base=2))        
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y ', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=np.exp(1))/(discrete.entropy(np.array((1,2,2)),base=np.exp(1))+discrete.entropy(np.array((2,1,2)),base=np.exp(1)))))
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min(discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min(discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2)))))))
         self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2))))))        
         

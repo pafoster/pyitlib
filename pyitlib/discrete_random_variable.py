@@ -4386,7 +4386,7 @@ def _autocreate_alphabet(X, fill_value):
     max_length = np.max(Lengths)
 
     def pad_with_fillvalue(x):
-        return np.append(x, np.tile(fill_value, max_length-x.size))
+        return np.append(x, np.tile(fill_value, int(max_length-x.size)))
     Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)),
                                    axis=-1, arr=X)
     return (Alphabet, fill_value)
@@ -4754,7 +4754,8 @@ def _vstack_pad(Arrays, fill_value):
     max_length = max([A.shape[-1] for A in Arrays])
     Arrays = [np.append(A, np.tile(fill_value,
                                    np.append(A.shape[:-1],
-                                             max_length-A.shape[-1])))
+                                             max_length -
+                                             A.shape[-1]).astype(int)))
               for A in Arrays]
     return np.vstack((Arrays))
 
