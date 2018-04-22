@@ -32,9 +32,11 @@ setup(
         'pandas>=0.20.2'
         'numpy>=1.9.2',
         'scikit-learn>=0.16.0',
-    ], keywords=['entropy', 'information theory', 'Shannon information',
-                 'uncertainty', 'correlation', 'statistics',
-                 'machine learning', 'data analysis', 'data science'],
+        'scipy>=1.0.1'
+    ],
+    keywords=['entropy', 'information theory', 'Shannon information',
+              'uncertainty', 'correlation', 'statistics',
+              'machine learning', 'data analysis', 'data science'],
     classifiers=[
         # How mature is this project? Common values are
         #   3 - Alpha
