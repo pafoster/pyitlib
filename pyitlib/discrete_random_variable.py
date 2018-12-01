@@ -112,7 +112,7 @@ from __future__ import division
 from builtins import zip
 from builtins import str
 from builtins import range
-from past.utils import old_div
+
 import warnings
 import numpy as np
 import sklearn.preprocessing
@@ -2095,7 +2095,7 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     else:
         raise ValueError("arg norm_factor has invalid value")
 
-    I = old_div(I, C)
+    I = I / C
 
     if keep_dims and not cartesian_product:
         I = I[..., np.newaxis]
@@ -3948,7 +3948,7 @@ def entropy_pmf(P, base=2, require_valid_pmf=True, keep_dims=False):
         raise ValueError("arg base not a positive real-valued scalar")
 
     H = -np.sum(P * np.log2(P + np.spacing(0)), axis=-1)
-    H = old_div(H, np.log2(base))
+    H = H / np.log2(base)
 
     if keep_dims:
         H = H[..., np.newaxis]
@@ -4055,7 +4055,7 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
         H = P * np.log2(Q)
     H[P == 0] = 0
     H = -np.sum(H, axis=-1)
-    H = old_div(H, np.log2(base))
+    H = H / np.log2(base)
 
     if keep_dims and not cartesian_product:
         H = H[..., np.newaxis]
@@ -4500,18 +4500,18 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         if np.isreal(estimator):
             alpha = estimator
         elif estimator == 'PERKS':
-            alpha = old_div(1.0, (Counts.size+n_additional_empty_bins))
+            alpha = 1.0 / (Counts.size+n_additional_empty_bins)
         elif estimator == 'MINIMAX':
-            alpha = old_div(np.sqrt(np.sum(Counts)), \
-                (Counts.size+n_additional_empty_bins))
+            alpha = np.sqrt(np.sum(Counts)) / \
+                (Counts.size+n_additional_empty_bins)
         else:
             alpha = 0
-        Theta = old_div((Counts+alpha), \
-            (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins)))
+        Theta = (Counts+alpha) / \
+            (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
-            Theta_0 = old_div(alpha, (1.0*np.sum(Counts) +
-                               alpha*(Counts.size+n_additional_empty_bins)))
+            Theta_0 = alpha / (1.0*np.sum(Counts) +
+                               alpha*(Counts.size+n_additional_empty_bins))
         else:
             Theta_0 = 0
 
@@ -4533,7 +4533,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         Q = np.append(0, R[:-1])
         T = np.append(R[1:], 2*R[-1]-Q[-1])
         Z_r = np.zeros_like(N_r)
-        Z_r[R] = old_div(N_r[R], (0.5*(T-Q)))
+        Z_r[R] = N_r[R] / (0.5*(T-Q))
 
         # Fit least squares regression line to plot of log(Z_r) versus log(r)
         x = np.log10(np.arange(1, Z_r.size))
@@ -4558,7 +4558,7 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         with np.errstate(invalid='ignore', divide='ignore'):
             VARr_T = (np.arange(N_r.size)+1)**2 * \
                 (1.0*np.append(N_r[1:], 0)/(N_r**2)) * \
-                (1 + old_div(np.append(N_r[1:], 0),N_r))
+                (1 + np.append(N_r[1:], 0)/N_r)
             x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:], 0) / N_r
             y = (np.arange(N_r.size)+1) * \
                 1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
@@ -4596,12 +4596,12 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
             warnings.warn("No unobserved outcomes specified. Disregarding the "
                           "probability mass allocated to any unobserved "
                           "outcomes.")
-            Theta = old_div(Theta, np.sum(Theta))
+            Theta = Theta / np.sum(Theta)
 
         # Divide p_0 among unobserved symbols
         with np.errstate(invalid='ignore', divide='ignore'):
-            p_emptybin = old_div(p_r[0], (np.sum(Counts == 0) +
-                                   n_additional_empty_bins))
+            p_emptybin = p_r[0] / (np.sum(Counts == 0) +
+                                   n_additional_empty_bins)
         Theta[Counts == 0] = p_emptybin
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
@@ -4611,12 +4611,12 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
 
     elif estimator == 'JAMES-STEIN':
         Theta, _ = _estimate_probabilities(Counts, 'ML')
-        p_uniform = old_div(1.0, (Counts.size + n_additional_empty_bins))
+        p_uniform = 1.0 / (Counts.size + n_additional_empty_bins)
         with np.errstate(invalid='ignore', divide='ignore'):
-            Lambda = old_div((1-np.sum(Theta**2)), \
+            Lambda = (1-np.sum(Theta**2)) / \
                 ((np.sum(Counts)-1) *
                  (np.sum((p_uniform-Theta)**2) +
-                  n_additional_empty_bins*p_uniform**2)))
+                  n_additional_empty_bins*p_uniform**2))
 
         if Lambda > 1:
             Lambda = 1
