@@ -118,6 +118,8 @@ import numpy as np
 import sklearn.preprocessing
 import pandas as pd
 
+NONE_REPLACEMENT = -32768
+
 # Aims of project: Comprehensive, Simple-to-use (avoid lots of function calls,
 # prefer flags, convenient defaults for possible interactive use). Focus on
 # data analysis. Documentation.
@@ -4703,6 +4705,16 @@ def _remove_counts_at_fill_value(Counts, Alphabet, fill_value):
 
 
 def _sanitise_array_input(X, fill_value=-1):
+    # Avoid Python 3 issues with numpy arrays containing None elements
+    if np.any(np.equal(X, None)) or fill_value is None:
+        X = np.array(X, copy=False)
+        assert(np.all(X != NONE_REPLACEMENT))
+        M = np.equal(X, None)
+        X = np.where(M, NONE_REPLACEMENT, X)
+    if fill_value is None:
+        X = np.array(X, copy=False)
+        fill_value = NONE_REPLACEMENT
+
     if isinstance(X, (pd.core.frame.DataFrame, pd.core.series.Series)):
         # Create masked array, honouring Dataframe/Series missing entries
         # NB: We transpose for convenience, so that quantities are computed for
@@ -4765,6 +4777,7 @@ def _vstack_pad(Arrays, fill_value):
               for A in Arrays]
     return np.vstack((Arrays))
 
+# TODO Avoid hack surrounding fill_type None and numpy arrays with Python 3. Remove support for fill_type None?
 # TODO Tests for keep_dims
 # TODO Should this really be NaN? Is it consistently NaN for all measures?
 # drv.entropy([-1,], estimator='PERKS', Alphabet_X = np.arange(100))
