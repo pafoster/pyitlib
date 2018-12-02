@@ -461,13 +461,10 @@ class TestEntropy(unittest.TestCase):
         # Tests using missing data and None values
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), fill_value=-1) == discrete.entropy((1,2,1,2,1,1,3,3)))
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), fill_value=None) == discrete.entropy((1,2,1,2,1,1)))
-        self.assertTrue(discrete.entropy(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1))) == discrete.entropy((1,2,1,2,1,1)))
         self.assertTrue(discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=-1) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=None) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.entropy((1,2,1,2,1,1), Alphabet_X=np.ma.array((1,2,None),mask=(0,0,1))) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=-1) == discrete.entropy((1,2,1,2,1,1,3,3), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=None) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.entropy(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1)), Alphabet_X=np.ma.array((1,2,3),mask=(0,0,1))) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         
         ### Tests involving Alphabet and non-ML estimation
         ###
@@ -2181,13 +2178,10 @@ class TestEntropy(unittest.TestCase):
         # Tests using missing data and None values
         self.assertTrue(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), fill_value=-1) == discrete.information_binding(np.array(((1,2,1,2,1,1,3,3),(1,1,1,2,1,1,1,1)))))
         self.assertTrue(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), fill_value=None) == - discrete.entropy_joint(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1)))) + discrete.entropy((1,2,1,2,1,1)) + discrete.entropy((1,1,1,2,1,1,1,1)))
-        self.assertTrue(np.allclose(discrete.information_binding(np.ma.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1)),mask=((0,0,0,0,0,0,1,1),(0,0,0,0,0,0,0,0)))), - discrete.entropy_joint(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1)))) + discrete.entropy((1,2,1,2,1,1)) + discrete.entropy((1,1,1,2,1,1,1,1))))
         self.assertTrue(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), Alphabet_X=((1,2,None),(1,2,-1)), fill_value=-1) == discrete.information_binding(np.array(((1,2,1,2,1,1,3,3),(1,1,1,2,1,1,1,1))), Alphabet_X=((1,2,3),(1,2,-1)), fill_value=-1))
         self.assertTrue(np.allclose(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), Alphabet_X=((1,2,None),(1,2,None)), fill_value=None), - discrete.entropy_joint(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1)))) + discrete.entropy((1,2,1,2,1,1)) + discrete.entropy((1,1,1,2,1,1,1,1))))
-        self.assertTrue(np.allclose(discrete.information_binding(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1))), Alphabet_X=np.ma.array(((1,2,None),(1,2,None)),mask=((0,0,1),(0,0,0)))), discrete.information_binding(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1))), Alphabet_X=np.array(((1,2,None),(1,2,3))))))
         self.assertTrue(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), Alphabet_X=np.array(((1,2,None),(1,2,None))), fill_value=-1) == discrete.information_binding(np.array(((1,2,1,2,1,1,3,3),(1,1,1,2,1,1,1,1))), Alphabet_X=np.array(((1,2,3),(1,2,3)))))
         self.assertTrue(np.allclose(discrete.information_binding(np.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1))), Alphabet_X=((1,2,None),(1,2,None)), fill_value=None), - discrete.entropy_joint(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1)))) + discrete.entropy((1,2,1,2,1,1)) + discrete.entropy((1,1,1,2,1,1,1,1))))
-        self.assertTrue(np.allclose(discrete.information_binding(np.ma.array(((1,2,1,2,1,1,None,None),(1,1,1,2,1,1,1,1)),mask=((0,0,0,0,0,0,1,1),(0,0,0,0,0,0,0,0))), Alphabet_X=np.ma.array(((1,2,3),(1,2,3)),mask=((0,0,1),(0,0,0)))), - discrete.entropy_joint(np.array(((1,2,1,2,1,1),(1,1,1,2,1,1)))) + discrete.entropy((1,2,1,2,1,1)) + discrete.entropy((1,1,1,2,1,1,1,1))))
         
         ### Tests involving Alphabet and non-ML estimation
         ###
@@ -2472,13 +2466,10 @@ class TestEntropy(unittest.TestCase):
         # Tests using missing data and None values
         self.assertTrue(discrete.information_co((1,2,1,2,1,1,None,None), fill_value=-1) == discrete.information_co((1,2,1,2,1,1,3,3)))
         self.assertTrue(discrete.information_co((1,2,1,2,1,1,None,None), fill_value=None) == discrete.information_co((1,2,1,2,1,1)))
-        self.assertTrue(discrete.information_co(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1))) == discrete.information_co((1,2,1,2,1,1)))
         self.assertTrue(discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=-1) == discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=None) == discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.information_co((1,2,1,2,1,1), Alphabet_X=np.ma.array((1,2,None),mask=(0,0,1))) == discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         self.assertTrue(discrete.information_co((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=-1) == discrete.information_co((1,2,1,2,1,1,3,3), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.information_co((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=None) == discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.information_co(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1)), Alphabet_X=np.ma.array((1,2,3),mask=(0,0,1))) == discrete.information_co((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         
         ### Tests involving Alphabet and non-ML estimation
         ###
@@ -2566,13 +2557,10 @@ class TestEntropy(unittest.TestCase):
         # Tests using missing data and None values
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1,None,None), fill_value=-1) == discrete.information_interaction((1,2,1,2,1,1,3,3)))
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1,None,None), fill_value=None) == discrete.information_interaction((1,2,1,2,1,1)))
-        self.assertTrue(discrete.information_interaction(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1))) == discrete.information_interaction((1,2,1,2,1,1)))
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=-1) == discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2,None), fill_value=None) == discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=np.ma.array((1,2,None),mask=(0,0,1))) == discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=-1) == discrete.information_interaction((1,2,1,2,1,1,3,3), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.information_interaction((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=None) == discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2)))
-        self.assertTrue(discrete.information_interaction(np.ma.array((1,2,1,2,1,1,None,None),mask=(0,0,0,0,0,0,1,1)), Alphabet_X=np.ma.array((1,2,3),mask=(0,0,1))) == discrete.information_interaction((1,2,1,2,1,1), Alphabet_X=(1,2)))        
         
         ### Tests involving Alphabet and non-ML estimation
         ###
