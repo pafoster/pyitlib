@@ -2710,7 +2710,7 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
 
     .. math::
         D_{\\mathrm{KL}}(P_X \\parallel P_Y) =
-        -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.
+        -\\sum_x {P_X(x) \\log {\\frac{P_Y(x)}{P_X(x)}}}.
 
     **Estimation**:
 
@@ -3912,7 +3912,7 @@ def entropy_pmf(P, base=2, require_valid_pmf=True, keep_dims=False):
     is defined as:
 
     .. math::
-        H(P) = -\\sum_x {P(x) \\log {Q(x)}}.
+        H(P) = -\\sum_x {P(x) \\log {P(x)}}.
 
     **Parameters**:
 
@@ -4080,7 +4080,7 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
 
     .. math::
         D_{\\mathrm{KL}}(P \\parallel Q) =
-        -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.
+        -\\sum_x {P(x) \\log {\\frac{Q(x)}{P(x)}}}.
 
     **Parameters**:
 
