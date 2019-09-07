@@ -17,47 +17,52 @@ from scipy.stats.distributions import norm
 import unittest
 from pyitlib import discrete_random_variable as discrete
 
-#TODO Is there a neater, more methodological way to group tests within each method?
 #TODO Re-arrange functions
 
-class TestEntropy(unittest.TestCase):
-    def test_entropy_pmf(self):
+class TestEntropyPmf(unittest.TestCase):
+    def test_immutability(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
         X1 = old_div(X1, (1.0 * np.sum(X1, axis=1)[:,np.newaxis]))
         X2 = np.copy(X1)
         discrete.entropy_pmf(X2)
         self.assertTrue(np.all(X2 == X1))
-        
+
+    def test_basic_results(self):
         #Basic tests
         self.assertTrue(discrete.entropy_pmf(np.array((0.5, 0.5)), base=2) == 1)
         self.assertTrue(discrete.entropy_pmf(np.array((1.0, 0)), base=2) == 0)
         self.assertTrue(abs(discrete.entropy_pmf(np.array((0.5, 0.5)), base=np.exp(1))-0.693) < 1E-03)
-        
+
+    def test_type(self):
         #Type tests        
         self.assertTrue(isinstance(discrete.entropy_pmf(np.array((0.5, 0.5))) , np.float))
         self.assertTrue(isinstance(discrete.entropy_pmf(1) , np.float))
-        
+
+    def test_outputdimensionality(self):
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.entropy_pmf(np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
         self.assertTrue(discrete.entropy_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T).shape == (1,))
         
+        #Output dimensionality tests -- multidimensional arrays
+        X = np.ones((3,4,5))
+        X = old_div(X, (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis]))
+        self.assertTrue(isinstance(discrete.entropy_pmf(X), np.ndarray))
+        self.assertTrue(discrete.entropy_pmf(X).shape == (3,4))
+
+    def test_scalar_arrays(self):
         self.assertTrue(discrete.entropy_pmf(np.array(1)) == 0)
         self.assertTrue(discrete.entropy_pmf(np.array((1,))) == 0)
         self.assertTrue(discrete.entropy_pmf(np.ones((1,))) == 0)
         self.assertTrue(discrete.entropy_pmf(np.ones((1,1))) == 0)
         
-        X = np.ones((3,4,5))
-        X = old_div(X, (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis]))
-        self.assertTrue(isinstance(discrete.entropy_pmf(X), np.ndarray))
-        self.assertTrue(discrete.entropy_pmf(X).shape == (3,4))                
-        
+    def test_large_vectors(self):
         P1 = 1.0 * np.ones(int(1E06))
         P2 = 1.0 * np.ones(int(2E06))
         H1 = discrete.entropy_pmf(old_div(P1, np.sum(P1)), base=2)
         H2 = discrete.entropy_pmf(old_div(P2, np.sum(P2)), base=2)
         self.assertTrue(np.allclose(H1+1, H2))
-                
+        
         np.random.seed(4759)
         X1 = np.random.randn(10**6)
         X2 = X1 * 0.5;
@@ -68,6 +73,7 @@ class TestEntropy(unittest.TestCase):
         H2 = discrete.entropy_pmf(old_div(P2, np.sum(P2)), base=2)
         self.assertTrue(abs(H1 - 1 - H2) < 1E-02)
         
+    def test_exceptions(self):
         #Exception tests
         with self.assertRaises(ValueError):
             discrete.entropy_pmf(np.array(()))
@@ -80,8 +86,9 @@ class TestEntropy(unittest.TestCase):
         with self.assertRaises(ValueError):
             discrete.entropy_pmf(np.array((0.5, 0.6))) 
         with self.assertRaises(ValueError):
-            discrete.entropy_pmf(np.array((0.5, 0.5)), base=-1)                    
-            
+            discrete.entropy_pmf(np.array((0.5, 0.5)), base=-1) 
+
+class TestEntropy(unittest.TestCase):
     def test_entropy_cross_pmf(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
