@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -24,6 +25,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">pyitlib 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
@@ -2747,7 +2751,7 @@
 
 <span class="sd">    .. math::</span>
 <span class="sd">        D_{\\mathrm{KL}}(P_X \\parallel P_Y) =</span>
-<span class="sd">        -\\sum_x {P_X(x) \\log {\\frac{P_X(x)}{P_Y(x)}}}.</span>
+<span class="sd">        -\\sum_x {P_X(x) \\log {\\frac{P_Y(x)}{P_X(x)}}}.</span>
 
 <span class="sd">    **Estimation**:</span>
 
@@ -3949,7 +3953,7 @@
 <span class="sd">    is defined as:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        H(P) = -\\sum_x {P(x) \\log {Q(x)}}.</span>
+<span class="sd">        H(P) = -\\sum_x {P(x) \\log {P(x)}}.</span>
 
 <span class="sd">    **Parameters**:</span>
 
@@ -4117,7 +4121,7 @@
 
 <span class="sd">    .. math::</span>
 <span class="sd">        D_{\\mathrm{KL}}(P \\parallel Q) =</span>
-<span class="sd">        -\\sum_x {P(x) \\log {\\frac{P(x)}{Q(x)}}}.</span>
+<span class="sd">        -\\sum_x {P(x) \\log {\\frac{Q(x)}{P(x)}}}.</span>
 
 <span class="sd">    **Parameters**:</span>
 
@@ -4860,6 +4864,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">pyitlib 0.2.2 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
       </ul>
