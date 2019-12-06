@@ -17,7 +17,7 @@ from scipy.stats.distributions import norm
 import unittest
 from pyitlib import discrete_random_variable as discrete
 
-# Test naming convention test(_immutabiliy|_results|_type|_dimensionality|_exceptions)?(__tensors|__scalararrays|__largevectors|__edgearrays)?
+# Test naming convention test(_immutabiliy|_results|_type|_dimensionality|_exceptions)?(__tensors|__vectors|__matrices|__largevectors|__edgearrays)?
 
 class TestEntropyPmf(unittest.TestCase):
     def test_immutability(self):
@@ -196,8 +196,12 @@ class TestEntropyCrossPmf(unittest.TestCase):
         with self.assertRaises(ValueError):
             discrete.entropy_cross_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5)), base=-1)
 
-class TestEntropy(unittest.TestCase):
-    def test_divergence_kullbackleibler_pmf(self):
+class TestDivergenceKullbackleiblerPmf(unittest.TestCase):
+    def setUp(self):
+        self.Bins = np.linspace(-5,5,10000)
+        self.Locs = np.linspace(-0.5,0.5,64)
+
+    def test_dimensionality__edgearrays(self):
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.array(1),np.array(1)).shape == tuple())
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.array((1,)),np.array((1,))).shape == tuple())
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,)),np.ones((1,))).shape == tuple())
@@ -211,20 +215,21 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,1)),np.ones((1,)),True).shape == (1,))
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))
 
+    def test_results__largevectors(self):
         P1 = 1.0 * np.ones(int(1E06))
         H1 = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1)), old_div(P1, np.sum(P1)), base=2)
         self.assertTrue(H1 == 0)
 
-        Bins1 = np.linspace(-5,5,10000)
-        P1 = norm.pdf(Bins1)
-        P2 = norm.pdf(Bins1,loc=0.5)
+    def test_results__vectors(self):
+        P1 = norm.pdf(self.Bins)
+        P2 = norm.pdf(self.Bins,loc=0.5)
         H1 = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1)), old_div(P2, np.sum(P2)), base=np.exp(1))
         self.assertTrue(np.abs(H1 - 0.125) < 1E-3)
 
-        Locs = np.linspace(-0.5,0.5,64)
-        P1 = [norm.pdf(Bins1) for i in np.arange(64)]
-        P2 = [norm.pdf(Bins1,Locs[i]) for i in np.arange(64)]
-        H1 = [old_div((1 + loc**2),2) - 0.5 for loc in Locs]
+    def test__arrays(self):
+        P1 = [norm.pdf(self.Bins) for i in np.arange(64)]
+        P2 = [norm.pdf(self.Bins,self.Locs[i]) for i in np.arange(64)]
+        H1 = [old_div((1 + loc**2),2) - 0.5 for loc in self.Locs]
         P1 = np.array(P1).reshape((8,8,-1))
         P2 = np.array(P2).reshape((8,8,-1))
         H1 = np.array(H1).reshape((8,8))
@@ -232,22 +237,23 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(np.all(H1_empirical.shape == (8,8)))
         self.assertTrue(np.all(np.abs(H1 - H1_empirical) < 1E-3))
 
-        Locs = np.linspace(-0.5,0.5,64)
-        P1 = [norm.pdf(Bins1,Locs[i]) for i in np.arange(64)]
-        P2 = [norm.pdf(Bins1,Locs[i]) for i in np.arange(64)]
+    def test__tensors(self):
+        P1 = [norm.pdf(self.Bins,self.Locs[i]) for i in np.arange(64)]
+        P2 = [norm.pdf(self.Bins,self.Locs[i]) for i in np.arange(64)]
         P1 = np.array(P1).reshape((8,8,-1))
         P2 = np.array(P2).reshape((8,8,-1))
-        Locs = Locs.reshape((8,8,-1))
+        self.Locs = self.Locs.reshape((8,8,-1))
         H1_empirical = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1,axis=-1)[:,:,np.newaxis]), old_div(P2, np.sum(P2,axis=-1)[:,:,np.newaxis]), cartesian_product=True, base=np.exp(1))
         self.assertTrue(np.all(H1_empirical.shape == (8,8,8,8)))
         for i in range(H1_empirical.shape[0]):
             for j in range(H1_empirical.shape[1]):
                 for k in range(H1_empirical.shape[2]):
                    for l in range(H1_empirical.shape[3]):
-                       H1 = old_div((1 + (Locs[i,j]-Locs[k,l])**2),2) - 0.5
+                       H1 = old_div((1 + (self.Locs[i,j]-self.Locs[k,l])**2),2) - 0.5
                        self.assertTrue(np.abs(H1 - H1_empirical[i,j,k,l]) < 1E-3)
 
-    def test_divergence_kullbackleibler_symmetrised_pmf(self):
+class TestDivergenceKullbackleiblerSymmetrisedPmf(unittest.TestCase):
+    def test_dimensionality__edgearrays(self):
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.array(1),np.array(1)).shape == tuple())
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.array((1,)),np.array((1,))).shape == tuple())
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.ones((1,)),np.ones((1,))).shape == tuple())
@@ -261,8 +267,10 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.ones((1,1)),np.ones((1,)),True).shape == (1,))
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))
 
+    def test_results__vectors(self):
         self.assertTrue(np.allclose(discrete.divergence_kullbackleibler_symmetrised_pmf(np.array((old_div(2.0,3), old_div(1.0,3))), np.array((old_div(1.0,3), old_div(2.0,3)))), old_div(2.0,3)))
 
+    def test_results__arrays(self):
         P = np.array(((old_div(2.0,3), old_div(1.0,3)),(old_div(1.0,3), old_div(2.0,3)),(old_div(2.0,3), old_div(1.0,3))))
         Q = np.array(((old_div(2.0,3), old_div(1.0,3)),(old_div(1.0,3), old_div(2.0,3))))
         H = discrete.divergence_kullbackleibler_symmetrised_pmf(P,Q, True)
@@ -270,6 +278,8 @@ class TestEntropy(unittest.TestCase):
         H = discrete.divergence_kullbackleibler_symmetrised_pmf(Q)
         self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0)))))
 
+
+class TestEntropy(unittest.TestCase):
     def test_divergence_jensenshannon_pmf(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
