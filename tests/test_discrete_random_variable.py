@@ -278,9 +278,8 @@ class TestDivergenceKullbackleiblerSymmetrisedPmf(unittest.TestCase):
         H = discrete.divergence_kullbackleibler_symmetrised_pmf(Q)
         self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0)))))
 
-
-class TestEntropy(unittest.TestCase):
-    def test_divergence_jensenshannon_pmf(self):
+class TestDivergenceJensenShannonPmf(unittest.TestCase):
+    def test_immutability(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
         X1 = old_div(X1, (1.0 * np.sum(X1, axis=1)[:,np.newaxis]))
@@ -291,6 +290,7 @@ class TestEntropy(unittest.TestCase):
         discrete.divergence_jensenshannon_pmf(X1_copy, X2_copy)
         self.assertTrue(np.all(X1_copy == X1) and np.all(X2_copy == X2))
 
+    def test_results__vectors(self):
         #Basic tests
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array((1.0, 0)), np.array((0, 1.0)), base=2) == 1)
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array((1.0, 0)), np.array((1.0, 0)), base=2) == 0)
@@ -302,10 +302,12 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5)), cartesian_product=True, base=2) == 0)
         self.assertTrue(abs(discrete.divergence_jensenshannon_pmf(np.array((1.0, 0.0)), np.array((0.0, 1.0)), cartesian_product=True, base=np.exp(1))-0.693) < 1E-03)
 
+    def test_type(self):
         #Type tests
         self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float))
         self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(1,1) , np.float))
 
+    def test_dimensionality__vectors(self):
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T).shape == (1,))
@@ -313,6 +315,7 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,))), cartesian_product=True).shape == (3,3))
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, cartesian_product=True).shape == (1,1))
 
+    def test_results__edgearrays(self):
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(1), np.array(1)) == 0)
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array((1,)), np.array((1,))) == 0)
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.ones((1,)), np.ones((1,))) == 0)
@@ -323,12 +326,14 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.ones((1,)), np.ones((1,)),  cartesian_product=True) == 0)
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.ones((1,1)), np.ones((1,1)), cartesian_product=True) == 0)
 
+    def test_results__matrices(self):
         self.assertTrue(np.all(discrete.divergence_jensenshannon_pmf(np.array(((0.5, 0.5), (0.5, 0.5))))==0))
         self.assertTrue(np.all(discrete.divergence_jensenshannon_pmf(np.array(((1.0, 0.0), (0.0, 1.0))),np.array(((1.0, 0.0), (0.0, 1.0))))==0))
         #Tests using cartesian_product=True
         self.assertTrue(np.all(discrete.divergence_jensenshannon_pmf(np.array(((1.0, 0.0), (0.0, 1.0))), cartesian_product=True)==np.array(((0.0, 1),(1, 0.0)))))
         self.assertTrue(np.all(discrete.divergence_jensenshannon_pmf(np.array(((1.0, 0.0), (0.0, 1.0))),np.array(((1.0, 0.0), (0.0, 1.0))), cartesian_product=True)==np.array(((0.0, 1),(1, 0.0)))))
 
+    def test_results__largevectors(self):
         #Test based on interpreting JSD as mutual information between X, sourced from mixture distribution, and Y, the mixture component indicator
         Bins1 = np.linspace(-5,5,10000)
         P1 = norm.pdf(Bins1,loc=-0.5)
@@ -354,6 +359,7 @@ class TestEntropy(unittest.TestCase):
         JSD2 = 0.5 * (discrete.divergence_kullbackleibler_pmf(P1, M) + discrete.divergence_kullbackleibler_pmf(P2, M))
         self.assertTrue(np.allclose(JSD2, JSD))
 
+    def test_exceptions(self):
         #Exception tests
         with self.assertRaises(ValueError):
             discrete.divergence_jensenshannon_pmf(np.array(()), np.array(()))
@@ -382,6 +388,7 @@ class TestEntropy(unittest.TestCase):
         with self.assertRaises(ValueError):
             discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5)), base=-1)
 
+class TestEntropy(unittest.TestCase):
     def test_entropy(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
