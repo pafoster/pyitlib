@@ -389,13 +389,14 @@ class TestDivergenceJensenShannonPmf(unittest.TestCase):
             discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5)), base=-1)
 
 class TestEntropy(unittest.TestCase):
-    def test_entropy(self):
+    def test_immutability(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
         X2 = np.copy(X1)
         discrete.entropy(X2)
         self.assertTrue(np.all(X2 == X1))
 
+    def test__vectors(self):
         self.assertTrue(discrete.entropy(np.array((0.5, 0.5, 1.0, 1.0)), base=2) == 1)
         self.assertTrue(discrete.entropy(np.array((1.0, 1.0)), base=2) == 0)
         self.assertTrue(abs(discrete.entropy(np.array((1.0, 2.0)), base=np.exp(1))-0.693) < 1E-03)
@@ -405,28 +406,34 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy(np.ones((5,1))).size==5)
         self.assertTrue(np.all(discrete.entropy(np.ones((5,1)))==0))
 
+    def test_results__edgearrays(self):
         self.assertTrue(discrete.entropy(np.array(4)) == 0)
         self.assertTrue(discrete.entropy(np.array((4,))) == 0)
         self.assertTrue(discrete.entropy(np.ones((1,))) == 0)
         self.assertTrue(discrete.entropy(np.ones((1,1))) == 0)
 
+    def test_results__matrices(self):
         self.assertTrue(np.all(discrete.entropy(np.array(((1.0, 2.0), (1.0, 2.0))))==1))
         self.assertTrue(np.all(discrete.entropy(np.array(((1.0, 2.0), (1.0, 2.0))).T)==0))
 
+    def test_dimensionality__edgearrays(self):
         self.assertTrue(discrete.entropy(np.array(1)).shape == tuple())
         self.assertTrue(discrete.entropy(np.array((1,))).shape == tuple())
         self.assertTrue(discrete.entropy(np.ones((1,))).shape == tuple())
         self.assertTrue(discrete.entropy(np.ones((1,1))).shape == (1,))
 
+    def test__tensors(self):
         X = np.arange(3*4*5).reshape((3,4,5))
         self.assertTrue(isinstance(discrete.entropy(X), np.ndarray))
         self.assertTrue(discrete.entropy(X).shape == (3,4))
         self.assertTrue(np.allclose(discrete.entropy(X), -np.log2(old_div(1.0,5))))
 
+    def test_results__largearrays(self):
         np.random.seed(4759)
         X = np.random.randint(16, size=(10,10**4))
         self.assertTrue(np.all(np.abs(discrete.entropy(X) - 4.0) < 1E-02))
 
+    def test_results__largevectors(self):
         np.random.seed(4759)
         X1 = np.random.randn(10**6)
         X2 = X1 * 0.5;
@@ -437,6 +444,7 @@ class TestEntropy(unittest.TestCase):
         H2 = discrete.entropy(P2, base=2)
         self.assertTrue(abs(H1 - 1 - H2) < 1E-02)
 
+    def test_exceptions(self):
         #Exception tests
         with self.assertRaises(ValueError):
             discrete.entropy(np.array(()))
@@ -449,6 +457,8 @@ class TestEntropy(unittest.TestCase):
         with self.assertRaises(ValueError):
             discrete.entropy(np.array((2, 1)), base=-1)
 
+class TestEntropy_MissingData(unittest.TestCase):
+    def test_immutability(self):
         #
         # Tests using missing data
         #
@@ -459,6 +469,7 @@ class TestEntropy(unittest.TestCase):
         discrete.entropy(X2, fill_value=-1)
         self.assertTrue(np.all(X2 == X1))
 
+    def test_results__matrices(self):
         # Tests using missing data involving masked arrays
         X1 = np.random.randint(16, size=(10,10)) * 1.0
         X1[0,0] = -1
@@ -466,6 +477,7 @@ class TestEntropy(unittest.TestCase):
         Mask[0,0] = 1
         self.assertTrue(np.all(discrete.entropy(X1, fill_value=-1) == discrete.entropy(np.ma.array(X1,mask=Mask))))
 
+    def test_results__vectors(self):
         #Tests involving masked arrays
         self.assertTrue(discrete.entropy(np.ma.array((4,1,2), mask=(0,1,0))) == 1)
         self.assertTrue(discrete.entropy(np.ma.array((4,1), mask=(0,0))) == 1)
@@ -494,6 +506,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=-1) == discrete.entropy((1,2,1,2,1,1,3,3), Alphabet_X=(1,2,3)))
         self.assertTrue(discrete.entropy((1,2,1,2,1,1,None,None), Alphabet_X=(1,2,None), fill_value=None) == discrete.entropy((1,2,1,2,1,1), Alphabet_X=(1,2)))
 
+class TestEntropy_AlphabetsAndEstimators(unittest.TestCase):
+    def test_results(self):
         ### Tests involving Alphabet and non-ML estimation
         ###
         ###
@@ -516,6 +530,8 @@ class TestEntropy(unittest.TestCase):
         with self.assertRaises(ValueError):
             discrete.entropy(np.array((1,2)), estimator=1, Alphabet_X=np.array(((1,2),(1,2))), base=3)
 
+
+class TestAll(unittest.TestCase):
     def test_entropy_joint(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
