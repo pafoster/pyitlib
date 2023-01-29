@@ -22,16 +22,16 @@ setup(
     description='A library of information-theoretic methods',
     long_description=open('README.rst').read(),
     url='https://github.com/pafoster/pyitlib',
-    download_url='https://github.com/pafoster/pyitlib/archive/0.2.2.tar.gz',
+    download_url='https://github.com/pafoster/pyitlib/archive/0.2.3.tar.gz',
     author='Peter Foster',
     author_email='pyitlib@gmx.us',
     license='MIT',
     packages=['pyitlib', ],
     zip_safe=False,
     install_requires=[
-        'pandas>=0.20.2'
+        'pandas>=0.20.2',
         'numpy>=1.9.2',
-        'scikit-learn>=0.16.0',
+        'scikit-learn>=0.16.0,<=0.24',
         'scipy>=1.0.1',
         'future>=0.16.0'
     ],
