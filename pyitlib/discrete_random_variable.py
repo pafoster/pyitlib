@@ -4678,7 +4678,7 @@ def _isnan_element(x):
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
     assert(len(Symbol_matrices) == len(Fill_values))
     FILL_VALUE = -1
-    if np.any([A.dtype != 'int' for A in Symbol_matrices]) or \
+    if np.any([A.dtype not in [np.dtype(np.intp), np.dtype(np.int32), np.dtype(np.int64)] for A in Symbol_matrices]) or \
             np.any(np.array(Fill_values) != FILL_VALUE):
         L = sklearn.preprocessing.LabelEncoder()
         F = [np.atleast_1d(v) for v in Fill_values]
@@ -4692,7 +4692,7 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
             assert(not np.any(A == FILL_VALUE))
             A[A == f] = FILL_VALUE
 
-    assert(np.all([A.dtype == 'int' for A in Symbol_matrices]))
+    assert(np.all([A.dtype in [np.dtype(np.intp), np.dtype(np.int32), np.dtype(np.int64)] for A in Symbol_matrices]))
     return Symbol_matrices, FILL_VALUE
 
 
