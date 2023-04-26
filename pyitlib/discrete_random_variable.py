@@ -4752,6 +4752,9 @@ def _sanitise_array_input(X, fill_value=-1):
     if X.size == 1 and X.ndim == 0:
         X = np.array((X, ))
 
+    if X.dtype.kind == "O":
+        X = X.astype(None)  # force data type change from object.
+
     return X, np.array(fill_value)
 
 

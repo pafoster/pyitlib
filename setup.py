@@ -29,10 +29,10 @@ setup(
     packages=['pyitlib', ],
     zip_safe=False,
     install_requires=[
-        'pandas>=0.20.2',
-        'numpy>=1.9.2',
-        'scikit-learn>=0.16.0,<=0.24',
-        'scipy>=1.0.1',
+        'pandas==1.4.1',
+        'numpy==1.22.3',
+        'scikit-learn==1.0.2',
+        'scipy==1.8.1',
         'future>=0.16.0'
     ],
     keywords=['entropy', 'information theory', 'Shannon information',

@@ -4,3 +4,5 @@
 docs/_build/
 dist
 pyitlib.egg-info
+venv/
+.vscode/

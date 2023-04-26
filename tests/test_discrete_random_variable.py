@@ -35,8 +35,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.entropy_pmf(np.array((0.5, 0.5)), base=np.exp(1))-0.693) < 1E-03)
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.entropy_pmf(np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.entropy_pmf(1) , np.float))
+        self.assertTrue(isinstance(discrete.entropy_pmf(np.array((0.5, 0.5))) , np.float64))
+        self.assertTrue(isinstance(discrete.entropy_pmf(1) , np.float64))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.entropy_pmf(np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
@@ -107,8 +107,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.entropy_cross_pmf(np.array((1.0, 0.0)), np.array((0.5, 0.5)), cartesian_product=True, base=np.exp(1))-0.693) < 1E-03)                
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.entropy_cross_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.entropy_cross_pmf(1,1) , np.float))
+        self.assertTrue(isinstance(discrete.entropy_cross_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float64))
+        self.assertTrue(isinstance(discrete.entropy_cross_pmf(1,1) , np.float64))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.entropy_cross_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
@@ -282,8 +282,8 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.divergence_jensenshannon_pmf(np.array((1.0, 0.0)), np.array((0.0, 1.0)), cartesian_product=True, base=np.exp(1))-0.693) < 1E-03)
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(1,1) , np.float))
+        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float64))
+        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(1,1) , np.float64))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
@@ -517,7 +517,7 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy_joint(np.ones((1,1))).shape == tuple())        
         
         X = np.arange(3*4*5).reshape((3,4,5))
-        self.assertTrue(isinstance(discrete.entropy_joint(X), np.float))
+        self.assertTrue(isinstance(discrete.entropy_joint(X), np.float64))
         self.assertTrue(discrete.entropy_joint(X).size == 1)
         self.assertTrue(np.allclose(discrete.entropy_joint(X), np.log2(5)))
         X = np.concatenate((X, X), axis=0)
