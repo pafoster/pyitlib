@@ -29,7 +29,7 @@ setup(
     packages=['pyitlib', ],
     zip_safe=False,
     install_requires=[
-        'pandas==1.4.1',
+        'pandas==1.5.3',
         'numpy==1.22.3',
         'scikit-learn==1.0.2',
         'scipy==1.10.0',
