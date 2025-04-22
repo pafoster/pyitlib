@@ -9,9 +9,6 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from __future__ import division
-from builtins import range
-from past.utils import old_div
 import numpy as np
 from scipy.stats.distributions import norm
 import unittest
@@ -24,7 +21,7 @@ class TestEntropy(unittest.TestCase):
     def test_entropy_pmf(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
-        X1 = old_div(X1, (1.0 * np.sum(X1, axis=1)[:,np.newaxis]))
+        X1 = X1 / (1.0 * np.sum(X1, axis=1)[:,np.newaxis])
         X2 = np.copy(X1)
         discrete.entropy_pmf(X2)
         self.assertTrue(np.all(X2 == X1))
@@ -35,12 +32,12 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.entropy_pmf(np.array((0.5, 0.5)), base=np.exp(1))-0.693) < 1E-03)
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.entropy_pmf(np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.entropy_pmf(1) , np.float))
+        self.assertTrue(isinstance(discrete.entropy_pmf(np.array((0.5, 0.5))) , float))
+        self.assertTrue(isinstance(discrete.entropy_pmf(1) , float))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.entropy_pmf(np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
-        self.assertTrue(discrete.entropy_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T).shape == (1,))
+        self.assertTrue(discrete.entropy_pmf(np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T).shape == (1,))
         
         self.assertTrue(discrete.entropy_pmf(np.array(1)) == 0)
         self.assertTrue(discrete.entropy_pmf(np.array((1,))) == 0)
@@ -48,14 +45,14 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy_pmf(np.ones((1,1))) == 0)
         
         X = np.ones((3,4,5))
-        X = old_div(X, (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis]))
+        X = X / (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis])
         self.assertTrue(isinstance(discrete.entropy_pmf(X), np.ndarray))
         self.assertTrue(discrete.entropy_pmf(X).shape == (3,4))                
         
         P1 = 1.0 * np.ones(int(1E06))
         P2 = 1.0 * np.ones(int(2E06))
-        H1 = discrete.entropy_pmf(old_div(P1, np.sum(P1)), base=2)
-        H2 = discrete.entropy_pmf(old_div(P2, np.sum(P2)), base=2)
+        H1 = discrete.entropy_pmf(P1 / np.sum(P1), base=2)
+        H2 = discrete.entropy_pmf(P2 / np.sum(P2), base=2)
         self.assertTrue(np.allclose(H1+1, H2))
                 
         np.random.seed(4759)
@@ -64,8 +61,8 @@ class TestEntropy(unittest.TestCase):
         Bins1 = np.linspace(-4,4,10000)
         P1 = 1.0 * np.bincount(np.digitize(X1, Bins1))
         P2 = 1.0 * np.bincount(np.digitize(X2, Bins1))
-        H1 = discrete.entropy_pmf(old_div(P1, np.sum(P1)), base=2)
-        H2 = discrete.entropy_pmf(old_div(P2, np.sum(P2)), base=2)
+        H1 = discrete.entropy_pmf(P1 / np.sum(P1), base=2)
+        H2 = discrete.entropy_pmf(P2 / np.sum(P2), base=2)
         self.assertTrue(abs(H1 - 1 - H2) < 1E-02)
         
         #Exception tests
@@ -85,10 +82,10 @@ class TestEntropy(unittest.TestCase):
     def test_entropy_cross_pmf(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
-        X1 = old_div(X1, (1.0 * np.sum(X1, axis=1)[:,np.newaxis]))
+        X1 = X1 / (1.0 * np.sum(X1, axis=1)[:,np.newaxis])
         X1_copy = np.copy(X1)
         X2 = np.random.randint(16, size=(10,10))
-        X2 = old_div(X2, (1.0 * np.sum(X2, axis=1)[:,np.newaxis]))
+        X2 = X2 / (1.0 * np.sum(X2, axis=1)[:,np.newaxis])
         X2_copy = np.copy(X2)        
         discrete.entropy_cross_pmf(X1_copy, X2_copy)
         self.assertTrue(np.all(X1_copy == X1) and np.all(X2_copy == X2))
@@ -107,15 +104,15 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.entropy_cross_pmf(np.array((1.0, 0.0)), np.array((0.5, 0.5)), cartesian_product=True, base=np.exp(1))-0.693) < 1E-03)                
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.entropy_cross_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.entropy_cross_pmf(1,1) , np.float))
+        self.assertTrue(isinstance(discrete.entropy_cross_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , float))
+        self.assertTrue(isinstance(discrete.entropy_cross_pmf(1,1) , float))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.entropy_cross_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
-        self.assertTrue(discrete.entropy_cross_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T).shape == (1,))
+        self.assertTrue(discrete.entropy_cross_pmf(np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T).shape == (1,))
         #Tests using cartesian_product=True
         self.assertTrue(discrete.entropy_cross_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,))), cartesian_product=True).shape == (3,3))
-        self.assertTrue(discrete.entropy_cross_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, cartesian_product=True).shape == (1,1))        
+        self.assertTrue(discrete.entropy_cross_pmf(np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, cartesian_product=True).shape == (1,1))        
 
         self.assertTrue(discrete.entropy_cross_pmf(np.array(1), np.array(1)) == 0)
         self.assertTrue(discrete.entropy_cross_pmf(np.array((1,)), np.array((1,))) == 0)
@@ -147,12 +144,12 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy_cross_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))
         
         X = np.ones((3,4,5))
-        X = old_div(X, (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis]))
+        X = X / (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis])
         self.assertTrue(isinstance(discrete.entropy_cross_pmf(X,X), np.ndarray))
         self.assertTrue(discrete.entropy_cross_pmf(X,X).shape == (3,4))
         #Tests using cartesian_product=True
         X = np.ones((3,4,5))
-        X = old_div(X, (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis]))
+        X = X / (1.0 * np.sum(X, axis=-1)[:,:,np.newaxis])
         self.assertTrue(isinstance(discrete.entropy_cross_pmf(X,X,cartesian_product=True), np.ndarray))
         self.assertTrue(discrete.entropy_cross_pmf(X,X,cartesian_product=True).shape == (3,4,3,4))        
         
@@ -201,23 +198,23 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))
         
         P1 = 1.0 * np.ones(int(1E06))
-        H1 = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1)), old_div(P1, np.sum(P1)), base=2)
+        H1 = discrete.divergence_kullbackleibler_pmf(P1 / np.sum(P1), P1 / np.sum(P1), base=2)
         self.assertTrue(H1 == 0)
 
         Bins1 = np.linspace(-5,5,10000)
         P1 = norm.pdf(Bins1)
         P2 = norm.pdf(Bins1,loc=0.5)
-        H1 = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1)), old_div(P2, np.sum(P2)), base=np.exp(1))
+        H1 = discrete.divergence_kullbackleibler_pmf(P1 / np.sum(P1), P2 / np.sum(P2), base=np.exp(1))
         self.assertTrue(np.abs(H1 - 0.125) < 1E-3)
         
         Locs = np.linspace(-0.5,0.5,64)
         P1 = [norm.pdf(Bins1) for i in np.arange(64)]
         P2 = [norm.pdf(Bins1,Locs[i]) for i in np.arange(64)]
-        H1 = [old_div((1 + loc**2),2) - 0.5 for loc in Locs]              
+        H1 = [(1 + loc**2) /2 - 0.5 for loc in Locs]              
         P1 = np.array(P1).reshape((8,8,-1))
         P2 = np.array(P2).reshape((8,8,-1))
         H1 = np.array(H1).reshape((8,8))
-        H1_empirical = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1,axis=-1)[:,:,np.newaxis]), old_div(P2, np.sum(P2,axis=-1)[:,:,np.newaxis]), base=np.exp(1))
+        H1_empirical = discrete.divergence_kullbackleibler_pmf(P1 / np.sum(P1,axis=-1)[:,:,np.newaxis], P2 / np.sum(P2,axis=-1)[:,:,np.newaxis], base=np.exp(1))
         self.assertTrue(np.all(H1_empirical.shape == (8,8)))
         self.assertTrue(np.all(np.abs(H1 - H1_empirical) < 1E-3))
         
@@ -227,13 +224,13 @@ class TestEntropy(unittest.TestCase):
         P1 = np.array(P1).reshape((8,8,-1))
         P2 = np.array(P2).reshape((8,8,-1))
         Locs = Locs.reshape((8,8,-1))
-        H1_empirical = discrete.divergence_kullbackleibler_pmf(old_div(P1, np.sum(P1,axis=-1)[:,:,np.newaxis]), old_div(P2, np.sum(P2,axis=-1)[:,:,np.newaxis]), cartesian_product=True, base=np.exp(1))        
+        H1_empirical = discrete.divergence_kullbackleibler_pmf(P1 / np.sum(P1,axis=-1)[:,:,np.newaxis], P2 / np.sum(P2,axis=-1)[:,:,np.newaxis], cartesian_product=True, base=np.exp(1))        
         self.assertTrue(np.all(H1_empirical.shape == (8,8,8,8)))
         for i in range(H1_empirical.shape[0]):
             for j in range(H1_empirical.shape[1]):
                 for k in range(H1_empirical.shape[2]):
                    for l in range(H1_empirical.shape[3]):
-                       H1 = old_div((1 + (Locs[i,j]-Locs[k,l])**2),2) - 0.5
+                       H1 = (1 + (Locs[i,j]-Locs[k,l])**2) / 2 - 0.5
                        self.assertTrue(np.abs(H1 - H1_empirical[i,j,k,l]) < 1E-3)
                        
     def test_divergence_kullbackleibler_symmetrised_pmf(self):
@@ -250,22 +247,22 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.ones((1,1)),np.ones((1,)),True).shape == (1,))
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised_pmf(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))        
         
-        self.assertTrue(np.allclose(discrete.divergence_kullbackleibler_symmetrised_pmf(np.array((old_div(2.0,3), old_div(1.0,3))), np.array((old_div(1.0,3), old_div(2.0,3)))), old_div(2.0,3)))
+        self.assertTrue(np.allclose(discrete.divergence_kullbackleibler_symmetrised_pmf(np.array((2.0 / 3, 1.0 / 3)), np.array((1.0 / 3, 2.0 / 3))), 2.0 / 3))
         
-        P = np.array(((old_div(2.0,3), old_div(1.0,3)),(old_div(1.0,3), old_div(2.0,3)),(old_div(2.0,3), old_div(1.0,3))))
-        Q = np.array(((old_div(2.0,3), old_div(1.0,3)),(old_div(1.0,3), old_div(2.0,3))))
+        P = np.array(((2.0 / 3, 1.0 / 3),(1.0 / 3, 2.0 / 3),(2.0 / 3, 1.0 / 3)))
+        Q = np.array(((2.0 / 3, 1.0 / 3),(1.0 / 3, 2.0 / 3)))
         H = discrete.divergence_kullbackleibler_symmetrised_pmf(P,Q, True)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0),(0.0,old_div(2.0,3))))))
+        self.assertTrue(np.allclose(H, np.array(((0.0, 2.0 / 3),(2.0 / 3,0.0),(0.0, 2.0 / 3)))))
         H = discrete.divergence_kullbackleibler_symmetrised_pmf(Q)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0)))))
+        self.assertTrue(np.allclose(H, np.array(((0.0, 2.0 / 3),(2.0 / 3,0.0)))))
         
     def test_divergence_jensenshannon_pmf(self):
         #Immutability test
         X1 = np.random.randint(16, size=(10,10))
-        X1 = old_div(X1, (1.0 * np.sum(X1, axis=1)[:,np.newaxis]))
+        X1 = X1 / (1.0 * np.sum(X1, axis=1)[:,np.newaxis])
         X1_copy = np.copy(X1)
         X2 = np.random.randint(16, size=(10,10))
-        X2 = old_div(X2, (1.0 * np.sum(X2, axis=1)[:,np.newaxis]))
+        X2 = X2 / (1.0 * np.sum(X2, axis=1)[:,np.newaxis])
         X2_copy = np.copy(X2)        
         discrete.divergence_jensenshannon_pmf(X1_copy, X2_copy)
         self.assertTrue(np.all(X1_copy == X1) and np.all(X2_copy == X2))
@@ -282,15 +279,15 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(abs(discrete.divergence_jensenshannon_pmf(np.array((1.0, 0.0)), np.array((0.0, 1.0)), cartesian_product=True, base=np.exp(1))-0.693) < 1E-03)
         
         #Type tests        
-        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , np.float))
-        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(1,1) , np.float))
+        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(np.array((0.5, 0.5)), np.array((0.5, 0.5))) , float))
+        self.assertTrue(isinstance(discrete.divergence_jensenshannon_pmf(1,1) , float))
         
         #Output dimensionality tests -- vectors
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,)))).shape == (3,))
-        self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T).shape == (1,))
+        self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T).shape == (1,))
         #Tests using cartesian_product=True
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0,), (1.0,), (1.0,))), np.array(((1.0,), (1.0,), (1.0,))), cartesian_product=True).shape == (3,3))
-        self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, np.array(((old_div(1.0,3),), (old_div(1.0,3),), (old_div(1.0,3),))).T, cartesian_product=True).shape == (1,1))        
+        self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, np.array(((1.0 / 3,), (1.0 / 3,), (1.0 / 3,))).T, cartesian_product=True).shape == (1,1))        
 
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array(1), np.array(1)) == 0)
         self.assertTrue(discrete.divergence_jensenshannon_pmf(np.array((1,)), np.array((1,))) == 0)
@@ -312,10 +309,10 @@ class TestEntropy(unittest.TestCase):
         Bins1 = np.linspace(-5,5,10000)
         P1 = norm.pdf(Bins1,loc=-0.5)
         P2 = norm.pdf(Bins1,loc=1.0)
-        P1 = old_div(P1, np.sum(P1))
-        P2 = old_div(P2, np.sum(P2))
+        P1 = P1 / np.sum(P1)
+        P2 = P2 / np.sum(P2)
         P = np.append(P1, P2)
-        P = old_div(P, np.sum(P))
+        P = P / np.sum(P)
         #Sample from component distributions
         I = np.random.choice(P.size, 10**6, p=P)
         #Get component indicator
@@ -393,7 +390,7 @@ class TestEntropy(unittest.TestCase):
         X = np.arange(3*4*5).reshape((3,4,5))
         self.assertTrue(isinstance(discrete.entropy(X), np.ndarray))
         self.assertTrue(discrete.entropy(X).shape == (3,4))
-        self.assertTrue(np.allclose(discrete.entropy(X), -np.log2(old_div(1.0,5))))
+        self.assertTrue(np.allclose(discrete.entropy(X), -np.log2(1.0 / 5)))
         
         np.random.seed(4759)
         X = np.random.randint(16, size=(10,10**4))
@@ -517,7 +514,7 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.entropy_joint(np.ones((1,1))).shape == tuple())        
         
         X = np.arange(3*4*5).reshape((3,4,5))
-        self.assertTrue(isinstance(discrete.entropy_joint(X), np.float))
+        self.assertTrue(isinstance(discrete.entropy_joint(X), float))
         self.assertTrue(discrete.entropy_joint(X).size == 1)
         self.assertTrue(np.allclose(discrete.entropy_joint(X), np.log2(5)))
         X = np.concatenate((X, X), axis=0)
@@ -679,13 +676,13 @@ class TestEntropy(unittest.TestCase):
         X = np.arange(3*4*5).reshape((3,4,5))
         self.assertTrue(isinstance(discrete.entropy_cross(X,X), np.ndarray))
         self.assertTrue(discrete.entropy_cross(X,X).shape == (3,4))
-        self.assertTrue(np.allclose(discrete.entropy_cross(X,X), -np.log2(old_div(1.0,5))))
+        self.assertTrue(np.allclose(discrete.entropy_cross(X,X), -np.log2(1.0 / 5)))
         #Tests using cartesian_product=True  
         X = np.arange(3*4*5).reshape((3,4,5))
         self.assertTrue(isinstance(discrete.entropy_cross(X,X, cartesian_product=True), np.ndarray))
         self.assertTrue(discrete.entropy_cross(X,X, cartesian_product=True).shape == (3,4,3,4))
         H = discrete.entropy_cross(X,X, cartesian_product=True)        
-        self.assertTrue(np.allclose([H[i,j,i,j] for j in range(4) for i in range(3)], -np.log2(old_div(1.0,5))))        
+        self.assertTrue(np.allclose([H[i,j,i,j] for j in range(4) for i in range(3)], -np.log2(1.0 / 5)))        
         
         np.random.seed(4759)
         X = np.random.randint(16, size=(10,10**4))
@@ -907,7 +904,7 @@ class TestEntropy(unittest.TestCase):
         H = discrete.divergence_kullbackleibler(P2, P1, True, base=np.exp(1))
         Scales = Scales.reshape(-1)
         H = H.reshape(-1)
-        H_predicted = np.log(old_div(1.0,Scales)) + (old_div(Scales**2, 2)) - 0.5
+        H_predicted = np.log(1.0 / Scales) + (Scales**2/ 2) - 0.5
         self.assertTrue(np.all(np.abs(H - H_predicted) < 2*1E-2))             
         
         #
@@ -1034,10 +1031,10 @@ class TestEntropy(unittest.TestCase):
         Bins1 = np.linspace(-5,5,10000)
         P1 = norm.pdf(Bins1,loc=-0.5)
         P2 = norm.pdf(Bins1,loc=1.0)
-        P1 = old_div(P1, np.sum(P1))
-        P2 = old_div(P2, np.sum(P2))
+        P1 = P1 / np.sum(P1)
+        P2 = P2 / np.sum(P2)
         P = np.append(P1, P2)
-        P = old_div(P, np.sum(P))
+        P = P / np.sum(P)
         #Sample from component distributions
         I = np.random.choice(P.size, 10**6, p=P)
         #Get component indicator
@@ -1186,14 +1183,14 @@ class TestEntropy(unittest.TestCase):
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised(np.ones((1,1)),np.ones((1,)),True).shape == (1,))
         self.assertTrue(discrete.divergence_kullbackleibler_symmetrised(np.ones((1,1)),np.ones((1,1)),True).shape == (1,1))        
 
-        self.assertTrue(np.allclose(discrete.divergence_kullbackleibler_symmetrised(np.array((1,2,1)), np.array((2,1,2))), old_div(2.0,3)))
+        self.assertTrue(np.allclose(discrete.divergence_kullbackleibler_symmetrised(np.array((1,2,1)), np.array((2,1,2))), 2.0 / 3))
         
         X = np.array(((1,2,1),(2,2,1),(1,1,2)))
         Y = np.array(((1,2,1),(1,2,2)))
         H = discrete.divergence_kullbackleibler_symmetrised(X,Y, True)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0),(0.0,old_div(2.0,3))))))
+        self.assertTrue(np.allclose(H, np.array(((0.0, 2.0 / 3),(2.0 / 3,0.0),(0.0,2.0 / 3)))))
         H = discrete.divergence_kullbackleibler_symmetrised(Y)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(2.0,3)),(old_div(2.0,3),0.0)))))
+        self.assertTrue(np.allclose(H, np.array(((0.0,2.0/3),(2.0/3,0.0)))))
         
         #
         # Tests using missing data (basic)
@@ -1522,9 +1519,9 @@ class TestEntropy(unittest.TestCase):
         P1 = norm.pdf(Bins1,loc=-0.5)
         P2 = norm.pdf(Bins1,loc=-0.0)
         P3 = norm.pdf(Bins1,loc=+0.5)     
-        P1 = old_div(P1, np.sum(P1))
-        P2 = old_div(P2, np.sum(P2))
-        P3 = old_div(P3, np.sum(P3))        
+        P1 = P1 / np.sum(P1)
+        P2 = P2 / np.sum(P2)
+        P3 = P3 / np.sum(P3)        
         #Sample from component distributions
         I = np.random.choice(P1.size, 10**6, p=P1)
         J = np.random.choice(P1.size, 10**6, p=P2)
@@ -1603,7 +1600,7 @@ class TestEntropy(unittest.TestCase):
         discrete.information_variation(X1,X2)
         self.assertTrue(np.all(X1_copy == X1) and np.all(X2_copy == X2))        
 
-        self.assertTrue(np.allclose(discrete.information_variation(np.array((1,2,1)), np.array((1,2,2))), old_div(4.0,3)))
+        self.assertTrue(np.allclose(discrete.information_variation(np.array((1,2,1)), np.array((1,2,2))), 4.0/3))
         self.assertTrue(np.allclose(discrete.information_variation(np.array((1,2,1)), np.array((1,2,2))), 2 * discrete.entropy_conditional(np.array((1,2,1)), np.array((1,2,2)))))
         
         self.assertTrue(discrete.information_variation(np.array(1),np.array(1)).shape == tuple())
@@ -1622,9 +1619,9 @@ class TestEntropy(unittest.TestCase):
         X = np.array(((1,2,1),(2,2,1),(1,1,2)))
         Y = np.array(((1,2,1),(1,2,2)))
         H = discrete.information_variation(X,Y, True)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(4.0,3)),(old_div(4.0,3),old_div(4.0,3)),(old_div(4.0,3),old_div(4.0,3))))))
+        self.assertTrue(np.allclose(H, np.array(((0.0,4.0/3),(4.0/3,4.0/3),(4.0/3,4.0/3)))))
         H = discrete.information_variation(Y)
-        self.assertTrue(np.allclose(H, np.array(((0.0,old_div(4.0,3)),(old_div(4.0,3),0)))))
+        self.assertTrue(np.allclose(H, np.array(((0.0,4.0/3),((4.0/3,0))))))
                 
         #
         # Tests using missing data (basic)
@@ -1693,23 +1690,23 @@ class TestEntropy(unittest.TestCase):
         discrete.information_mutual_normalised(X1,X2)
         self.assertTrue(np.all(X1_copy == X1) and np.all(X2_copy == X2))
         
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2))) == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2),discrete.entropy(np.array((2,1,2)), base=2)))
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y') == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2),discrete.entropy(np.array((2,1,2)), base=2)))        
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X') == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2),discrete.entropy(np.array((1,2,2)), base=2)))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y '), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=np.exp(1)),(discrete.entropy(np.array((1,2,2)), base=np.exp(1))+discrete.entropy(np.array((2,1,2)), base=np.exp(1))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN'), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))))      
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX'), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY'), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2))))))))
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT'), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2))) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2)/discrete.entropy(np.array((2,1,2)), base=2))
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y') == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2)/discrete.entropy(np.array((2,1,2)), base=2))        
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X') == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=2)/discrete.entropy(np.array((1,2,2)), base=2))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y '), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), base=np.exp(1))/(discrete.entropy(np.array((1,2,2)), base=np.exp(1))+discrete.entropy(np.array((2,1,2)), base=np.exp(1)))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))      
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2)))))))
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT'), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2))))))        
         #Tests using cartesian_product=True
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True) == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True, base=2),discrete.entropy(np.array((2,1,2)),base=2)))
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y', cartesian_product=True) == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2),discrete.entropy(np.array((2,1,2)),base=2)))        
-        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X', cartesian_product=True) == old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2),discrete.entropy(np.array((1,2,2)),base=2)))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y ', cartesian_product=True), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=np.exp(1)),(discrete.entropy(np.array((1,2,2)),base=np.exp(1))+discrete.entropy(np.array((2,1,2)),base=np.exp(1))))))
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN', cartesian_product=True), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX', cartesian_product=True), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2))))))))        
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY', cartesian_product=True), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2))))))))
-        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT', cartesian_product=True), old_div(discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2))),np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True, base=2)/discrete.entropy(np.array((2,1,2)),base=2))
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'Y', cartesian_product=True) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2)/discrete.entropy(np.array((2,1,2)),base=2))        
+        self.assertTrue(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'X', cartesian_product=True) == discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=2)/discrete.entropy(np.array((1,2,2)),base=2))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), ' x + Y ', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)), cartesian_product=True,base=np.exp(1))/(discrete.entropy(np.array((1,2,2)),base=np.exp(1))+discrete.entropy(np.array((2,1,2)),base=np.exp(1)))))
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MIN', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'MAX', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.min((discrete.entropy(np.array((1,2,2))),discrete.entropy(np.array((2,1,2)))))))        
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'XY', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/discrete.entropy_joint(np.vstack((np.array((2,1,2)), np.array((1,2,2)))))))
+        self.assertTrue(np.allclose(discrete.information_mutual_normalised(np.array((1,2,2)), np.array((2,1,2)), 'SQRT', cartesian_product=True), discrete.information_mutual(np.array((1,2,2)), np.array((2,1,2)))/np.sqrt(discrete.entropy(np.array((1,2,2)))*discrete.entropy(np.array((2,1,2))))))        
         
         self.assertTrue(discrete.information_mutual_normalised(np.ones(5),np.ones(5)).size==1)
         self.assertTrue(np.isnan(discrete.information_mutual_normalised(np.ones(5),np.ones(5))))        
@@ -1873,7 +1870,7 @@ class TestEntropy(unittest.TestCase):
                 Denominator = np.sqrt(discrete.entropy((2,2,2,1), estimator=1, base=3) * discrete.entropy((1,2,1,2), estimator=1, base=3))                
             else:
                 raise ValueError("Unsupported argument")
-            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=None, Alphabet_Y=None), old_div(Numerator, Denominator)))
+            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=None, Alphabet_Y=None), Numerator/ Denominator))
         #No explicit alphabet -- Cartesian product
         for norm_factor in ('Y','X','X+Y','MIN','MAX','XY','SQRT'):
             self.assertTrue(np.all(discrete.information_mutual_normalised(np.array(((1,2,1,2),(2,2,2,1))), None, norm_factor, estimator=1, Alphabet_X=None) != discrete.information_mutual_normalised(np.array(((1,2,1,2),(2,2,2,1))), None, norm_factor, Alphabet_X=None)))        
@@ -1912,9 +1909,9 @@ class TestEntropy(unittest.TestCase):
                 Denominator3 = np.sqrt(discrete.entropy((2,2,2,1), Alphabet_X=(1,2,3), estimator=1, base=3) * discrete.entropy((1,2,1,2), Alphabet_X=(1,2,3), estimator=1, base=3))                
             else:
                 raise ValueError("Unsupported argument")
-            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=None, Alphabet_Y=(1,2,3)), old_div(Numerator1, Denominator1)))
-            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=(1,2,3), Alphabet_Y=None), old_div(Numerator2, Denominator2)))
-            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=(1,2,3), Alphabet_Y=(1,2,3)), old_div(Numerator3, Denominator3)))        
+            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=None, Alphabet_Y=(1,2,3)), Numerator1/ Denominator1))
+            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=(1,2,3), Alphabet_Y=None), Numerator2/ Denominator2))
+            self.assertTrue(np.allclose(discrete.information_mutual_normalised((1,2,1,2),(2,2,2,1), norm_factor, estimator=1, Alphabet_X=(1,2,3), Alphabet_Y=(1,2,3)), Numerator3/ Denominator3))        
         #Larger alphabet -- Cartesian product
         for norm_factor in ('Y','X','X+Y','MIN','MAX','XY','SQRT'):        
             self.assertTrue(np.all(discrete.information_mutual_normalised(np.array(((1,2,1,2),(2,2,2,1))), None, norm_factor, estimator=1, Alphabet_X=np.array(((1,2,3),(1,2,3)))) != discrete.information_mutual_normalised(np.array(((2,2,2,1),(2,2,2,1))), None, norm_factor, Alphabet_X=np.array(((1,2,3),(1,2,3))))))
@@ -2694,21 +2691,21 @@ class TestEntropy(unittest.TestCase):
             self.assertTrue(np.allclose(np.sum(P) + n*P_0, 1))
         #Some hand-worked examples
         #[1 2 8]; 0 empty bins
-        Theta = old_div(np.array((1,2,8)), 11.0)
-        t_k = old_div(1, 3.0)
-        Lambda = old_div((1 - np.sum(Theta**2)), ((11-1) * np.sum((t_k - Theta)**2)))
+        Theta = np.array((1,2,8))/ 11.0
+        t_k = 1/ 3.0
+        Lambda = (1 - np.sum(Theta**2))/ ((11-1) * np.sum((t_k - Theta)**2))
         Theta_shrink = Lambda*t_k + (1-Lambda)*Theta
         self.assertTrue(np.all(Theta_shrink == discrete._estimate_probabilities(np.array((1,2,8)), 'james-stein',0)[0]))
         #0.1 0.2 0.8; 1 empty bin
-        Theta = old_div(np.array((1,2,8)), 11.0)
-        t_k = old_div(1, 4.0)
-        Lambda = old_div((1 - np.sum(Theta**2)), ((11-1) * (np.sum((t_k - Theta)**2)+(t_k**2))))
+        Theta = np.array((1,2,8))/ 11.0
+        t_k = 1/ 4.0
+        Lambda = (1 - np.sum(Theta**2))/ ((11-1) * (np.sum((t_k - Theta)**2)+(t_k**2)))
         Theta_shrink = Lambda*t_k + (1-Lambda)*Theta
         self.assertTrue(np.all(Theta_shrink == discrete._estimate_probabilities(np.array((1,2,8)), 'james-stein',1)[0]))        
         #0.1 0.2 0.8; 2 empty bins
-        Theta = old_div(np.array((1,2,8)), 11.0)
-        t_k = old_div(1, 5.0)
-        Lambda = old_div((1 - np.sum(Theta**2)), ((11-1) * (np.sum((t_k - Theta)**2)+(2*t_k**2))))
+        Theta = np.array((1,2,8))/ 11.0
+        t_k = 1/ 5.0
+        Lambda = (1 - np.sum(Theta**2))/ ((11-1) * (np.sum((t_k - Theta)**2)+(2*t_k**2)))
         Theta_shrink = Lambda*t_k + (1-Lambda)*Theta
         self.assertTrue(np.all(Theta_shrink == discrete._estimate_probabilities(np.array((1,2,8)), 'james-stein',2)[0]))
         
@@ -2726,25 +2723,25 @@ class TestEntropy(unittest.TestCase):
                 self.assertTrue(np.allclose(np.sum(P) + n*P_0, 1))
         #Some hand-worked examples
         #[1 2 8]; 0 empty bins
-        Theta = old_div(np.array((1,2,8)), 11.0)
+        Theta = np.array((1,2,8))/ 11.0
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'ML',0)[0]))
-        Theta = old_div((old_div(1.0,3)+np.array((1,2,8))), (11.0 + 1.0))
+        Theta = (1.0/3+np.array((1,2,8)))/ (11.0 + 1.0)
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'PERKS',0)[0]))
-        Theta = old_div((old_div(np.sqrt(11),3)+np.array((1,2,8))), (11.0 + np.sqrt(11)))        
+        Theta = (np.sqrt(11)/3+np.array((1,2,8)))/ (11.0 + np.sqrt(11))        
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'MINIMAX',0)[0]))       
         #0.1 0.2 0.8; 1 empty bin
-        Theta = old_div(np.array((1,2,8)), 11.0)
+        Theta = np.array((1,2,8))/ 11.0
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'ML',1)[0]))
-        Theta = old_div((old_div(1.0,4)+np.array((1,2,8))), (11.0 + 1.0))
+        Theta = (1.0/4+np.array((1,2,8)))/ (11.0 + 1.0)
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'PERKS',1)[0]))
-        Theta = old_div((old_div(np.sqrt(11),4)+np.array((1,2,8))), (11.0 + np.sqrt(11)))        
+        Theta = (np.sqrt(11)/4+np.array((1,2,8)))/ (11.0 + np.sqrt(11))        
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'MINIMAX',1)[0]))
         #0.1 0.2 0.8; 2 empty bins
-        Theta = old_div(np.array((1,2,8)), 11.0)
+        Theta = np.array((1,2,8))/ 11.0
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'ML',2)[0]))
-        Theta = old_div((old_div(1.0,5)+np.array((1,2,8))), (11.0 + 1.0))
+        Theta = (1.0/5+np.array((1,2,8))) / (11.0 + 1.0)
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'PERKS',2)[0]))
-        Theta = old_div((old_div(np.sqrt(11),5)+np.array((1,2,8))), (11.0 + np.sqrt(11)))        
+        Theta = (np.sqrt(11)/5+np.array((1,2,8)))/ (11.0 + np.sqrt(11))        
         self.assertTrue(np.all(Theta == discrete._estimate_probabilities(np.array((1,2,8)), 'MINIMAX',2)[0]))       
         
         #Good-Turing estimator

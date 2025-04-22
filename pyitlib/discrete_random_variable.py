@@ -107,11 +107,6 @@ International Symposium on Information Theory, 2006, P. 98-102.
 correlation. In: IBM Journal of research and development, \
 Vol. 4, No. 1, 1960, P. 66-82.
 """
-from __future__ import division
-
-from builtins import zip
-from builtins import str
-from builtins import range
 
 import warnings
 import numpy as np
@@ -1384,9 +1379,9 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     if not cartesian_product:
         I = np.empty(X.shape[:-1])
         if I.ndim > 0:
-            I[:] = np.NaN
+            I[:] = np.nan
         else:
-            I = np.float64(np.NaN)
+            I = np.float64(np.nan)
     else:
         shapeI_Z = Z.shape[:-1]
         Z = np.reshape(Z, (-1, Z.shape[-1]))
@@ -1660,9 +1655,9 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
-            H[:] = np.NaN
+            H[:] = np.nan
         else:
-            H = np.float64(np.NaN)
+            H = np.float64(np.nan)
     else:
         def f(X, Y, Alphabet_X, Alphabet_Y):
             return information_lautum(X, Y, False, base, fill_value, estimator,
@@ -2045,9 +2040,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         if not cartesian_product:
             H = np.empty(X.shape[:-1])
             if H.ndim > 0:
-                H[:] = np.NaN
+                H[:] = np.nan
             else:
-                H = np.float64(np.NaN)
+                H = np.float64(np.nan)
 
             # Re-shape H and X, so that we may handle multi-dimensional arrays
             # equivalently and iterate across 0th axis
@@ -2614,9 +2609,9 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
-            H[:] = np.NaN
+            H[:] = np.nan
         else:
-            H = np.float64(np.NaN)
+            H = np.float64(np.nan)
     else:
         def f(X, Y, Alphabet_X, Alphabet_Y):
             return entropy_cross(X, Y, False, base, fill_value, estimator,
@@ -2680,8 +2675,8 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         Alphabet = np.union1d(alphabet_X, alphabet_Y)
         P = np.zeros_like(Alphabet, dtype=P1.dtype)
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
-        P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
-        Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
+        P[np.isin(Alphabet, alphabet_X, assume_unique=True)] = P1
+        Q[np.isin(Alphabet, alphabet_Y, assume_unique=True)] = P2
 
         H[i] = entropy_cross_pmf(P, Q, False, base)
 
@@ -3044,9 +3039,9 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
-            H[:] = np.NaN
+            H[:] = np.nan
         else:
-            H = np.float64(np.NaN)
+            H = np.float64(np.nan)
     else:
         def f(X, Y, Alphabet_X, Alphabet_Y):
             return divergence_jensenshannon(X, Y, False, base, fill_value,
@@ -3110,8 +3105,8 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         Alphabet = np.union1d(alphabet_X, alphabet_Y)
         P = np.zeros_like(Alphabet, dtype=P1.dtype)
         Q = np.zeros_like(Alphabet, dtype=P2.dtype)
-        P[np.in1d(Alphabet, alphabet_X, assume_unique=True)] = P1
-        Q[np.in1d(Alphabet, alphabet_Y, assume_unique=True)] = P2
+        P[np.isin(Alphabet, alphabet_X, assume_unique=True)] = P1
+        Q[np.isin(Alphabet, alphabet_Y, assume_unique=True)] = P2
 
         H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - \
             0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
@@ -3498,9 +3493,9 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     if not cartesian_product:
         H = np.empty(X.shape[:-1])
         if H.ndim > 0:
-            H[:] = np.NaN
+            H[:] = np.nan
         else:
-            H = np.float64(np.NaN)
+            H = np.float64(np.nan)
     else:
         def f(X, Y, Alphabet_X, Alphabet_Y):
             return entropy_conditional(X, Y, False, base, fill_value,
@@ -3701,7 +3696,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
         n_additional_empty_bins = 0
     L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
     if not np.any(L):
-        return np.float64(np.NaN)
+        return np.float64(np.nan)
 
     # P_0 is the probability mass assigned to each additional empty bin
     P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
@@ -3847,9 +3842,9 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
 
     H = np.empty(X.shape[:-1])
     if H.ndim > 0:
-        H[:] = np.NaN
+        H[:] = np.nan
     else:
-        H = np.float64(np.NaN)
+        H = np.float64(np.nan)
 
     # Re-shape H and X, so that we may handle multi-dimensional arrays
     # equivalently and iterate across 0th axis
@@ -4440,9 +4435,9 @@ def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
 
     H = np.empty(np.append(X.shape[:-1], Y.shape[:-1]).astype('int'))
     if H.ndim > 0:
-        H[:] = np.NaN
+        H[:] = np.nan
     else:
-        H = np.float64(np.NaN)
+        H = np.float64(np.nan)
 
     X = np.reshape(X, (-1, X.shape[-1]))
     Y = np.reshape(Y, (-1, Y.shape[-1]))
@@ -4660,7 +4655,7 @@ def _increment_binary_vector(X):
 
 
 def _isnan(X):
-    X = np.array(X, copy=False)
+    X = np.asarray(X)
     if X.dtype in ('int', 'float'):
         return np.isnan(X)
     else:
@@ -4707,12 +4702,12 @@ def _remove_counts_at_fill_value(Counts, Alphabet, fill_value):
 def _sanitise_array_input(X, fill_value=-1):
     # Avoid Python 3 issues with numpy arrays containing None elements
     if np.any(np.equal(X, None)) or fill_value is None:
-        X = np.array(X, copy=False)
+        X = np.asarray(X)
         assert(np.all(X != NONE_REPLACEMENT))
         M = np.equal(X, None)
         X = np.where(M, NONE_REPLACEMENT, X)
     if fill_value is None:
-        X = np.array(X, copy=False)
+        X = np.array(X)
         fill_value = NONE_REPLACEMENT
 
     if isinstance(X, (pd.core.frame.DataFrame, pd.core.series.Series)):
@@ -4744,7 +4739,7 @@ def _sanitise_array_input(X, fill_value=-1):
         else:
             X = X.filled()
     else:
-        X = np.array(X, copy=False)
+        X = np.asarray(X)
 
     if X.dtype.kind not in 'biufcmMOSUV':
         raise TypeError("Unsupported array dtype")

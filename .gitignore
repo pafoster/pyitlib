@@ -3,4 +3,5 @@
 
 docs/_build/
 dist
+build
 pyitlib.egg-info
