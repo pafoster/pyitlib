@@ -4811,7 +4811,7 @@ def _increment_binary_vector(X):
 
 def _isnan(X):
     X = np.asarray(X)
-    if X.dtype in ("int", "float"):
+    if np.issubdtype(X.dtype, np.integer) or np.issubdtype(X.dtype, np.floating):
         return np.isnan(X)
     else:
         f = np.vectorize(_isnan_element)
