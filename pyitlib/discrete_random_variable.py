@@ -140,8 +140,9 @@ NONE_REPLACEMENT = -32768
 # minimised
 
 
-def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
-                     Alphabet_X=None, keep_dims=False):
+def entropy_residual(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated residual entropy [JaEC11] (also known as erasure
     entropy [VeWe06]) for an array X containing realisations of discrete random
@@ -258,8 +259,7 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
     """
     H_joint = entropy_joint(X, base, fill_value, estimator, Alphabet_X)
 
-    R = H_joint - information_binding(X, base, fill_value, estimator,
-                                      Alphabet_X)
+    R = H_joint - information_binding(X, base, fill_value, estimator, Alphabet_X)
 
     if keep_dims:
         R = R[..., np.newaxis]
@@ -267,8 +267,9 @@ def entropy_residual(X, base=2, fill_value=-1, estimator='ML',
     return R
 
 
-def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
-                                Alphabet_X=None, keep_dims=False):
+def information_exogenous_local(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated exogenous local information [JaEC11] for an array X
     containing realisations of discrete random variables.
@@ -380,8 +381,9 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
     internal conversion step, supply integer data and use the default fill
     value -1.
     """
-    W = information_binding(X, base, fill_value, estimator, Alphabet_X) + \
-        information_multi(X, base, fill_value, estimator, Alphabet_X)
+    W = information_binding(
+        X, base, fill_value, estimator, Alphabet_X
+    ) + information_multi(X, base, fill_value, estimator, Alphabet_X)
 
     if keep_dims:
         W = W[..., np.newaxis]
@@ -389,8 +391,9 @@ def information_exogenous_local(X, base=2, fill_value=-1, estimator='ML',
     return W
 
 
-def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
-                          Alphabet_X=None, keep_dims=False):
+def information_enigmatic(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     # Note: can be negative
     # Note: equals multivariate mutual information when N=3, can test for this
     """
@@ -504,8 +507,9 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
     internal conversion step, supply integer data and use the default fill
     value -1.
     """
-    Q = information_multi(X, base, fill_value, estimator, Alphabet_X) - \
-        information_binding(X, base, fill_value, estimator, Alphabet_X)
+    Q = information_multi(
+        X, base, fill_value, estimator, Alphabet_X
+    ) - information_binding(X, base, fill_value, estimator, Alphabet_X)
 
     if keep_dims:
         Q = Q[..., np.newaxis]
@@ -513,8 +517,9 @@ def information_enigmatic(X, base=2, fill_value=-1, estimator='ML',
     return Q
 
 
-def information_interaction(X, base=2, fill_value=-1, estimator='ML',
-                            Alphabet_X=None, keep_dims=False):
+def information_interaction(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated interaction information [JaBr03] for an array X
     containing realisations of discrete random variables.
@@ -638,12 +643,12 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -656,14 +661,13 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X)
+    )
     X, Alphabet_X = S
 
     # Re-shape X, so that we may handle multi-dimensional arrays equivalently
@@ -672,11 +676,12 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     I = 0
-    M = np.zeros(X.shape[0]).astype('bool')
+    M = np.zeros(X.shape[0]).astype("bool")
     M = _increment_binary_vector(M)
     while np.any(M):
-        I -= (-1)**(X.shape[0]-np.sum(M)) * \
-            entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
+        I -= (-1) ** (X.shape[0] - np.sum(M)) * entropy_joint(
+            X[M], base, fill_value, estimator, Alphabet_X[M]
+        )
         M = _increment_binary_vector(M)
 
     if keep_dims:
@@ -685,8 +690,9 @@ def information_interaction(X, base=2, fill_value=-1, estimator='ML',
     return I
 
 
-def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
-                   keep_dims=False):
+def information_co(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated co-information [Bell03] for an array X containing
     realisations of discrete random variables.
@@ -811,12 +817,12 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = \
-            _sanitise_array_input(Alphabet_X, fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = \
-            _autocreate_alphabet(X, fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -829,14 +835,13 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X)
+    )
     X, Alphabet_X = S
 
     # Re-shape X, so that we may handle multi-dimensional arrays equivalently
@@ -845,11 +850,12 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     Alphabet_X = np.reshape(Alphabet_X, (-1, Alphabet_X.shape[-1]))
 
     I = 0
-    M = np.zeros(X.shape[0]).astype('bool')
+    M = np.zeros(X.shape[0]).astype("bool")
     M = _increment_binary_vector(M)
     while np.any(M):
-        I -= (-1)**(np.sum(M)) * \
-            entropy_joint(X[M], base, fill_value, estimator, Alphabet_X[M])
+        I -= (-1) ** (np.sum(M)) * entropy_joint(
+            X[M], base, fill_value, estimator, Alphabet_X[M]
+        )
         M = _increment_binary_vector(M)
 
     if keep_dims:
@@ -858,8 +864,9 @@ def information_co(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     return I
 
 
-def information_binding(X, base=2, fill_value=-1, estimator='ML',
-                        Alphabet_X=None, keep_dims=False):
+def information_binding(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated binding information [AbPl12] (also known as dual
     total correlation [Han78]) for an array X containing realisations of
@@ -976,12 +983,12 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     """
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
 
     # Exceptions needed to create Alphabet_X correctly if None
     # Not all of these are needed, however we include them for consistency.
@@ -996,14 +1003,13 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X)
+    )
     X, Alphabet_X = S
 
     # Exceptions thrown by entropy_joint
@@ -1018,8 +1024,9 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     for i in range(X.shape[0]):
         B -= H_joint
         if X.shape[0] > 1:
-            B += entropy_joint(X[M != i], base, fill_value, estimator,
-                               Alphabet_X[M != i])
+            B += entropy_joint(
+                X[M != i], base, fill_value, estimator, Alphabet_X[M != i]
+            )
 
     if keep_dims:
         B = B[..., np.newaxis]
@@ -1027,8 +1034,9 @@ def information_binding(X, base=2, fill_value=-1, estimator='ML',
     return B
 
 
-def information_multi(X, base=2, fill_value=-1, estimator='ML',
-                      Alphabet_X=None, keep_dims=False):
+def information_multi(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated multi-information [StVe98] (also known as total
     correlation [Wata60]) for an array X containing realisations of discrete
@@ -1153,10 +1161,19 @@ def information_multi(X, base=2, fill_value=-1, estimator='ML',
     return T
 
 
-def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
-                                   fill_value=-1, estimator='ML',
-                                   Alphabet_X=None, Alphabet_Y=None,
-                                   Alphabet_Z=None, keep_dims=False):
+def information_mutual_conditional(
+    X,
+    Y,
+    Z,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    Alphabet_Z=None,
+    keep_dims=False,
+):
     """
     Returns the conditional mutual information (see e.g. [CoTh06]) between
     arrays X and Y given array Z, each containing discrete random variable
@@ -1297,26 +1314,26 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     Z, fill_value_Z = _sanitise_array_input(Z, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
     if Alphabet_Z is not None:
-        Alphabet_Z, fill_value_Alphabet_Z = _sanitise_array_input(Alphabet_Z,
-                                                                  fill_value)
+        Alphabet_Z, fill_value_Alphabet_Z = _sanitise_array_input(
+            Alphabet_Z, fill_value
+        )
         Alphabet_Z, _ = _autocreate_alphabet(Alphabet_Z, fill_value_Alphabet_Z)
     else:
-        Alphabet_Z, fill_value_Alphabet_Z = _autocreate_alphabet(Z,
-                                                                 fill_value_Z)
+        Alphabet_Z, fill_value_Alphabet_Z = _autocreate_alphabet(Z, fill_value_Z)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1349,31 +1366,29 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     if _isnan(fill_value_Z):
         raise ValueError("fill value for arg Z is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if Z.shape[:-1] != Alphabet_Z.shape[:-1]:
-        raise ValueError("leading dimensions of args Z and Alphabet_Z do not "
-                         "match")
+        raise ValueError("leading dimensions of args Z and Alphabet_Z do not " "match")
     if not cartesian_product and (X.shape != Y.shape or X.shape != Z.shape):
         raise ValueError("dimensions of args X, Y, Z do not match")
-    if cartesian_product and (X.shape[-1] != Y.shape[-1] or
-                              X.shape[-1] != Z.shape[-1]):
+    if cartesian_product and (X.shape[-1] != Y.shape[-1] or X.shape[-1] != Z.shape[-1]):
         raise ValueError("trailing dimensions of args X, Y, Z do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y,
-                                                   Z, Alphabet_Z),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y,
-                                                   fill_value_Z,
-                                                   fill_value_Alphabet_Z))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z),
+        (
+            fill_value_X,
+            fill_value_Alphabet_X,
+            fill_value_Y,
+            fill_value_Alphabet_Y,
+            fill_value_Z,
+            fill_value_Alphabet_Z,
+        ),
+    )
     X, Alphabet_X, Y, Alphabet_Y, Z, Alphabet_Z = S
 
     if not cartesian_product:
@@ -1388,11 +1403,21 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         Alphabet_Z = np.reshape(Alphabet_Z, (-1, Alphabet_Z.shape[-1]))
         I = []
         for i in range(Z.shape[0]):
+
             def f(X, Y, Alphabet_X, Alphabet_Y):
-                return information_mutual_conditional(X, Y, Z[i], False, base,
-                                                      fill_value, estimator,
-                                                      Alphabet_X, Alphabet_Y,
-                                                      Alphabet_Z[i])
+                return information_mutual_conditional(
+                    X,
+                    Y,
+                    Z[i],
+                    False,
+                    base,
+                    fill_value,
+                    estimator,
+                    Alphabet_X,
+                    Alphabet_Y,
+                    Alphabet_Z[i],
+                )
+
             I.append(_cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y))
         shapeI_XY = I[0].shape
         if len(shapeI_Z) == 0:
@@ -1400,7 +1425,7 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
         else:
             I = np.array(I)
             I = np.rollaxis(I, 0, len(I.shape))
-            I = I.reshape(np.append(shapeI_XY, shapeI_Z).astype('int'))
+            I = I.reshape(np.append(shapeI_XY, shapeI_Z).astype("int"))
         return I
 
     # Re-shape H, X,Y,Z so that we may handle multi-dimensional arrays
@@ -1415,22 +1440,30 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     I = np.reshape(I, (-1, 1))
 
     for i in range(X.shape[0]):
-        I_ = (entropy_joint(np.vstack((X[i], Z[i])), base, fill_value,
-                            estimator,
-                            _vstack_pad((Alphabet_X[i],
-                                         Alphabet_Z[i]),
-                                        fill_value)) +
-              entropy_joint(np.vstack((Y[i], Z[i])), base, fill_value,
-                            estimator,
-                            _vstack_pad((Alphabet_Y[i],
-                                         Alphabet_Z[i]),
-                                        fill_value)) -
-              entropy_joint(np.vstack((X[i], Y[i], Z[i])), base, fill_value,
-                            estimator,
-                            _vstack_pad((Alphabet_X[i],
-                                         Alphabet_Y[i],
-                                         Alphabet_Z[i]), fill_value)) -
-              entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i]))
+        I_ = (
+            entropy_joint(
+                np.vstack((X[i], Z[i])),
+                base,
+                fill_value,
+                estimator,
+                _vstack_pad((Alphabet_X[i], Alphabet_Z[i]), fill_value),
+            )
+            + entropy_joint(
+                np.vstack((Y[i], Z[i])),
+                base,
+                fill_value,
+                estimator,
+                _vstack_pad((Alphabet_Y[i], Alphabet_Z[i]), fill_value),
+            )
+            - entropy_joint(
+                np.vstack((X[i], Y[i], Z[i])),
+                base,
+                fill_value,
+                estimator,
+                _vstack_pad((Alphabet_X[i], Alphabet_Y[i], Alphabet_Z[i]), fill_value),
+            )
+            - entropy_joint(Z[i], base, fill_value, estimator, Alphabet_Z[i])
+        )
         I[i] = I_
 
     # Reverse re-shaping
@@ -1442,9 +1475,17 @@ def information_mutual_conditional(X, Y, Z, cartesian_product=False, base=2,
     return I
 
 
-def information_lautum(X, Y=None, cartesian_product=False, base=2,
-                       fill_value=-1, estimator='ML', Alphabet_X=None,
-                       Alphabet_Y=None, keep_dims=False):
+def information_lautum(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the lautum information [PaVe08] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -1597,19 +1638,19 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1632,11 +1673,9 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if not cartesian_product and X.shape != Y.shape:
         raise ValueError("dimensions of args X and Y do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
@@ -1644,12 +1683,10 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y),
+        (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y),
+    )
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -1659,9 +1696,12 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.nan)
     else:
+
         def f(X, Y, Alphabet_X, Alphabet_Y):
-            return information_lautum(X, Y, False, base, fill_value, estimator,
-                                      Alphabet_X, Alphabet_Y)
+            return information_lautum(
+                X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+            )
+
         return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
@@ -1680,28 +1720,27 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         # Sort X and Y jointly, so that we can determine joint symbol
         # probabilities
         JointXY = np.vstack((X[i], Y[i]))
-        JointXY = JointXY[:, JointXY[0].argsort(kind='mergesort')]
-        JointXY = JointXY[:, JointXY[1].argsort(kind='mergesort')]
+        JointXY = JointXY[:, JointXY[0].argsort(kind="mergesort")]
+        JointXY = JointXY[:, JointXY[1].argsort(kind="mergesort")]
 
         # Compute symbol run-lengths
         # Compute symbol change indicators
         B = np.any(JointXY[:, 1:] != JointXY[:, :-1], axis=0)
 
         # Obtain symbol change positions
-        I = np.append(np.where(B), JointXY.shape[1]-1)
+        I = np.append(np.where(B), JointXY.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, I))
 
         alphabet_XY = JointXY[:, I]
-        if estimator != 'ML':
-            L, alphabet_XY = \
-                _append_empty_bins_using_alphabet(L, alphabet_XY,
-                                                  _vstack_pad((Alphabet_X[i],
-                                                               Alphabet_Y[i]),
-                                                              fill_value),
-                                                  fill_value)
-        L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY,
-                                                      fill_value)
+        if estimator != "ML":
+            L, alphabet_XY = _append_empty_bins_using_alphabet(
+                L,
+                alphabet_XY,
+                _vstack_pad((Alphabet_X[i], Alphabet_Y[i]), fill_value),
+                fill_value,
+            )
+        L, alphabet_XY = _remove_counts_at_fill_value(L, alphabet_XY, fill_value)
         if not np.any(L):
             continue
         P_XY, _ = _estimate_probabilities(L, estimator)
@@ -1715,7 +1754,7 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         P_XY_reshaped = np.zeros((alphabet_Y.size, alphabet_X.size))
         j = k = c = 0
         for c in range(P_XY.size):
-            if c > 0 and alphabet_XY[1, c] != alphabet_XY[1, c-1]:
+            if c > 0 and alphabet_XY[1, c] != alphabet_XY[1, c - 1]:
                 k = 0
             while alphabet_X[k] != alphabet_XY[0, c]:
                 k = k + 1
@@ -1727,11 +1766,12 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
         P_X = np.reshape(np.sum(P_XY_reshaped, axis=0), (1, -1))
         P_Y = np.reshape(np.sum(P_XY_reshaped, axis=1), (-1, 1))
 
-        H[i] = divergence_kullbackleibler_pmf(np.reshape(P_X*P_Y,
-                                                         (1, -1)),
-                                              np.reshape(P_XY_reshaped,
-                                                         (1, -1)),
-                                              False, base)
+        H[i] = divergence_kullbackleibler_pmf(
+            np.reshape(P_X * P_Y, (1, -1)),
+            np.reshape(P_XY_reshaped, (1, -1)),
+            False,
+            base,
+        )
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -1742,10 +1782,17 @@ def information_lautum(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def information_mutual_normalised(X, Y=None, norm_factor='Y',
-                                  cartesian_product=False, fill_value=-1,
-                                  estimator='ML', Alphabet_X=None,
-                                  Alphabet_Y=None, keep_dims=False):
+def information_mutual_normalised(
+    X,
+    Y=None,
+    norm_factor="Y",
+    cartesian_product=False,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     # TODO Documentation should include properties for each of the
     # normalisation factors
     """
@@ -1928,19 +1975,19 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -1963,11 +2010,9 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if not isinstance(norm_factor, str):
         raise ValueError("arg norm_factor not a string")
     if not cartesian_product and X.shape != Y.shape:
@@ -1976,67 +2021,87 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
         raise ValueError("trailing dimensions of args X and Y do not match")
     # NB: No base parameter needed here, therefore no test!
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y),
+        (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y),
+    )
     X, Alphabet_X, Y, Alphabet_Y = S
 
-    I = information_mutual(X, Y, cartesian_product, fill_value=fill_value,
-                           estimator=estimator, Alphabet_X=Alphabet_X,
-                           Alphabet_Y=Alphabet_Y)
+    I = information_mutual(
+        X,
+        Y,
+        cartesian_product,
+        fill_value=fill_value,
+        estimator=estimator,
+        Alphabet_X=Alphabet_X,
+        Alphabet_Y=Alphabet_Y,
+    )
 
-    norm_factor = norm_factor.upper().replace(' ', '')
-    if norm_factor == 'Y':
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
-                                      H2.shape).astype('int'))
+    norm_factor = norm_factor.upper().replace(" ", "")
+    if norm_factor == "Y":
+        H2 = entropy(
+            Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y
+        )
+        H2 = np.reshape(
+            H2, np.append(np.ones(I.ndim - H2.ndim), H2.shape).astype("int")
+        )
 
         C = H2
-    elif norm_factor == 'X':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,
-                                      np.ones(I.ndim-H1.ndim)).astype('int'))
+    elif norm_factor == "X":
+        H1 = entropy(
+            X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X
+        )
+        H1 = np.reshape(
+            H1, np.append(H1.shape, np.ones(I.ndim - H1.ndim)).astype("int")
+        )
 
         C = H1
-    elif norm_factor == 'Y+X' or norm_factor == 'X+Y':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,
-                                      np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
-                                      H2.shape).astype('int'))
+    elif norm_factor == "Y+X" or norm_factor == "X+Y":
+        H1 = entropy(
+            X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X
+        )
+        H1 = np.reshape(
+            H1, np.append(H1.shape, np.ones(I.ndim - H1.ndim)).astype("int")
+        )
+        H2 = entropy(
+            Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y
+        )
+        H2 = np.reshape(
+            H2, np.append(np.ones(I.ndim - H2.ndim), H2.shape).astype("int")
+        )
 
         C = H1 + H2
-    elif norm_factor == 'MIN':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,
-                                      np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
-                                      H2.shape).astype('int'))
+    elif norm_factor == "MIN":
+        H1 = entropy(
+            X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X
+        )
+        H1 = np.reshape(
+            H1, np.append(H1.shape, np.ones(I.ndim - H1.ndim)).astype("int")
+        )
+        H2 = entropy(
+            Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y
+        )
+        H2 = np.reshape(
+            H2, np.append(np.ones(I.ndim - H2.ndim), H2.shape).astype("int")
+        )
 
         C = np.minimum(H1, H2)
-    elif norm_factor == 'MAX':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,
-                                      np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
-                                      H2.shape).astype('int'))
+    elif norm_factor == "MAX":
+        H1 = entropy(
+            X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X
+        )
+        H1 = np.reshape(
+            H1, np.append(H1.shape, np.ones(I.ndim - H1.ndim)).astype("int")
+        )
+        H2 = entropy(
+            Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y
+        )
+        H2 = np.reshape(
+            H2, np.append(np.ones(I.ndim - H2.ndim), H2.shape).astype("int")
+        )
 
         C = np.maximum(H1, H2)
-    elif norm_factor == 'XY' or norm_factor == 'YX':
+    elif norm_factor == "XY" or norm_factor == "YX":
         if not cartesian_product:
             H = np.empty(X.shape[:-1])
             if H.ndim > 0:
@@ -2059,34 +2124,41 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
             H = np.reshape(H, (-1, 1))
 
             for i in range(X.shape[0]):
-                H[i] = entropy_joint(np.vstack((X[i], Y[i])),
-                                     fill_value=fill_value,
-                                     estimator=estimator,
-                                     Alphabet_X=_vstack_pad((Alphabet_X[i],
-                                                             Alphabet_Y[i]),
-                                                            fill_value))
+                H[i] = entropy_joint(
+                    np.vstack((X[i], Y[i])),
+                    fill_value=fill_value,
+                    estimator=estimator,
+                    Alphabet_X=_vstack_pad((Alphabet_X[i], Alphabet_Y[i]), fill_value),
+                )
             H = np.reshape(H, orig_shape_H)
 
             C = H
         else:
+
             def f(X, Y, Alphabet_X, Alphabet_Y):
-                return entropy_joint(np.vstack((X, Y)), fill_value=fill_value,
-                                     estimator=estimator,
-                                     Alphabet_X=_vstack_pad((Alphabet_X,
-                                                             Alphabet_Y),
-                                                            fill_value))
+                return entropy_joint(
+                    np.vstack((X, Y)),
+                    fill_value=fill_value,
+                    estimator=estimator,
+                    Alphabet_X=_vstack_pad((Alphabet_X, Alphabet_Y), fill_value),
+                )
+
             H = _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
             C = H
-    elif norm_factor == 'SQRT':
-        H1 = entropy(X, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_X)
-        H1 = np.reshape(H1, np.append(H1.shape,
-                                      np.ones(I.ndim-H1.ndim)).astype('int'))
-        H2 = entropy(Y, fill_value=fill_value, estimator=estimator,
-                     Alphabet_X=Alphabet_Y)
-        H2 = np.reshape(H2, np.append(np.ones(I.ndim-H2.ndim),
-                                      H2.shape).astype('int'))
+    elif norm_factor == "SQRT":
+        H1 = entropy(
+            X, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_X
+        )
+        H1 = np.reshape(
+            H1, np.append(H1.shape, np.ones(I.ndim - H1.ndim)).astype("int")
+        )
+        H2 = entropy(
+            Y, fill_value=fill_value, estimator=estimator, Alphabet_X=Alphabet_Y
+        )
+        H2 = np.reshape(
+            H2, np.append(np.ones(I.ndim - H2.ndim), H2.shape).astype("int")
+        )
 
         C = np.sqrt(H1 * H2)
     else:
@@ -2100,9 +2172,17 @@ def information_mutual_normalised(X, Y=None, norm_factor='Y',
     return I
 
 
-def information_variation(X, Y=None, cartesian_product=False, base=2,
-                          fill_value=-1, estimator='ML', Alphabet_X=None,
-                          Alphabet_Y=None, keep_dims=False):
+def information_variation(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the variation of information [Meil03] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2245,10 +2325,12 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
         cartesian_product = True
         Alphabet_Y = Alphabet_X
 
-    H1 = entropy_conditional(X, Y, cartesian_product, base, fill_value,
-                             estimator, Alphabet_X, Alphabet_Y)
-    H2 = entropy_conditional(Y, X, cartesian_product, base, fill_value,
-                             estimator, Alphabet_Y, Alphabet_X)
+    H1 = entropy_conditional(
+        X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+    )
+    H2 = entropy_conditional(
+        Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X
+    )
 
     if cartesian_product:
         H2 = H2.T
@@ -2261,9 +2343,17 @@ def information_variation(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def information_mutual(X, Y=None, cartesian_product=False, base=2,
-                       fill_value=-1, estimator='ML', Alphabet_X=None,
-                       Alphabet_Y=None, keep_dims=False):
+def information_mutual(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the mutual information (see e.g. [CoTh06]) between arrays X and Y,
     each containing discrete random variable realisations.
@@ -2402,14 +2492,14 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
     internal conversion step, supply integer data and use the default fill
     value -1.
     """
-    H_conditional = entropy_conditional(X, Y, cartesian_product, base,
-                                        fill_value, estimator, Alphabet_X,
-                                        Alphabet_Y)
+    H_conditional = entropy_conditional(
+        X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+    )
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
 
-    H = np.reshape(H, np.append(H.shape,
-                                np.ones(H_conditional.ndim -
-                                        H.ndim)).astype('int'))
+    H = np.reshape(
+        H, np.append(H.shape, np.ones(H_conditional.ndim - H.ndim)).astype("int")
+    )
 
     H = H - H_conditional
 
@@ -2419,9 +2509,17 @@ def information_mutual(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
-                  estimator='ML', Alphabet_X=None, Alphabet_Y=None,
-                  keep_dims=False):
+def entropy_cross(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2553,19 +2651,19 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -2588,22 +2686,18 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
         raise ValueError("dimensions of args X and Y do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y),
+        (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y),
+    )
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -2613,9 +2707,12 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
         else:
             H = np.float64(np.nan)
     else:
+
         def f(X, Y, Alphabet_X, Alphabet_Y):
-            return entropy_cross(X, Y, False, base, fill_value, estimator,
-                                 Alphabet_X, Alphabet_Y)
+            return entropy_cross(
+                X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+            )
+
         return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
@@ -2641,30 +2738,30 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     C = Y[:, 1:] != Y[:, :-1]
     for i in range(X.shape[0]):
         # Obtain symbol change positions
-        I = np.append(np.where(B[i]), X.shape[1]-1)
+        I = np.append(np.where(B[i]), X.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, I))
 
         alphabet_X = X[i, I]
-        if estimator != 'ML':
-            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X,
-                                                              Alphabet_X[i],
-                                                              fill_value)
+        if estimator != "ML":
+            L, alphabet_X = _append_empty_bins_using_alphabet(
+                L, alphabet_X, Alphabet_X[i], fill_value
+            )
         L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
         if not np.any(L):
             continue
         P1, _ = _estimate_probabilities(L, estimator)
 
         # Obtain symbol change positions
-        J = np.append(np.where(C[i]), Y.shape[1]-1)
+        J = np.append(np.where(C[i]), Y.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, J))
 
         alphabet_Y = Y[i, J]
-        if estimator != 'ML':
-            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y,
-                                                              Alphabet_Y[i],
-                                                              fill_value)
+        if estimator != "ML":
+            L, alphabet_Y = _append_empty_bins_using_alphabet(
+                L, alphabet_Y, Alphabet_Y[i], fill_value
+            )
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
         if not np.any(L):
             continue
@@ -2689,9 +2786,17 @@ def entropy_cross(X, Y=None, cartesian_product=False, base=2, fill_value=-1,
     return H
 
 
-def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
-                               fill_value=-1, estimator='ML', Alphabet_X=None,
-                               Alphabet_Y=None, keep_dims=False):
+def divergence_kullbackleibler(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
     X and Y, each containing discrete random variable realisations.
@@ -2826,12 +2931,12 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
     value -1.
 
     """
-    H_cross = entropy_cross(X, Y, cartesian_product, base, fill_value,
-                            estimator, Alphabet_X, Alphabet_Y)
+    H_cross = entropy_cross(
+        X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+    )
     H = entropy(X, base, fill_value, estimator, Alphabet_X)
 
-    H = np.reshape(H, np.append(H.shape,
-                                np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape, np.ones(H_cross.ndim - H.ndim)).astype("int"))
 
     H = H_cross - H
 
@@ -2841,9 +2946,17 @@ def divergence_kullbackleibler(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
-                             fill_value=-1, estimator='ML', Alphabet_X=None,
-                             Alphabet_Y=None, keep_dims=False):
+def divergence_jensenshannon(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays X and Y, each
     containing discrete random variable realisations.
@@ -2983,19 +3096,19 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -3018,22 +3131,18 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if not cartesian_product and X.shape[:-1] != Y.shape[:-1]:
         raise ValueError("dimensions of args X and Y do not match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y),
+        (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y),
+    )
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -3043,9 +3152,12 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.nan)
     else:
+
         def f(X, Y, Alphabet_X, Alphabet_Y):
-            return divergence_jensenshannon(X, Y, False, base, fill_value,
-                                            estimator, Alphabet_X, Alphabet_Y)
+            return divergence_jensenshannon(
+                X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+            )
+
         return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
@@ -3071,30 +3183,30 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     C = Y[:, 1:] != Y[:, :-1]
     for i in range(X.shape[0]):
         # Obtain symbol change positions
-        I = np.append(np.where(B[i]), X.shape[1]-1)
+        I = np.append(np.where(B[i]), X.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, I))
 
         alphabet_X = X[i, I]
-        if estimator != 'ML':
-            L, alphabet_X = _append_empty_bins_using_alphabet(L, alphabet_X,
-                                                              Alphabet_X[i],
-                                                              fill_value)
+        if estimator != "ML":
+            L, alphabet_X = _append_empty_bins_using_alphabet(
+                L, alphabet_X, Alphabet_X[i], fill_value
+            )
         L, alphabet_X = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
         if not np.any(L):
             continue
         P1, _ = _estimate_probabilities(L, estimator)
 
         # Obtain symbol change positions
-        J = np.append(np.where(C[i]), Y.shape[1]-1)
+        J = np.append(np.where(C[i]), Y.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, J))
 
         alphabet_Y = Y[i, J]
-        if estimator != 'ML':
-            L, alphabet_Y = _append_empty_bins_using_alphabet(L, alphabet_Y,
-                                                              Alphabet_Y[i],
-                                                              fill_value)
+        if estimator != "ML":
+            L, alphabet_Y = _append_empty_bins_using_alphabet(
+                L, alphabet_Y, Alphabet_Y[i], fill_value
+            )
         L, alphabet_Y = _remove_counts_at_fill_value(L, alphabet_Y, fill_value)
         if not np.any(L):
             continue
@@ -3108,8 +3220,11 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
         P[np.isin(Alphabet, alphabet_X, assume_unique=True)] = P1
         Q[np.isin(Alphabet, alphabet_Y, assume_unique=True)] = P2
 
-        H[i] = entropy_pmf(0.5*P + 0.5*Q, base) - \
-            0.5*entropy_pmf(P, base) - 0.5*entropy_pmf(Q, base)
+        H[i] = (
+            entropy_pmf(0.5 * P + 0.5 * Q, base)
+            - 0.5 * entropy_pmf(P, base)
+            - 0.5 * entropy_pmf(Q, base)
+        )
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -3120,10 +3235,17 @@ def divergence_jensenshannon(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
-                                           base=2, fill_value=-1,
-                                           estimator='ML', Alphabet_X=None,
-                                           Alphabet_Y=None, keep_dims=False):
+def divergence_kullbackleibler_symmetrised(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
     X and Y, each containing discrete random variable realisations.
@@ -3267,10 +3389,12 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
         cartesian_product = True
         Alphabet_Y = Alphabet_X
 
-    H1 = divergence_kullbackleibler(X, Y, cartesian_product, base, fill_value,
-                                    estimator, Alphabet_X, Alphabet_Y)
-    H2 = divergence_kullbackleibler(Y, X, cartesian_product, base, fill_value,
-                                    estimator, Alphabet_Y, Alphabet_X)
+    H1 = divergence_kullbackleibler(
+        X, Y, cartesian_product, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+    )
+    H2 = divergence_kullbackleibler(
+        Y, X, cartesian_product, base, fill_value, estimator, Alphabet_Y, Alphabet_X
+    )
 
     if cartesian_product:
         H2 = H2.T
@@ -3283,9 +3407,17 @@ def divergence_kullbackleibler_symmetrised(X, Y=None, cartesian_product=False,
     return H
 
 
-def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
-                        fill_value=-1, estimator='ML', Alphabet_X=None,
-                        Alphabet_Y=None, keep_dims=False):
+def entropy_conditional(
+    X,
+    Y=None,
+    cartesian_product=False,
+    base=2,
+    fill_value=-1,
+    estimator="ML",
+    Alphabet_X=None,
+    Alphabet_Y=None,
+    keep_dims=False,
+):
     """
     Returns the conditional entropy (see e.g. [CoTh06]) between arrays X and Y,
     each containing discrete random variable realisations.
@@ -3435,19 +3567,19 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     Y, fill_value_Y = _sanitise_array_input(Y, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
     if Alphabet_Y is not None:
-        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(Alphabet_Y,
-                                                                  fill_value)
+        Alphabet_Y, fill_value_Alphabet_Y = _sanitise_array_input(
+            Alphabet_Y, fill_value
+        )
         Alphabet_Y, _ = _autocreate_alphabet(Alphabet_Y, fill_value_Alphabet_Y)
     else:
-        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y,
-                                                                 fill_value_Y)
+        Alphabet_Y, fill_value_Alphabet_Y = _autocreate_alphabet(Y, fill_value_Y)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -3470,11 +3602,9 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     if _isnan(fill_value_Y):
         raise ValueError("fill value for arg Y is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if Y.shape[:-1] != Alphabet_Y.shape[:-1]:
-        raise ValueError("leading dimensions of args Y and Alphabet_Y do not "
-                         "match")
+        raise ValueError("leading dimensions of args Y and Alphabet_Y do not " "match")
     if not cartesian_product and X.shape != Y.shape:
         raise ValueError("dimensions of args X and Y do not match")
     if cartesian_product and X.shape[-1] != Y.shape[-1]:
@@ -3482,12 +3612,10 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X,
-                                                   Y, Alphabet_Y),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X,
-                                                   fill_value_Y,
-                                                   fill_value_Alphabet_Y))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X, Y, Alphabet_Y),
+        (fill_value_X, fill_value_Alphabet_X, fill_value_Y, fill_value_Alphabet_Y),
+    )
     X, Alphabet_X, Y, Alphabet_Y = S
 
     if not cartesian_product:
@@ -3497,9 +3625,12 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
         else:
             H = np.float64(np.nan)
     else:
+
         def f(X, Y, Alphabet_X, Alphabet_Y):
-            return entropy_conditional(X, Y, False, base, fill_value,
-                                       estimator, Alphabet_X, Alphabet_Y)
+            return entropy_conditional(
+                X, Y, False, base, fill_value, estimator, Alphabet_X, Alphabet_Y
+            )
+
         return _cartesian_product_apply(X, Y, f, Alphabet_X, Alphabet_Y)
 
     # Re-shape H, X and Y, so that we may handle multi-dimensional arrays
@@ -3512,11 +3643,13 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     H = np.reshape(H, (-1, 1))
 
     for i in range(X.shape[0]):
-        H[i] = entropy_joint(np.vstack((X[i], Y[i])), base, fill_value,
-                             estimator, _vstack_pad((Alphabet_X[i],
-                                                     Alphabet_Y[i]),
-                                                    fill_value)) - \
-            entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
+        H[i] = entropy_joint(
+            np.vstack((X[i], Y[i])),
+            base,
+            fill_value,
+            estimator,
+            _vstack_pad((Alphabet_X[i], Alphabet_Y[i]), fill_value),
+        ) - entropy(Y[i], base, fill_value, estimator, Alphabet_Y[i])
 
     # Reverse re-shaping
     H = np.reshape(H, orig_shape_H)
@@ -3527,8 +3660,9 @@ def entropy_conditional(X, Y=None, cartesian_product=False, base=2,
     return H
 
 
-def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
-                  keep_dims=False):
+def entropy_joint(
+    X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False
+):
     """
     Returns the estimated joint entropy (see e.g. [CoTh06]) for an array X
     containing realisations of discrete random variables.
@@ -3640,12 +3774,12 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     # values.
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -3658,14 +3792,13 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X)
+    )
     X, Alphabet_X = S
 
     # Re-shape X, so that we may handle multi-dimensional arrays equivalently
@@ -3677,21 +3810,21 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
 
     # Sort columns
     for i in range(X.shape[0]):
-        X = X[:, X[i].argsort(kind='mergesort')]
+        X = X[:, X[i].argsort(kind="mergesort")]
 
     # Compute symbol run-lengths
     # Compute symbol change indicators
     B = np.any(X[:, 1:] != X[:, :-1], axis=0)
     # Obtain symbol change positions
-    I = np.append(np.where(B), X.shape[1]-1)
+    I = np.append(np.where(B), X.shape[1] - 1)
     # Compute run lengths
     L = np.diff(np.append(-1, I))
 
     alphabet_X = X[:, I]
-    if estimator != 'ML':
-        n_additional_empty_bins = \
-            _determine_number_additional_empty_bins(L, alphabet_X, Alphabet_X,
-                                                    fill_value)
+    if estimator != "ML":
+        n_additional_empty_bins = _determine_number_additional_empty_bins(
+            L, alphabet_X, Alphabet_X, fill_value
+        )
     else:
         n_additional_empty_bins = 0
     L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -3700,8 +3833,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
 
     # P_0 is the probability mass assigned to each additional empty bin
     P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
-    H_0 = n_additional_empty_bins * P_0 * \
-        -np.log2(P_0 + np.spacing(0)) / np.log2(base)
+    H_0 = n_additional_empty_bins * P_0 * -np.log2(P_0 + np.spacing(0)) / np.log2(base)
     H = entropy_pmf(P, base, require_valid_pmf=False) + H_0
 
     if keep_dims:
@@ -3710,8 +3842,7 @@ def entropy_joint(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     return H
 
 
-def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
-            keep_dims=False):
+def entropy(X, base=2, fill_value=-1, estimator="ML", Alphabet_X=None, keep_dims=False):
     """
     Returns the estimated entropy (see e.g. [CoTh06]) for an array X containing
     realisations of a discrete random variable.
@@ -3812,12 +3943,12 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     # entropy_cross(X,X). However, performance would likely be lower!
     X, fill_value_X = _sanitise_array_input(X, fill_value)
     if Alphabet_X is not None:
-        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(Alphabet_X,
-                                                                  fill_value)
+        Alphabet_X, fill_value_Alphabet_X = _sanitise_array_input(
+            Alphabet_X, fill_value
+        )
         Alphabet_X, _ = _autocreate_alphabet(Alphabet_X, fill_value_Alphabet_X)
     else:
-        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X,
-                                                                 fill_value_X)
+        Alphabet_X, fill_value_Alphabet_X = _autocreate_alphabet(X, fill_value_X)
 
     if X.size == 0:
         raise ValueError("arg X contains no elements")
@@ -3830,14 +3961,13 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     if _isnan(fill_value_X):
         raise ValueError("fill value for arg X is NaN")
     if X.shape[:-1] != Alphabet_X.shape[:-1]:
-        raise ValueError("leading dimensions of args X and Alphabet_X do not "
-                         "match")
+        raise ValueError("leading dimensions of args X and Alphabet_X do not " "match")
     if not (np.isscalar(base) and np.isreal(base) and base > 0):
         raise ValueError("arg base not a positive real-valued scalar")
 
-    S, fill_value = _map_observations_to_integers((X, Alphabet_X),
-                                                  (fill_value_X,
-                                                   fill_value_Alphabet_X))
+    S, fill_value = _map_observations_to_integers(
+        (X, Alphabet_X), (fill_value_X, fill_value_Alphabet_X)
+    )
     X, Alphabet_X = S
 
     H = np.empty(X.shape[:-1])
@@ -3864,16 +3994,15 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
     B = X[:, 1:] != X[:, :-1]
     for i in range(X.shape[0]):
         # Obtain symbol change positions
-        I = np.append(np.where(B[i]), X.shape[1]-1)
+        I = np.append(np.where(B[i]), X.shape[1] - 1)
         # Compute run lengths
         L = np.diff(np.append(-1, I))
 
         alphabet_X = X[i, I]
-        if estimator != 'ML':
-            n_additional_empty_bins = \
-                _determine_number_additional_empty_bins(L, alphabet_X,
-                                                        Alphabet_X[i],
-                                                        fill_value)
+        if estimator != "ML":
+            n_additional_empty_bins = _determine_number_additional_empty_bins(
+                L, alphabet_X, Alphabet_X[i], fill_value
+            )
         else:
             n_additional_empty_bins = 0
         L, _ = _remove_counts_at_fill_value(L, alphabet_X, fill_value)
@@ -3882,8 +4011,12 @@ def entropy(X, base=2, fill_value=-1, estimator='ML', Alphabet_X=None,
 
         # P_0 is the probability mass assigned to each additional empty bin
         P, P_0 = _estimate_probabilities(L, estimator, n_additional_empty_bins)
-        H_0 = n_additional_empty_bins * P_0 * \
-            -np.log2(P_0 + np.spacing(0)) / np.log2(base)
+        H_0 = (
+            n_additional_empty_bins
+            * P_0
+            * -np.log2(P_0 + np.spacing(0))
+            / np.log2(base)
+        )
         H[i] = entropy_pmf(P, base, require_valid_pmf=False) + H_0
 
     # Reverse re-shaping
@@ -3953,8 +4086,9 @@ def entropy_pmf(P, base=2, require_valid_pmf=True, keep_dims=False):
     return H
 
 
-def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
-                      require_valid_pmf=True, keep_dims=False):
+def entropy_cross_pmf(
+    P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True, keep_dims=False
+):
     """
     Returns the cross entropy (see e.g. [Murp12]) between arrays P and Q, each
     representing a discrete probability distribution.
@@ -4044,11 +4178,13 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
+
         def f(P, Q):
             return entropy_cross_pmf(P, Q, False, base, require_valid_pmf)
+
         return _cartesian_product_apply(P, Q, f)
 
-    with np.errstate(invalid='ignore', divide='ignore'):
+    with np.errstate(invalid="ignore", divide="ignore"):
         H = P * np.log2(Q)
     H[P == 0] = 0
     H = -np.sum(H, axis=-1)
@@ -4060,8 +4196,9 @@ def entropy_cross_pmf(P, Q=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
-                                   require_valid_pmf=True, keep_dims=False):
+def divergence_kullbackleibler_pmf(
+    P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True, keep_dims=False
+):
     """
     Returns the Kullback-Leibler divergence (see e.g. [CoTh06]) between arrays
     P and Q, each representing a discrete probability distribution.
@@ -4122,12 +4259,10 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
         broadcast operations required by the user (defaults to False). Has no
         effect when cartesian_product==True.
     """
-    H_cross = entropy_cross_pmf(P, Q, cartesian_product, base,
-                                require_valid_pmf)
+    H_cross = entropy_cross_pmf(P, Q, cartesian_product, base, require_valid_pmf)
     H = entropy_pmf(P, base, require_valid_pmf)
 
-    H = np.reshape(H, np.append(H.shape,
-                                np.ones(H_cross.ndim-H.ndim)).astype('int'))
+    H = np.reshape(H, np.append(H.shape, np.ones(H_cross.ndim - H.ndim)).astype("int"))
 
     H = H_cross - H
 
@@ -4137,8 +4272,9 @@ def divergence_kullbackleibler_pmf(P, Q=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
-                                 require_valid_pmf=True, keep_dims=False):
+def divergence_jensenshannon_pmf(
+    P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True, keep_dims=False
+):
     """
     Returns the Jensen-Shannon divergence [Lin91] between arrays P and Q, each
     representing a discrete probability distribution.
@@ -4234,14 +4370,18 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
         raise ValueError("arg base not a positive real-valued scalar")
 
     if cartesian_product:
+
         def f(P, Q):
-            return divergence_jensenshannon_pmf(P, Q, False, base,
-                                                require_valid_pmf)
+            return divergence_jensenshannon_pmf(P, Q, False, base, require_valid_pmf)
+
         return _cartesian_product_apply(P, Q, f)
 
-    H1 = entropy_pmf(0.5*(P + Q), base, require_valid_pmf)
-    H = H1 - 0.5*entropy_pmf(P, base, require_valid_pmf) - \
-        0.5*entropy_pmf(Q, base, require_valid_pmf)
+    H1 = entropy_pmf(0.5 * (P + Q), base, require_valid_pmf)
+    H = (
+        H1
+        - 0.5 * entropy_pmf(P, base, require_valid_pmf)
+        - 0.5 * entropy_pmf(Q, base, require_valid_pmf)
+    )
 
     if keep_dims and not cartesian_product:
         H = H[..., np.newaxis]
@@ -4249,10 +4389,9 @@ def divergence_jensenshannon_pmf(P, Q=None, cartesian_product=False, base=2,
     return H
 
 
-def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
-                                               cartesian_product=False, base=2,
-                                               require_valid_pmf=True,
-                                               keep_dims=False):
+def divergence_kullbackleibler_symmetrised_pmf(
+    P, Q=None, cartesian_product=False, base=2, require_valid_pmf=True, keep_dims=False
+):
     """
     Returns the symmetrised Kullback-Leibler divergence [Lin91] between arrays
     P and Q, each representing a discrete probability distribution.
@@ -4321,10 +4460,12 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
         Q = P
         cartesian_product = True
 
-    H1 = divergence_kullbackleibler_pmf(P, Q, cartesian_product, base,
-                                        require_valid_pmf)
-    H2 = divergence_kullbackleibler_pmf(Q, P, cartesian_product, base,
-                                        require_valid_pmf)
+    H1 = divergence_kullbackleibler_pmf(
+        P, Q, cartesian_product, base, require_valid_pmf
+    )
+    H2 = divergence_kullbackleibler_pmf(
+        Q, P, cartesian_product, base, require_valid_pmf
+    )
 
     if cartesian_product:
         H2 = H2.T
@@ -4337,31 +4478,31 @@ def divergence_kullbackleibler_symmetrised_pmf(P, Q=None,
     return H
 
 
-def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet,
-                                      fill_value):
+def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet, fill_value):
     if Alphabet.ndim == 1:
-        assert(Full_Alphabet.ndim == 1)
-        A = np.setdiff1d(Full_Alphabet[Full_Alphabet != fill_value], Alphabet,
-                         assume_unique=True)
+        assert Full_Alphabet.ndim == 1
+        A = np.setdiff1d(
+            Full_Alphabet[Full_Alphabet != fill_value], Alphabet, assume_unique=True
+        )
         Alphabet = np.append(Alphabet, A)
-        Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
-        I = Alphabet.argsort(kind='mergesort')
+        Counts = np.append(Counts, np.tile(0, Alphabet.size - Counts.size))
+        I = Alphabet.argsort(kind="mergesort")
         Alphabet = Alphabet[I]
         Counts = Counts[I]
-        assert(np.all(Alphabet[1:] != Alphabet[:-1]))
+        assert np.all(Alphabet[1:] != Alphabet[:-1])
         return Counts, Alphabet
     else:
-        assert(Full_Alphabet.shape[0] == 2 and Alphabet.shape[0] == 2)
+        assert Full_Alphabet.shape[0] == 2 and Alphabet.shape[0] == 2
         Alph1 = np.unique(Full_Alphabet[0, Full_Alphabet[0] != fill_value])
         Alph2 = np.unique(Full_Alphabet[1, Full_Alphabet[1] != fill_value])
-        A = np.zeros((2, Alph1.size*Alph2.size), dtype=Full_Alphabet.dtype)
+        A = np.zeros((2, Alph1.size * Alph2.size), dtype=Full_Alphabet.dtype)
         c = 0
         for j in range(Alph2.size):
             for i in range(Alph1.size):
                 A[0, c] = Alph1[i]
                 A[1, c] = Alph2[j]
                 c = c + 1
-        Unseen = np.ones(A.shape[-1], dtype='bool')
+        Unseen = np.ones(A.shape[-1], dtype="bool")
         i = j = 0
         while i < Alphabet.shape[-1] and j < A.shape[-1]:
             if np.all(Alphabet[:, i] == A[:, j]):
@@ -4373,13 +4514,13 @@ def _append_empty_bins_using_alphabet(Counts, Alphabet, Full_Alphabet,
             else:
                 i = i + 1
         Alphabet = np.hstack((Alphabet, A[:, Unseen]))
-        Counts = np.append(Counts, np.tile(0, Alphabet.size-Counts.size))
+        Counts = np.append(Counts, np.tile(0, Alphabet.size - Counts.size))
         # Sort columns
         for i in range(Alphabet.shape[0]):
-            I = Alphabet[i].argsort(kind='mergesort')
+            I = Alphabet[i].argsort(kind="mergesort")
             Alphabet = Alphabet[:, I]
             Counts = Counts[I]
-        assert(np.all(np.any(Alphabet[:, 1:] != Alphabet[:, :-1], axis=0)))
+        assert np.all(np.any(Alphabet[:, 1:] != Alphabet[:, :-1], axis=0))
         return Counts, Alphabet
 
 
@@ -4388,9 +4529,11 @@ def _autocreate_alphabet(X, fill_value):
     max_length = np.max(Lengths)
 
     def pad_with_fillvalue(x):
-        return np.append(x, np.tile(fill_value, int(max_length-x.size)))
-    Alphabet = np.apply_along_axis(lambda x: pad_with_fillvalue(np.unique(x)),
-                                   axis=-1, arr=X)
+        return np.append(x, np.tile(fill_value, int(max_length - x.size)))
+
+    Alphabet = np.apply_along_axis(
+        lambda x: pad_with_fillvalue(np.unique(x)), axis=-1, arr=X
+    )
     return (Alphabet, fill_value)
 
 
@@ -4427,13 +4570,13 @@ def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
     function : function
         A function with two vector-valued arguments.
      """
-    assert(X.ndim > 0 and Y.ndim > 0)
-    assert(X.size > 0 and Y.size > 0)
+    assert X.ndim > 0 and Y.ndim > 0
+    assert X.size > 0 and Y.size > 0
     if Alphabet_X is not None or Alphabet_Y is not None:
-        assert(Alphabet_X.ndim > 0 and Alphabet_Y.ndim > 0)
-        assert(Alphabet_X.size > 0 and Alphabet_Y.size > 0)
+        assert Alphabet_X.ndim > 0 and Alphabet_Y.ndim > 0
+        assert Alphabet_X.size > 0 and Alphabet_Y.size > 0
 
-    H = np.empty(np.append(X.shape[:-1], Y.shape[:-1]).astype('int'))
+    H = np.empty(np.append(X.shape[:-1], Y.shape[:-1]).astype("int"))
     if H.ndim > 0:
         H[:] = np.nan
     else:
@@ -4462,19 +4605,21 @@ def _cartesian_product_apply(X, Y, function, Alphabet_X=None, Alphabet_Y=None):
     return H
 
 
-def _determine_number_additional_empty_bins(Counts, Alphabet, Full_Alphabet,
-                                            fill_value):
-    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value,
-                            axis=-1)
+def _determine_number_additional_empty_bins(
+    Counts, Alphabet, Full_Alphabet, fill_value
+):
+    alphabet_sizes = np.sum(np.atleast_2d(Full_Alphabet) != fill_value, axis=-1)
     if np.any(alphabet_sizes != fill_value):
         joint_alphabet_size = np.prod(alphabet_sizes[alphabet_sizes > 0])
         if joint_alphabet_size <= 0:
-            raise ValueError("Numerical overflow detected. Joint alphabet "
-                             "size too large.")
+            raise ValueError(
+                "Numerical overflow detected. Joint alphabet " "size too large."
+            )
     else:
         joint_alphabet_size = 0
-    return joint_alphabet_size - \
-        np.sum(np.all(np.atleast_2d(Alphabet) != fill_value, axis=0))
+    return joint_alphabet_size - np.sum(
+        np.all(np.atleast_2d(Alphabet) != fill_value, axis=0)
+    )
 
 
 def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
@@ -4485,34 +4630,35 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
     # 2) James-Stein approach may be used as an alternative
     # 3) Dirichlet prior may be used in all other cases
 
-    assert(np.sum(Counts) > 0)
-    assert(np.all(Counts.astype('int') == Counts))
-    assert(n_additional_empty_bins >= 0)
-    Counts = Counts.astype('int')
+    assert np.sum(Counts) > 0
+    assert np.all(Counts.astype("int") == Counts)
+    assert n_additional_empty_bins >= 0
+    Counts = Counts.astype("int")
 
     if isinstance(estimator, str):
-        estimator = estimator.upper().replace(' ', '')
+        estimator = estimator.upper().replace(" ", "")
 
-    if np.isreal(estimator) or estimator in ('ML', 'PERKS', 'MINIMAX'):
+    if np.isreal(estimator) or estimator in ("ML", "PERKS", "MINIMAX"):
         if np.isreal(estimator):
             alpha = estimator
-        elif estimator == 'PERKS':
-            alpha = 1.0 / (Counts.size+n_additional_empty_bins)
-        elif estimator == 'MINIMAX':
-            alpha = np.sqrt(np.sum(Counts)) / \
-                (Counts.size+n_additional_empty_bins)
+        elif estimator == "PERKS":
+            alpha = 1.0 / (Counts.size + n_additional_empty_bins)
+        elif estimator == "MINIMAX":
+            alpha = np.sqrt(np.sum(Counts)) / (Counts.size + n_additional_empty_bins)
         else:
             alpha = 0
-        Theta = (Counts+alpha) / \
-            (1.0*np.sum(Counts) + alpha*(Counts.size+n_additional_empty_bins))
+        Theta = (Counts + alpha) / (
+            1.0 * np.sum(Counts) + alpha * (Counts.size + n_additional_empty_bins)
+        )
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
-            Theta_0 = alpha / (1.0*np.sum(Counts) +
-                               alpha*(Counts.size+n_additional_empty_bins))
+            Theta_0 = alpha / (
+                1.0 * np.sum(Counts) + alpha * (Counts.size + n_additional_empty_bins)
+            )
         else:
             Theta_0 = 0
 
-    elif estimator == 'GOOD-TURING':
+    elif estimator == "GOOD-TURING":
         # TODO We could also add a Chen-Chao vocabulary size estimator (See
         # Bhat Suma's thesis)
 
@@ -4520,48 +4666,49 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         # Determine histogram of counts N_r (index r denotes count)
         X = np.sort(Counts)
         B = X[1:] != X[:-1]  # Compute symbol change indicators
-        I = np.append(np.where(B), X.size-1)  # Obtain symbol change positions
-        N_r = np.zeros(X[I[-1]]+1)
+        I = np.append(np.where(B), X.size - 1)  # Obtain symbol change positions
+        N_r = np.zeros(X[I[-1]] + 1)
         N_r[X[I]] = np.diff(np.append(-1, I))  # Compute run lengths
         N_r[0] = 0  # Ensures that unobserved symbols do not interfere
 
         # Compute Z_r, a locally averaged version of N_r
         R = np.where(N_r)[0]
         Q = np.append(0, R[:-1])
-        T = np.append(R[1:], 2*R[-1]-Q[-1])
+        T = np.append(R[1:], 2 * R[-1] - Q[-1])
         Z_r = np.zeros_like(N_r)
-        Z_r[R] = N_r[R] / (0.5*(T-Q))
+        Z_r[R] = N_r[R] / (0.5 * (T - Q))
 
         # Fit least squares regression line to plot of log(Z_r) versus log(r)
         x = np.log10(np.arange(1, Z_r.size))
-        with np.errstate(invalid='ignore', divide='ignore'):
+        with np.errstate(invalid="ignore", divide="ignore"):
             y = np.log10(Z_r[1:])
         x = x[np.isfinite(y)]
         y = y[np.isfinite(y)]
-        m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y,
-                               rcond=None)[0]
+        m, c = np.linalg.lstsq(np.vstack([x, np.ones(x.size)]).T, y, rcond=None)[0]
         if m >= -1:
-            warnings.warn("Regression slope < -1 requirement in linear "
-                          "Good-Turing estimate not satisfied")
+            warnings.warn(
+                "Regression slope < -1 requirement in linear "
+                "Good-Turing estimate not satisfied"
+            )
         # Compute smoothed value of N_r based on interpolation
         # We need to refer to SmoothedN_{r+1} for all observed values of r
-        SmoothedN_r = np.zeros(N_r.size+1)
-        SmoothedN_r[1:] = 10**(np.log10(np.arange(1, SmoothedN_r.size)) *
-                               m + c)
+        SmoothedN_r = np.zeros(N_r.size + 1)
+        SmoothedN_r[1:] = 10 ** (np.log10(np.arange(1, SmoothedN_r.size)) * m + c)
 
         # Determine threshold value of r at which to use smoothed values of N_r
         # (SmoothedN_r), as apposed to straightforward N_r.
         # Variance of Turing estimate
-        with np.errstate(invalid='ignore', divide='ignore'):
-            VARr_T = (np.arange(N_r.size)+1)**2 * \
-                (1.0*np.append(N_r[1:], 0)/(N_r**2)) * \
-                (1 + np.append(N_r[1:], 0)/N_r)
-            x = (np.arange(N_r.size)+1) * 1.0*np.append(N_r[1:], 0) / N_r
-            y = (np.arange(N_r.size)+1) * \
-                1.0*SmoothedN_r[1:] / (SmoothedN_r[:-1])
-            assert(np.isinf(VARr_T[0]) or np.isnan(VARr_T[0]))
-            turing_is_sig_diff = np.abs(x-y) > 1.96 * np.sqrt(VARr_T)
-        assert(turing_is_sig_diff[0] == np.array(False))
+        with np.errstate(invalid="ignore", divide="ignore"):
+            VARr_T = (
+                (np.arange(N_r.size) + 1) ** 2
+                * (1.0 * np.append(N_r[1:], 0) / (N_r**2))
+                * (1 + np.append(N_r[1:], 0) / N_r)
+            )
+            x = (np.arange(N_r.size) + 1) * 1.0 * np.append(N_r[1:], 0) / N_r
+            y = (np.arange(N_r.size) + 1) * 1.0 * SmoothedN_r[1:] / (SmoothedN_r[:-1])
+            assert np.isinf(VARr_T[0]) or np.isnan(VARr_T[0])
+            turing_is_sig_diff = np.abs(x - y) > 1.96 * np.sqrt(VARr_T)
+        assert turing_is_sig_diff[0] == np.array(False)
         # NB: 0th element can be safely ignored, since always 0
         T = np.where(turing_is_sig_diff == np.array(False))[0]
         if T.size > 1:
@@ -4577,8 +4724,12 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         # objects observed r times, r>0
         p_r = np.zeros(N_r.size)
         N = np.sum(Counts)
-        p_r[1:] = (np.arange(1, N_r.size)+1) * \
-            1.0*SmoothedN_r[2:] / (SmoothedN_r[1:-1] * N)
+        p_r[1:] = (
+            (np.arange(1, N_r.size) + 1)
+            * 1.0
+            * SmoothedN_r[2:]
+            / (SmoothedN_r[1:-1] * N)
+        )
         # Estimate probability of observing any unseen symbol
         p_r[0] = 1.0 * N_r[1] / N
 
@@ -4588,17 +4739,18 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
 
         # Normalise probabilities for observed symbols, so that they sum to one
         if np.any(Counts == 0) or n_additional_empty_bins > 0:
-            Theta = (1-p_r[0]) * Theta / np.sum(Theta)
+            Theta = (1 - p_r[0]) * Theta / np.sum(Theta)
         else:
-            warnings.warn("No unobserved outcomes specified. Disregarding the "
-                          "probability mass allocated to any unobserved "
-                          "outcomes.")
+            warnings.warn(
+                "No unobserved outcomes specified. Disregarding the "
+                "probability mass allocated to any unobserved "
+                "outcomes."
+            )
             Theta = Theta / np.sum(Theta)
 
         # Divide p_0 among unobserved symbols
-        with np.errstate(invalid='ignore', divide='ignore'):
-            p_emptybin = p_r[0] / (np.sum(Counts == 0) +
-                                   n_additional_empty_bins)
+        with np.errstate(invalid="ignore", divide="ignore"):
+            p_emptybin = p_r[0] / (np.sum(Counts == 0) + n_additional_empty_bins)
         Theta[Counts == 0] = p_emptybin
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
@@ -4606,14 +4758,17 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         else:
             Theta_0 = 0
 
-    elif estimator == 'JAMES-STEIN':
-        Theta, _ = _estimate_probabilities(Counts, 'ML')
+    elif estimator == "JAMES-STEIN":
+        Theta, _ = _estimate_probabilities(Counts, "ML")
         p_uniform = 1.0 / (Counts.size + n_additional_empty_bins)
-        with np.errstate(invalid='ignore', divide='ignore'):
-            Lambda = (1-np.sum(Theta**2)) / \
-                ((np.sum(Counts)-1) *
-                 (np.sum((p_uniform-Theta)**2) +
-                  n_additional_empty_bins*p_uniform**2))
+        with np.errstate(invalid="ignore", divide="ignore"):
+            Lambda = (1 - np.sum(Theta**2)) / (
+                (np.sum(Counts) - 1)
+                * (
+                    np.sum((p_uniform - Theta) ** 2)
+                    + n_additional_empty_bins * p_uniform**2
+                )
+            )
 
         if Lambda > 1:
             Lambda = 1
@@ -4622,10 +4777,10 @@ def _estimate_probabilities(Counts, estimator, n_additional_empty_bins=0):
         elif np.isnan(Lambda):
             Lambda = 1
 
-        Theta = Lambda*p_uniform + (1-Lambda)*Theta
+        Theta = Lambda * p_uniform + (1 - Lambda) * Theta
         # Theta_0 is the probability mass assigned to each additional empty bin
         if n_additional_empty_bins > 0:
-            Theta_0 = Lambda*p_uniform
+            Theta_0 = Lambda * p_uniform
         else:
             Theta_0 = 0
     else:
@@ -4656,7 +4811,7 @@ def _increment_binary_vector(X):
 
 def _isnan(X):
     X = np.asarray(X)
-    if X.dtype in ('int', 'float'):
+    if X.dtype in ("int", "float"):
         return np.isnan(X)
     else:
         f = np.vectorize(_isnan_element)
@@ -4671,23 +4826,25 @@ def _isnan_element(x):
 
 
 def _map_observations_to_integers(Symbol_matrices, Fill_values):
-    assert(len(Symbol_matrices) == len(Fill_values))
+    assert len(Symbol_matrices) == len(Fill_values)
     FILL_VALUE = -1
-    if np.any([A.dtype != 'int' for A in Symbol_matrices]) or \
-            np.any(np.array(Fill_values) != FILL_VALUE):
+    if np.any([A.dtype != "int" for A in Symbol_matrices]) or np.any(
+        np.array(Fill_values) != FILL_VALUE
+    ):
         L = sklearn.preprocessing.LabelEncoder()
         F = [np.atleast_1d(v) for v in Fill_values]
         L.fit(np.concatenate([A.ravel() for A in Symbol_matrices] + F))
         # TODO make sure to test with various (unusual) data types
-        Symbol_matrices = [L.transform(A.ravel()).reshape(A.shape) for A in
-                           Symbol_matrices]
+        Symbol_matrices = [
+            L.transform(A.ravel()).reshape(A.shape) for A in Symbol_matrices
+        ]
         Fill_values = [L.transform(np.atleast_1d(f)) for f in Fill_values]
 
         for A, f in zip(Symbol_matrices, Fill_values):
-            assert(not np.any(A == FILL_VALUE))
+            assert not np.any(A == FILL_VALUE)
             A[A == f] = FILL_VALUE
 
-    assert(np.all([A.dtype == 'int' for A in Symbol_matrices]))
+    assert np.all([A.dtype == "int" for A in Symbol_matrices])
     return Symbol_matrices, FILL_VALUE
 
 
@@ -4703,7 +4860,7 @@ def _sanitise_array_input(X, fill_value=-1):
     # Avoid Python 3 issues with numpy arrays containing None elements
     if np.any(np.equal(X, None)) or fill_value is None:
         X = np.asarray(X)
-        assert(np.all(X != NONE_REPLACEMENT))
+        assert np.all(X != NONE_REPLACEMENT)
         M = np.equal(X, None)
         X = np.where(M, NONE_REPLACEMENT, X)
     if fill_value is None:
@@ -4722,17 +4879,19 @@ def _sanitise_array_input(X, fill_value=-1):
         if np.any(X == fill_value):
             warnings.warn("Masked array contains data equal to fill value")
 
-        if X.dtype.kind in ('S', 'U'):
+        if X.dtype.kind in ("S", "U"):
             kind = X.dtype.kind
             current_dtype_len = int(X.dtype.str.split(kind)[1])
             if current_dtype_len < len(fill_value):
                 # Fix numpy's broken array string type behaviour which causes
                 # X.filled() placeholder entries to be no longer than
                 # non-placeholder entries
-                warnings.warn("Changing numpy array dtype internally to "
-                              "accommodate fill_value string length")
+                warnings.warn(
+                    "Changing numpy array dtype internally to "
+                    "accommodate fill_value string length"
+                )
                 M = X.mask
-                X = np.array(X.filled(), dtype=kind+str(len(fill_value)))
+                X = np.array(X.filled(), dtype=kind + str(len(fill_value)))
                 X[M] = fill_value
             else:
                 X = X.filled()
@@ -4741,36 +4900,43 @@ def _sanitise_array_input(X, fill_value=-1):
     else:
         X = np.asarray(X)
 
-    if X.dtype.kind not in 'biufcmMOSUV':
+    if X.dtype.kind not in "biufcmMOSUV":
         raise TypeError("Unsupported array dtype")
 
     if X.size == 1 and X.ndim == 0:
-        X = np.array((X, ))
+        X = np.array((X,))
 
     return X, np.array(fill_value)
 
 
 def _verify_alphabet_sufficiently_large(X, Alphabet, fill_value):
-    assert(not np.any(X == np.array(None)))
-    assert(not np.any(Alphabet == np.array(None)))
+    assert not np.any(X == np.array(None))
+    assert not np.any(Alphabet == np.array(None))
     for i in range(X.shape[0]):
         I = X[i] != fill_value
         J = Alphabet[i] != fill_value
         # NB: This causes issues when both arguments contain None. But it is
         # always called after observations have all been mapped to integers.
         if np.setdiff1d(X[i, I], Alphabet[i, J]).size > 0:
-            raise ValueError("provided alphabet does not contain all observed "
-                             "outcomes")
+            raise ValueError(
+                "provided alphabet does not contain all observed " "outcomes"
+            )
 
 
 def _vstack_pad(Arrays, fill_value):
     max_length = max([A.shape[-1] for A in Arrays])
-    Arrays = [np.append(A, np.tile(fill_value,
-                                   np.append(A.shape[:-1],
-                                             max_length -
-                                             A.shape[-1]).astype(int)))
-              for A in Arrays]
+    Arrays = [
+        np.append(
+            A,
+            np.tile(
+                fill_value,
+                np.append(A.shape[:-1], max_length - A.shape[-1]).astype(int),
+            ),
+        )
+        for A in Arrays
+    ]
     return np.vstack((Arrays))
+
 
 # TODO Avoid hack surrounding fill_type None and numpy arrays with Python 3. Remove support for fill_type None?
 # TODO Tests for keep_dims
