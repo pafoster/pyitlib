@@ -4844,7 +4844,7 @@ def _map_observations_to_integers(Symbol_matrices, Fill_values):
             assert not np.any(A == FILL_VALUE)
             A[A == f] = FILL_VALUE
 
-    assert np.all([A.dtype == "int" for A in Symbol_matrices])
+    assert np.all([np.issubdtype(A.dtype, np.integer) for A in Symbol_matrices])
     return Symbol_matrices, FILL_VALUE
 
 
